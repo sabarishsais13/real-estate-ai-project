@@ -1,0 +1,119 @@
+/* --- Glassmorphism Elements --- */
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    transition: var(--transition-smooth);
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 215, 0, 0.4);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    width: 800px;
+    max-width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 60px;
+    background: var(--glass-bg);
+    border: 1px solid var(--gold-border);
+    backdrop-filter: var(--glass-blur);
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.close-btn:hover {
+    color: var(--luxury-gold);
+}
+
+/* Chatbot Floating */
+.vastu-chatbot {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 320px;
+    z-index: 1000;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* By default maybe minimized or hidden */
+    transform: translateY(0);
+}
+
+.chatbot-header {
+    background: rgba(212, 175, 55, 0.15);
+    padding: 15px 20px;
+    color: var(--luxury-gold);
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--gold-border);
+    cursor: pointer;
+}
+
+.chatbot-body {
+    padding: 20px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* Specific Card Layouts */
+.property-card-comp {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+}
+
+.property-card-comp .property-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.property-info {
+    padding: var(--spacing-small);
+}
+
+.property-price {
+    color: var(--luxury-gold);
+    font-weight: 700;
+    font-size: 20px;
+}

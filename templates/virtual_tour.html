@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}Virtual Tour | {{ property.title }} | EstateVista AI{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Remove navbar margin and make full screen */
+.main-content {
+    margin-top: 0 !important;
+}
+
+nav.navbar {
+    background: rgba(10, 10, 10, 0.5); /* More transparent */
+}
+
+.tour-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#aframe-scene-container {
+    width: 100%;
+    height: 100%;
+}
+
+.room-selector-panel {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--gold-border);
+    border-radius: 100px;
+    padding: 10px 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 100;
+}
+
+.room-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.room-btn:hover {
+    color: var(--luxury-gold);
+}
+
+.room-btn.active {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--highlight-gold);
+    border: 1px solid var(--luxury-gold);
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg-base);
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--luxury-gold);
+    font-size: 24px;
+    font-family: 'Playfair Display', serif;
+    transition: opacity 0.5s ease;
+}
+
+/* Hide footer on tour */
+footer { display: none !important; }
+</style>
+<!-- Include A-Frame -->
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="loading-overlay" id="loadingOverlay">Loading Virtual Tour...</div>
+<div class="tour-container">
+    <div id="aframe-scene-container">
+        <!-- Scene injected dynamically to avoid A-Frame running before data is ready -->
+    </div>
+    
+    <div class="room-selector-panel" id="roomSelector">
+        <!-- Buttons injected dynamically -->
+        <button class="room-btn active" onclick="switchRoom('living_room_360')">Living Room</button>
+        <button class="room-btn" onclick="switchRoom('kitchen_360')">Kitchen</button>
+        <button class="room-btn" onclick="switchRoom('bedroom_360')">Master Bedroom</button>
+        <button class="room-btn" onclick="switchRoom('bathroom_360')">Bathroom</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const propId = {{ property_id|default:0 }};
+    let propertyData = null;
+    let currentRoom = 'living_room_360';
+    
+    const fallbackImage = 'https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=2000'; // Fallback equirectangularish image
+
+    async function fetchTourData() {
+        if (!propId) {
+            initScene(fallbackImage);
+            return;
+        }
+        try {
+            const res = await fetch(`/api/properties/${propId}/`);
+            if (res.ok) {
+                propertyData = await res.json();
+                const initialUrl = propertyData.living_room_360 || propertyData.image || fallbackImage;
+                initScene(initialUrl);
+            } else {
+                initScene(fallbackImage);
+            }
+        } catch(e) {
+            initScene(fallbackImage);
+        }
+    }
+
+    function initScene(imgUrl) {
+        const container = document.getElementById('aframe-scene-container');
+        container.innerHTML = `
+            <a-scene embedded vr-mode-ui="enabled: false">
+                <a-sky id="sky-image" src="${imgUrl}" rotation="0 -90 0"></a-sky>
+                <a-camera id="camera" position="0 1.6 0" look-controls="reverseMouseDrag: true"></a-camera>
+            </a-scene>
+        `;
+        
+        // Hide loading after a bit
+        setTimeout(() => {
+            const el = document.getElementById('loadingOverlay');
+            if(el) {
+                el.style.opacity = '0';
+                setTimeout(() => el.style.display = 'none', 500);
+            }
+        }, 1000);
+    }
+
+    function switchRoom(roomKey) {
+        // Update active button
+        document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Update sky
+        const sky = document.getElementById('sky-image');
+        if (sky && propertyData) {
+            let nextImage = propertyData[roomKey];
+            if (!nextImage) nextImage = fallbackImage; // fallback if room not defined
+            sky.setAttribute('src', nextImage);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchTourData);
+</script>
+{% endblock %}
