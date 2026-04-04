@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EstateVista AI | Premium Real Estate Platform{% endblock %}</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/glass.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <style>
+        .icon-gold {
+            width: 48px;
+            height: 48px;
+            margin-bottom: var(--spacing-small);
+            stroke: var(--luxury-gold);
+            stroke-width: 1.5;
+            fill: none;
+            filter: drop-shadow(0 0 5px var(--soft-gold-glow));
+        }
+        .card-title {
+            font-size: 18px;
+            color: var(--luxury-gold);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: var(--spacing-micro);
+            text-shadow: 0 0 10px var(--soft-gold-glow);
+        }
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="logo">EstateVista<span>AI</span></a>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'discover' %}">Discover</a></li>
+            <li><a href="{% url 'sell' %}">Sell</a></li>
+            <li><a href="{% url 'ai_advisor' %}">AI Advisor</a></li>
+        </ul>
+        <!-- Re-using Virtual Tour as generic if 0, else they navigate from discover page -->
+        <a href="{% url 'discover' %}" class="btn btn-outline" style="padding: 10px 25px; font-size: 12px;">Get Started</a>
+    </nav>
+
+    <main class="main-content" style="margin-top: 70px; position: relative; z-index: 10;">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="section" style="border-top: 1px solid var(--gold-border); text-align: center; padding: 40px;">
+        <p style="color: var(--text-muted); font-size: 14px;">&copy; 2026 EstateVista AI. The Pinnacle of Real Estate Intelligence.</p>
+    </footer>
+
+    <!-- Floating Chatbot Vastu Guide -->
+    <div id="vastu-chatbot" class="vastu-chatbot glass-card">
+        <div class="chatbot-header">
+            <span>Vastu AI Guide</span>
+            <span class="close-chat" style="font-size:24px; cursor:pointer;" onclick="toggleChat()">&times;</span>
+        </div>
+        <div class="chatbot-body" id="chatbot-body" style="display:none;">
+            <p>How can I assist you with Vastu compliance for your properties today?</p>
+            <input type="text" placeholder="Ask Vastu AI..." style="width:100%; padding: 8px; margin-top:10px; background:rgba(255,255,255,0.1); border:1px solid var(--luxury-gold); color:white; outline:none; border-radius:4px;">
+        </div>
+    </div>
+
+    <!-- Base Scripts -->
+    <script>
+        // Inline particle script or external
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = 60;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() { this.init(); }
+            init() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height + canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedY = Math.random() * 0.3 + 0.1;
+                this.opacity = Math.random() * 0.3 + 0.1;
+            }
+            update() {
+                this.y -= this.speedY;
+                if (this.y < -10) this.init();
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Reveal on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+        function toggleChat() {
+            const body = document.getElementById('chatbot-body');
+            body.style.display = body.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

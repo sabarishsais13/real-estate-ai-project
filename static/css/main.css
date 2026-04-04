@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+    --bg-base: #0b0b0b;
+    --bg-secondary: #0e0e0e;
+    --bg-accent: #151515;
+    
+    --luxury-gold: #d4af37;
+    --highlight-gold: #ffd700;
+    --soft-gold-glow: rgba(212, 175, 55, 0.4);
+    --gold-border: rgba(212, 175, 55, 0.15);
+    
+    --text-primary: #ffffff;
+    --text-secondary: #d1d1d1;
+    --text-muted: #9a9a9a;
+    --glass-label: rgba(255, 255, 255, 0.7);
+    
+    --glass-bg: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 215, 0, 0.2);
+    --glass-blur: blur(20px);
+    
+    --spacing-micro: 10px;
+    --spacing-small: 20px;
+    --spacing-medium: 40px;
+    --spacing-section: 80px;
+
+    --transition-smooth: 0.3s ease-in-out;
+    --luxury-animation: 6s ease-in-out infinite alternate;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+h1, h2, h3, .logo {
+    font-family: 'Playfair Display', serif;
+}
+
+/* --- Particle Canvas --- */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* --- Navigation --- */
+nav.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    background: rgba(10, 10, 10, 0.95);
+    border-bottom: 1px solid var(--gold-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+}
+
+.logo span {
+    color: var(--luxury-gold);
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--spacing-medium);
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+}
+
+.nav-links a:hover {
+    color: var(--luxury-gold);
+}
+
+/* --- Buttons --- */
+.btn-group {
+    display: flex;
+    gap: var(--spacing-small);
+    justify-content: center;
+}
+
+.btn {
+    padding: 16px 36px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-filled {
+    background: linear-gradient(45deg, var(--luxury-gold), var(--highlight-gold));
+    color: #000;
+    border: none;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+}
+
+.btn-filled:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.35);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--luxury-gold);
+    color: var(--luxury-gold);
+}
+
+.btn-outline:hover {
+    background: var(--luxury-gold);
+    color: #000;
+}
+
+/* --- Layout Sections --- */
+.section {
+    padding: var(--spacing-section) 5%;
+    position: relative;
+    z-index: 1;
+}
+
+/* Utility classes */
+.text-center { text-align: center; }
+.mt-small { margin-top: var(--spacing-small); }
+.mt-medium { margin-top: var(--spacing-medium); }
+.mb-small { margin-bottom: var(--spacing-small); }
+.mb-medium { margin-bottom: var(--spacing-medium); }

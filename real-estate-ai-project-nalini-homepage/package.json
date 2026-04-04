@@ -1,0 +1,9 @@
+{
+  "name": "luxury-real-estate-ai",
+  "version": "1.0.0",
+  "description": "Premium luxury real estate AI platform",
+  "scripts": {
+    "start": "npx -y http-server -p 8080"
+  },
+  "dependencies": {}
+}

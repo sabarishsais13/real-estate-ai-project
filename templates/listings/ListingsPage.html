@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA ESTATES | Find Your Property</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Reset and Variables */
+        :root {
+            --bg-darker: #0b0b0b;
+            --bg-dark: #111111;
+            --bg-card: #151515;
+            --gold-primary: #d4af37;
+            --gold-highlight: #ffd700;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --gold-border: rgba(212, 175, 55, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: #d1d1d1;
+            --text-muted: #9a9a9a;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-darker);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1, h2, h3, h4, h5, h6, .cinzel {
+            font-family: 'Cinzel', serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Background Canvas */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 80px;
+            z-index: 100;
+        }
+
+        .navbar-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .navbar-links a {
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        /* Hero Strip */
+        .hero {
+            position: relative;
+            margin-top: 70px; /* Offset for navbar */
+            height: 280px;
+            background: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeInHero 0.8s ease forwards;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0.85));
+            z-index: 1;
+        }
+
+        /* Applying the requested brightness down to 0.45 via a specific layer under the gradient */
+        .hero-bg-darkener {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.55);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            color: var(--text-primary);
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        @keyframes fadeInHero {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Main Context */
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+        }
+
+        /* Filter Bar */
+        .filter-wrapper {
+            padding: 0 80px;
+            transform: translateY(-50%); /* Pull up over the hero */
+            position: relative;
+            z-index: 20;
+        }
+
+        .filter-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 24px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .filter-select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid transparent;
+            color: var(--text-primary);
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            appearance: none;
+            outline: none;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+            
+            /* Custom dropdown arrow */
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+
+        .filter-select:focus {
+            box-shadow: 0 0 10px var(--gold-glow);
+            border-color: var(--gold-primary);
+        }
+
+        .filter-select option {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        .btn-search {
+            flex: 0 0 auto;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-highlight) 100%);
+            color: #000;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-search:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+
+        .results-count {
+            flex: 1 1 100%;
+            text-align: right;
+            margin-top: 12px;
+            color: var(--gold-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        /* Property Grid */
+        .property-grid {
+            padding: 0 80px 80px 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 32px;
+            margin-top: -30px; /* offset the transform of filter to close gap */
+        }
+
+        .property-card {
+            display: flex;
+            flex-direction: column;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .property-card.show {
+            animation: cardReveal 0.6s ease forwards;
+        }
+
+        @keyframes cardReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .property-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px var(--gold-glow);
+        }
+
+        /* Image section */
+        .card-image-section {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+        }
+
+        .card-image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .property-card:hover .card-image-section img {
+            transform: scale(1.05);
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
+            pointer-events: none;
+        }
+
+        .card-name {
+            position: absolute;
+            bottom: 16px;
+            left: 20px;
+            font-family: 'Cinzel', serif;
+            color: var(--text-primary);
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--gold-primary);
+            color: #000;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            font-variant: small-caps;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            z-index: 2;
+            text-transform: uppercase;
+        }
+
+        /* Info section */
+        .card-info {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--gold-border);
+            border-top: none;
+            padding: 24px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.35s ease;
+            border-radius: 0 0 16px 16px;
+        }
+
+        .property-card:hover .card-info {
+            border-color: var(--gold-glow);
+        }
+
+        .card-location {
+            color: var(--text-muted);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .card-location svg {
+            width: 14px;
+            height: 14px;
+            fill: var(--gold-primary);
+        }
+
+        .card-specs {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-price {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: var(--gold-highlight);
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .btn-card {
+            flex: 1;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .btn-filled {
+            background: var(--gold-primary);
+            border: 1px solid var(--gold-primary);
+            color: #000;
+        }
+
+        .btn-filled:hover {
+            background: var(--gold-highlight);
+            border-color: var(--gold-highlight);
+            box-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-darker);
+            border-top: 1px solid var(--gold-border);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .navbar, .filter-wrapper, .property-grid { padding-left: 40px; padding-right: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+                height: 60px;
+            }
+            .navbar-logo { font-size: 20px; }
+            .navbar-links { display: none; } /* Collapsed */
+            
+            .hero { height: 240px; margin-top: 60px; }
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 16px; }
+            
+            .filter-wrapper { padding: 0 20px; margin-top: -20px; transform: none; }
+            .filter-panel { gap: 12px; padding: 16px; }
+            .filter-group { flex: 1 1 100%; min-width: 100%; }
+            .btn-search { width: 100%; }
+            
+            .property-grid { padding: 40px 20px; grid-template-columns: 1fr; margin-top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Background -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="navbar-logo">AURA ESTATES</a>
+        <div class="navbar-links">
+            <a href="#">Home</a>
+            <a href="#">Listings</a>
+            <a href="#">AI Recommend <span style="color:var(--gold-highlight); font-size: 10px;text-transform:uppercase; letter-spacing: 1px;text-shadow: 0 0 5px var(--gold-glow);">✦</span></a>
+            <a href="#">Vastu AI <span style="color:var(--gold-highlight); font-size: 10px;text-transform:uppercase; letter-spacing: 1px;text-shadow: 0 0 5px var(--gold-glow);">✦</span></a>
+            <a href="#">Virtual Tour</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-bg-darkener"></div>
+        <div class="hero-content">
+            <h1>Find Your Perfect Property</h1>
+            <p>Homes for every budget. Discovered by Intelligence.</p>
+        </div>
+    </header>
+
+    <main class="main-wrapper">
+        <!-- Filter Bar -->
+        <div class="filter-wrapper">
+            <div class="filter-panel">
+                <div class="filter-group">
+                    <select id="filter-location" class="filter-select">
+                        <option value="All">All Cities</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="filterBudget" class="filter-select">
+                        <option value="all">Any Budget</option>
+                        <option value="under20">Under ₹20L</option>
+                        <option value="20to50">₹20L–₹50L</option>
+                        <option value="50to100">₹50L–₹1Cr</option>
+                        <option value="above100">Above ₹1Cr</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="filterType" class="filter-select">
+                        <option value="all">All Types</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Independent House">Independent House</option>
+                        <option value="Plot">Plot</option>
+                        <option value="Penthouse">Penthouse</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="filterBHK" class="filter-select">
+                        <option value="all">Any BHK</option>
+                        <option value="Studio">Studio</option>
+                        <option value="1 BHK">1 BHK</option>
+                        <option value="2 BHK">2 BHK</option>
+                        <option value="3 BHK">3 BHK</option>
+                        <option value="4 BHK">4 BHK</option>
+                        <option value="5 BHK">5 BHK+</option>
+                    </select>
+                </div>
+                <button class="btn-search" onclick="filterProperties()">Search Properties</button>
+                <div class="results-count" id="resultCount">Showing 12 Properties</div>
+            </div>
+        </div>
+
+        <!-- Property Grid -->
+        <div class="property-grid" id="propertiesGrid">
+            <!-- Dynamically populated -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>AURA ESTATES © 2025 · Smart Property Search for Everyone</p>
+    </footer>
+
+    <!-- JavaScript Base -->
+    <script>
+        const API_BASE = 'http://127.0.0.1:8000';
+
+        async function loadProperties(params = {}) {
+            const query = new URLSearchParams(params).toString();
+            const url = `${API_BASE}/api/properties/${query ? '?' + query : ''}`;
+            try {
+                const res  = await fetch(url);
+                const data = await res.json();
+                renderCards(data.properties);
+                updateCount(data.count);
+            } catch (err) {
+                console.error('API Error:', err);
+                document.getElementById('propertiesGrid').innerHTML =
+                    '<p style="color:#9a9a9a;text-align:center;padding:60px">Failed to load properties.</p>';
+            }
+        }
+
+        function filterProperties() {
+            const city   = document.getElementById('filterCity') ? document.getElementById('filterCity').value : 'all';
+            const budget = document.getElementById('filterBudget').value;
+            const type   = document.getElementById('filterType').value;
+            const bhk    = document.getElementById('filterBHK').value;
+            loadProperties({ city, budget, type, bhk });
+        }
+
+        function createCardHTML(p, index) {
+            const badgeHTML = p.badge
+                ? `<span class="card-badge">${p.badge}</span>` : '';
+            return `
+            <div class="property-card" style="animation-delay:${index * 0.08}s">
+                <div class="card-image-section">
+                    <img src="${p.image_url}" alt="${p.name}" loading="lazy"
+                         onerror="this.src='https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800'">
+                    <div class="card-overlay"></div>
+                    <h3 class="card-name">${p.name}</h3>
+                    ${badgeHTML}
+                </div>
+                <div class="card-info">
+                    <div class="card-location">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                             stroke="#d4af37" stroke-width="2">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                            <circle cx="12" cy="9" r="2.5"/>
+                        </svg>
+                        ${p.location}
+                    </div>
+                    <div class="card-specs">
+                        <span>🛏 ${p.bhk}</span>
+                        <span>&middot;</span>
+                        <span>📐 ${p.area}</span>
+                        <span>&middot;</span>
+                        <span>🏢 Floor ${p.floor}</span>
+                    </div>
+                    <div class="card-price">${p.price}</div>
+                    <div class="card-actions">
+                        <button class="btn-card btn-outline"
+                            onclick="window.location.href='/listings/detail/${p.id}'">
+                            View Details
+                        </button>
+                        <button class="btn-card btn-filled"
+                            onclick="window.location.href='/virtual-tour/?id=${p.id}'">
+                            Virtual Tour &#8594;
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderCards(list) {
+            const grid = document.getElementById('propertiesGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            if (list.length === 0) {
+                grid.innerHTML = '<p style="color:#9a9a9a;text-align:center;padding:60px;grid-column:1/-1">No properties found for selected filters.</p>';
+                return;
+            }
+            list.forEach((p, i) => {
+                const html = createCardHTML(p, i);
+                grid.insertAdjacentHTML('beforeend', html);
+            });
+            
+            // Re-trigger animation cleanly
+            const newCards = grid.querySelectorAll('.property-card');
+            setTimeout(() => {
+                newCards.forEach(c => c.classList.add('show'));
+            }, 10);
+        }
+
+        function updateCount(n) {
+            const el = document.getElementById('resultCount');
+            if (el) el.textContent = 'Showing ' + n + ' Properties';
+        }
+
+        // Particle Canvas Logic
+        function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let particlesArray = [];
+            const numberOfParticles = 60;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 2; // 2 to 4px
+                    this.speedY = -(Math.random() * 0.5 + 0.1); // slow upward
+                    this.speedX = (Math.random() - 0.5) * 0.2;
+                    this.baseOpacity = Math.random() * 0.13 + 0.12; // 0.12 to 0.25
+                    this.opacity = this.baseOpacity;
+                    this.fadeSpeed = Math.random() * 0.005 + 0.001;
+                    this.fadingOut = Math.random() > 0.5;
+                }
+
+                update() {
+                    this.y += this.speedY;
+                    this.x += this.speedX;
+
+                    // recycle particle
+                    if (this.y < -10) {
+                        this.y = canvas.height + 10;
+                        this.x = Math.random() * canvas.width;
+                    }
+
+                    // simple twinkle effect
+                    if (this.fadingOut) {
+                        this.opacity -= this.fadeSpeed;
+                        if (this.opacity <= 0.05) this.fadingOut = false;
+                    } else {
+                        this.opacity += this.fadeSpeed;
+                        if (this.opacity >= this.baseOpacity) this.fadingOut = true;
+                    }
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particlesArray.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCards(properties);
+            initParticles();
+        });
+    </script>
+</body>
+</html>
