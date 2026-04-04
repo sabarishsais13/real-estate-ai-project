@@ -15,5 +15,5 @@ urlpatterns = [
     path('virtual-tour/<int:id>/',     views.virtual_tour_page,    name='virtual_tour'),
     path('sell/',                      views.sell_page,            name='sell'),
     path('ai-advisor/',                views.ai_advisor_page,      name='ai_advisor'),
-    path('capture360/',                views.capture360,           name='capture360'),  # 👈 added
+    path('capture360/',                views.capture360,           name='capture360'),  
 ]
