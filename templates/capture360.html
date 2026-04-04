@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Capture 360° — GRIHA{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cinzel:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="{% static 'css/capture360.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<canvas id="particles" class="particles-canvas"></canvas>
+
+<!-- MAIN -->
+<div class="capture-layout">
+
+  <!-- LEFT: CAMERA + CAPTURE -->
+  <div class="camera-section">
+
+    <!-- STATE: IDLE -->
+    <div class="idle-screen" id="idleScreen">
+      <div class="idle-inner">
+        <div class="idle-orb">
+          <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="44" stroke="rgba(212,175,55,0.25)" stroke-width="1"/>
+            <circle cx="50" cy="50" r="30" stroke="rgba(212,175,55,0.15)" stroke-width="1" stroke-dasharray="5 5"/>
+            <circle cx="50" cy="50" r="6" fill="#d4af37" opacity="0.5"/>
+            <line x1="50" y1="6" x2="50" y2="20" stroke="#d4af37" stroke-width="1.2" opacity="0.4"/>
+            <line x1="50" y1="80" x2="50" y2="94" stroke="#d4af37" stroke-width="1.2" opacity="0.4"/>
+            <line x1="6" y1="50" x2="20" y2="50" stroke="#d4af37" stroke-width="1.2" opacity="0.4"/>
+            <line x1="80" y1="50" x2="94" y2="50" stroke="#d4af37" stroke-width="1.2" opacity="0.4"/>
+          </svg>
+        </div>
+        <h2 class="idle-title">Ready to Capture</h2>
+        <p class="idle-sub">Select a room from the right panel, then start capturing your 360° tour</p>
+        <div class="idle-steps">
+          <div class="idle-step"><span class="step-num">1</span><span>Select a room</span></div>
+          <div class="idle-step"><span class="step-num">2</span><span>Tap Start Camera</span></div>
+          <div class="idle-step"><span class="step-num">3</span><span>Slowly rotate your phone</span></div>
+          <div class="idle-step"><span class="step-num">4</span><span>Tap Capture to save</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE: CAMERA ACTIVE -->
+    <div class="camera-screen" id="cameraScreen">
+      <video id="cameraFeed" autoplay playsinline muted></video>
+      <div class="camera-overlay">
+        <div class="guide-ring">
+          <div class="guide-crosshair">
+            <div class="ch-h"></div>
+            <div class="ch-v"></div>
+          </div>
+        </div>
+        <svg class="progress-arc" id="progressArc" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(212,175,55,0.15)" stroke-width="3"/>
+          <circle cx="100" cy="100" r="88" fill="none" stroke="#d4af37" stroke-width="3"
+            stroke-dasharray="553" stroke-dashoffset="553"
+            stroke-linecap="round"
+            id="arcFill"
+            transform="rotate(-90 100 100)"/>
+        </svg>
+        <div class="cam-room-label" id="camRoomLabel">Select a Room</div>
+        <div class="tilt-bar-wrap">
+          <div class="tilt-bar">
+            <div class="tilt-fill" id="tiltFill"></div>
+            <div class="tilt-marker"></div>
+          </div>
+          <span class="tilt-label">Keep level</span>
+        </div>
+        <div class="rotation-pct" id="rotationPct">0°</div>
+      </div>
+      <div class="capture-controls">
+        <button class="ctrl-btn secondary" id="btnStopCamera" onclick="stopCamera()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+          Stop
+        </button>
+        <button class="capture-shutter" id="btnCapture" onclick="captureFrames()">
+          <div class="shutter-inner">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4" fill="#d4af37"/></svg>
+          </div>
+        </button>
+        <button class="ctrl-btn secondary" id="btnFlip" onclick="flipCamera()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+          Flip
+        </button>
+      </div>
+    </div>
+
+    <!-- STATE: STITCHING -->
+    <div class="stitching-screen" id="stitchingScreen">
+      <div class="stitch-inner">
+        <div class="stitch-spinner"></div>
+        <p class="stitch-title">Stitching 360°</p>
+        <p class="stitch-sub">Combining your frames into a panorama...</p>
+        <div class="stitch-progress-bar">
+          <div class="stitch-fill" id="stitchFill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- START CAMERA BAR -->
+    <div class="start-camera-bar" id="startCameraBar">
+      <div class="start-room-info">
+        <span class="start-room-icon" id="startRoomIcon">🏠</span>
+        <div>
+          <div class="start-room-name" id="startRoomName">No room selected</div>
+          <div class="start-room-hint">Ready to capture</div>
+        </div>
+      </div>
+      <button class="start-cam-btn" id="btnStartCamera" onclick="startCamera()" disabled>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        Start Camera
+      </button>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: ROOMS PANEL -->
+  <div class="rooms-panel">
+    <div class="panel-header">
+      <div>
+        <h3 class="panel-title">Rooms</h3>
+        <p class="panel-sub">Tap a room to start capturing</p>
+      </div>
+      <button class="add-room-btn" onclick="addRoom()">+ Add</button>
+    </div>
+    <div class="rooms-list" id="roomsList"></div>
+    <div class="panel-footer">
+      <div class="captured-count" id="capturedCount">
+        <span id="capturedNum">0</span> of <span id="totalNum">6</span> rooms captured
+      </div>
+      <div class="captured-bar">
+        <div class="captured-fill" id="capturedFill" style="width:0%"></div>
+      </div>
+      <!-- DONE BUTTON -->
+      <button onclick="finishCapture()" style="
+        width: 100%;
+        margin-top: 14px;
+        background: linear-gradient(135deg, #d4af37, #ffd700);
+        color: #000;
+        border: none;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.82rem;
+        letter-spacing: 0.03em;
+      ">Done & Continue →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- PREVIEW MODAL -->
+<div class="preview-modal" id="previewModal">
+  <div class="preview-inner">
+    <div class="preview-header">
+      <h3 class="preview-title" id="previewTitle">Living Room — 360° Preview</h3>
+      <button class="preview-close" onclick="closePreview()">✕</button>
+    </div>
+    <canvas id="previewCanvas" class="preview-canvas"></canvas>
+    <div class="preview-actions">
+      <button class="preview-btn secondary" onclick="retakeRoom()">↺ Retake</button>
+      <button class="preview-btn primary" onclick="saveRoom()">✓ Save Room</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="stitchCanvas" style="display:none"></canvas>
+
+<script src="{% static 'js/capture360.js' %}"></script>
+
+{% endblock %}
