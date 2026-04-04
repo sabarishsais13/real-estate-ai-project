@@ -25,6 +25,28 @@ def virtual_tour_page(request, id):
     return render(request, 'virtual_tour.html', {'property_id': id})
 
 def sell_page(request):
+    if request.method == 'POST':
+        price = request.POST.get('price')
+
+        Property.objects.create(
+            title=request.POST.get('title'),
+            location=request.POST.get('location'),
+            price=price,
+            price_value=float(price),  # 🔥 IMPORTANT
+            bhk=request.POST.get('bhk'),
+            type=request.POST.get('type'),
+            area=request.POST.get('area'),
+            floor=request.POST.get('floor'),
+            facing=request.POST.get('facing'),
+            description=request.POST.get('description'),
+            amenities=request.POST.get('amenities'),
+            image=request.POST.get('image'),  # URL
+            city=request.POST.get('location'),
+            is_active=True
+        )
+
+        return redirect('discover')
+
     return render(request, 'sell.html')
 
 def ai_advisor_page(request):

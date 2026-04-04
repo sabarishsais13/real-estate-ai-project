@@ -122,6 +122,42 @@
     transform: scale(1.1);
     filter: drop-shadow(0 0 5px var(--soft-gold-glow));
 }
+/* Sell Property Button (Luxury Highlight CTA) */
+.btn-sell {
+    border: 1px solid var(--luxury-gold);
+    color: var(--luxury-gold);
+    background: transparent;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow effect */
+.btn-sell::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(212,175,55,0.4), transparent);
+    transition: 0.6s;
+}
+
+/* Hover animation */
+.btn-sell:hover::before {
+    left: 100%;
+}
+
+.btn-sell:hover {
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}
 </style>
 {% endblock %}
 
@@ -147,6 +183,7 @@
         <div class="btn-group">
             <a href="{% url 'discover' %}" class="btn btn-filled">Explore Properties</a>
             <a href="{% url 'ai_advisor' %}" class="btn btn-outline">Try AI Advisor</a>
+            <a href="{% url 'sell' %}" class="btn btn-sell">Sell Property</a>
         </div>
     </div>
 </header>

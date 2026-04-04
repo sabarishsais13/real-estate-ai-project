@@ -1,198 +1,131 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Sell | EstateVista AI{% endblock %}
+{% block title %}Sell Property{% endblock %}
 
 {% block extra_css %}
 <style>
-.sell-hero {
-    padding: 80px 5%;
-    text-align: center;
-    background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600') center/cover no-repeat;
-    position: relative;
-}
-
-.sell-hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(11,11,11,0.85);
-}
-
-.sell-hero-content {
-    position: relative;
-    z-index: 2;
-}
-
-.sell-hero h1 {
-    font-size: 48px;
-    color: var(--text-primary);
-    margin-bottom: 20px;
-}
-
-.sell-hero h1 span {
-    color: var(--luxury-gold);
-}
-
-.sell-form-container {
+.sell-container {
     max-width: 900px;
-    margin: -50px auto 50px auto;
-    position: relative;
-    z-index: 10;
+    margin: 80px auto;
 }
 
-.step-indicator {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 40px;
-    position: relative;
-}
-
-.step-indicator::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--gold-border);
-    z-index: -1;
-}
-
-.step {
-    background: var(--bg-base);
-    border: 2px solid var(--luxury-gold);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: var(--luxury-gold);
-}
-
-.step.active {
-    background: var(--luxury-gold);
-    color: #000;
-    box-shadow: 0 0 15px var(--soft-gold-glow);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
 .form-input, .form-textarea {
     width: 100%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255,255,255,0.05);
     border: 1px solid var(--gold-border);
-    padding: 15px;
+    padding: 14px;
     border-radius: 8px;
     color: white;
-    font-family: 'Inter', sans-serif;
-    outline: none;
-    transition: var(--transition-smooth);
-}
-
-.form-input:focus, .form-textarea:focus {
-    border-color: var(--luxury-gold);
 }
 
 .form-textarea {
-    resize: vertical;
-    min-height: 100px;
+    min-height: 120px;
 }
 
-.camera-box {
+.file-upload {
     border: 2px dashed var(--luxury-gold);
-    border-radius: 12px;
-    padding: 60px 20px;
+    padding: 30px;
     text-align: center;
-    background: rgba(212, 175, 55, 0.05);
+    border-radius: 10px;
     cursor: pointer;
+}
+
+/* Upload box hover */
+.file-upload:hover {
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 12px var(--soft-gold-glow);
+    transform: translateY(-2px);
     transition: var(--transition-smooth);
 }
 
-.camera-box:hover {
-    background: rgba(212, 175, 55, 0.1);
+/* Button hover (general) */
+.btn-filled:hover {
+    box-shadow: 0 0 15px var(--soft-gold-glow);
+    transform: translateY(-2px);
+}
+
+/* 360 section hover */
+.vr-section {
+    transition: var(--transition-smooth);
+}
+
+.vr-section:hover {
+    box-shadow: 0 0 15px var(--soft-gold-glow);
+    transform: translateY(-3px);
+}
+
+/* 360 button hover */
+.vr-btn:hover {
+    box-shadow: 0 0 10px var(--soft-gold-glow);
+    transform: scale(1.05);
 }
 </style>
 {% endblock %}
 
 {% block content %}
-<header class="sell-hero">
-    <div class="sell-hero-content">
-        <h1>List Your Property With <span>Intelligence</span></h1>
-        <p style="color:var(--text-secondary); font-size:18px;">Capture 360° views directly from your browser and reach global luxury buyers.</p>
-    </div>
-</header>
 
-<section class="section" style="padding-top:0;">
-    <div class="glass-card sell-form-container">
-        <div class="step-indicator">
-            <div class="step active">1</div>
-            <div class="step">2</div>
-            <div class="step">3</div>
+<section class="section">
+    <h2 style="text-align:center; color:var(--luxury-gold);">Sell Your Property</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="sell-container">
+        {% csrf_token %}
+
+        <div class="form-grid">
+            <input type="text" name="title" placeholder="Property Title" required class="form-input">
+            <input type="text" name="location" placeholder="Location" required class="form-input">
+
+            <input type="number" name="price" placeholder="Price (₹)" required class="form-input">
+            <input type="number" name="bhk" placeholder="Bedrooms (BHK)" class="form-input">
+
+            <input type="number" name="area" placeholder="Area (sq.ft)" class="form-input">
+            <input type="number" name="floor" placeholder="Floor" class="form-input">
+
+            <input type="text" name="type" placeholder="Type (Apartment/Villa)" class="form-input">
+            <input type="text" name="status" placeholder="Status (Ready to Move)" class="form-input">
         </div>
-        
-        <!-- Step 1: Info -->
-        <div id="step-1">
-            <h2 style="color:var(--luxury-gold); margin-bottom: 20px;">Property Information</h2>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-input" placeholder="e.g. Modern Seaview Villa">
-                </div>
-                <div class="form-group">
-                    <label>Asking Price</label>
-                    <input type="text" class="form-input" placeholder="e.g. ₹5,00,00,000">
-                </div>
-                <div class="form-group">
-                    <label>Property Type</label>
-                    <select class="form-input">
-                        <option>Apartment</option>
-                        <option>Villa</option>
-                        <option>Penthouse</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Location</label>
-                    <input type="text" class="form-input" placeholder="City / Neighborhood">
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Description</label>
-                <textarea class="form-textarea" placeholder="Highlight the key features and luxury aspects..."></textarea>
-            </div>
-            
-            <div style="text-align:right;">
-                <button class="btn btn-filled" onclick="alert('Proceeding to 360 Capture (UI Mockup)')">Next Step: 360 Capture Setup</button>
-            </div>
+
+        <br>
+
+        <textarea name="description" placeholder="Description" class="form-textarea"></textarea>
+
+        <br>
+
+        <!-- Image Upload -->
+        <div class="file-upload">
+            <input type="file" name="image" required>
+            <p>Upload Property Image</p>
         </div>
-        
-        <!-- Mock representation of Step 2 -->
-        <div id="step-2" style="display:none;">
-            <h2 style="color:var(--luxury-gold); margin-bottom: 20px;">360° Capture</h2>
-            <p style="color:var(--text-secondary); margin-bottom:30px;">Use your smartphone gyroscope to scan the room.</p>
-            
-            <div class="camera-box">
-                <svg viewBox="0 0 24 24" width="48" height="48" stroke="var(--luxury-gold)" fill="none" style="margin-bottom:15px;">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                    <circle cx="12" cy="13" r="4"></circle>
-                </svg>
-                <h3 style="color:var(--text-primary);">Launch WebVR Scanner</h3>
-                <p style="color:var(--text-muted); font-size:14px;">No app download required.</p>
-            </div>
-        </div>
-        
-    </div>
+
+        <br>
+
+        <!-- 360 View Optional Section -->
+<div class="glass-card vr-section" style="padding:20px; margin-top:20px; text-align:center;">
+    
+    <h3 style="color: var(--luxury-gold); margin-bottom:10px;">
+        Add 360° Virtual Tour
+    </h3>
+
+    <p style="color: var(--text-secondary); font-size:14px;">
+        Optional — Enhance your listing with immersive property views
+    </p>
+
+    <button type="button" class="btn btn-outline vr-btn" style="margin-top:10px;">
+        + Add 360° View
+    </button>
+
+</div>
+
+<br>
+
+<button type="submit" class="btn btn-filled">Submit Property</button>
+    </form>
 </section>
+
 {% endblock %}
