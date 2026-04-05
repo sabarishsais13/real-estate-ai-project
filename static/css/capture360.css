@@ -1,0 +1,485 @@
+:root {
+  --gold: #d4af37;
+  --gold-hi: #ffd700;
+  --gold-glow: rgba(212,175,55,0.4);
+  --gold-soft: rgba(212,175,55,0.12);
+  --gold-border: rgba(212,175,55,0.22);
+  --bg: #0b0b0b;
+  --bg2: #111111;
+  --bg3: #151515;
+  --card: rgba(255,255,255,0.05);
+  --text: #ffffff;
+  --text2: #d1d1d1;
+  --muted: #9a9a9a;
+  --radius: 12px;
+  --success: #4caf7d;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%; overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg); color: var(--text);
+}
+
+.particles-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0; opacity: 0.5;
+}
+
+/* ── LAYOUT ── */
+.capture-layout {
+  display: flex;
+  height: calc(100vh - 70px);
+  position: relative; z-index: 10;
+}
+
+/* ── CAMERA SECTION ── */
+.camera-section {
+  flex: 1; position: relative; overflow: hidden;
+  background: #050505;
+  display: flex; flex-direction: column;
+}
+
+/* IDLE */
+.idle-screen {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at center, #120f05 0%, #0b0b0b 70%);
+  transition: opacity 0.4s;
+}
+.idle-screen.hidden { display: none; }
+.idle-inner { text-align: center; max-width: 420px; padding: 40px; }
+.idle-orb {
+  display: flex; justify-content: center; margin-bottom: 28px;
+  animation: float 5s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.idle-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 600; color: var(--text);
+  margin-bottom: 12px;
+}
+.idle-sub { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 32px; }
+.idle-steps { display: flex; flex-direction: column; gap: 12px; text-align: left; }
+.idle-step {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 0.82rem; color: var(--text2);
+}
+.step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--gold-soft); border: 1px solid var(--gold-border);
+  color: var(--gold); font-size: 0.72rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* CAMERA SCREEN */
+.camera-screen {
+  flex: 1; position: relative; overflow: hidden;
+  display: none;
+}
+.camera-screen.active { display: block; }
+
+video#cameraFeed {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* OVERLAY */
+.camera-overlay {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* GUIDE RING */
+.guide-ring {
+  width: 180px; height: 180px; border-radius: 50%;
+  border: 1px solid rgba(212,175,55,0.35);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  box-shadow: 0 0 30px rgba(212,175,55,0.08);
+}
+.guide-crosshair { position: relative; width: 40px; height: 40px; }
+.ch-h {
+  position: absolute; top: 50%; left: 0; right: 0;
+  height: 1px; background: rgba(212,175,55,0.6);
+}
+.ch-v {
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 1px; background: rgba(212,175,55,0.6);
+}
+
+/* PROGRESS ARC */
+.progress-arc {
+  position: absolute; width: 200px; height: 200px;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+#arcFill { transition: stroke-dashoffset 0.3s ease; }
+
+/* CAM ROOM LABEL */
+.cam-room-label {
+  position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+  background: rgba(10,10,10,0.88);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem; font-weight: 600;
+  padding: 8px 22px; border-radius: 24px;
+  backdrop-filter: blur(10px);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+
+/* TILT BAR */
+.tilt-bar-wrap {
+  position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  pointer-events: none;
+}
+.tilt-bar {
+  width: 6px; height: 100px; border-radius: 3px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--gold-border);
+  position: relative; overflow: hidden;
+}
+.tilt-fill {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--gold); transition: height 0.1s;
+  border-radius: 3px;
+  height: 50%;
+}
+.tilt-marker {
+  position: absolute; left: -3px; right: -3px;
+  top: 50%; height: 2px; background: var(--gold);
+  border-radius: 1px;
+}
+.tilt-label { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.05em; }
+
+/* ROTATION % */
+.rotation-pct {
+  position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%);
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem; font-weight: 600;
+  color: var(--gold);
+  text-shadow: 0 0 20px var(--gold-glow);
+  pointer-events: none;
+  letter-spacing: 0.05em;
+}
+
+/* CAPTURE CONTROLS */
+.capture-controls {
+  position: absolute; bottom: 80px; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: center; gap: 24px;
+  padding: 20px 32px 32px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+}
+.capture-shutter {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(212,175,55,0.15);
+  border: 2px solid var(--gold);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s;
+  box-shadow: 0 0 20px rgba(212,175,55,0.2);
+}
+.capture-shutter:hover {
+  background: rgba(212,175,55,0.25);
+  box-shadow: 0 0 30px var(--gold-glow);
+  transform: scale(1.06);
+}
+.capture-shutter:active { transform: scale(0.95); }
+.shutter-inner { display: flex; align-items: center; justify-content: center; }
+
+.ctrl-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--gold-border);
+  color: var(--text2); border-radius: 10px;
+  padding: 10px 18px; font-size: 0.78rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: all 0.2s;
+}
+.ctrl-btn:hover { background: rgba(255,255,255,0.12); color: var(--gold); border-color: var(--gold); }
+
+/* STITCHING SCREEN */
+.stitching-screen {
+  position: absolute; inset: 0; z-index: 20;
+  background: rgba(0,0,0,0.92);
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px);
+}
+.stitching-screen.active { display: flex; }
+.stitch-inner { text-align: center; }
+.stitch-spinner {
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 2px solid var(--gold-border);
+  border-top-color: var(--gold);
+  margin: 0 auto 24px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.stitch-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; color: var(--text); margin-bottom: 8px;
+}
+.stitch-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
+.stitch-progress-bar {
+  width: 200px; height: 3px; background: var(--gold-border);
+  border-radius: 2px; margin: 0 auto; overflow: hidden;
+}
+.stitch-fill {
+  height: 100%; background: var(--gold); width: 0%;
+  transition: width 0.1s;
+  border-radius: 2px;
+}
+
+/* START CAMERA BAR */
+.start-camera-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px;
+  background: rgba(10,10,10,0.95);
+  border-top: 1px solid var(--gold-border);
+  backdrop-filter: blur(10px);
+}
+.start-room-info { display: flex; align-items: center; gap: 14px; }
+.start-room-icon { font-size: 1.6rem; }
+.start-room-name { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+.start-room-hint { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+.start-cam-btn {
+  display: flex; align-items: center; gap: 9px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-hi));
+  color: #000; border: none; border-radius: 10px;
+  padding: 12px 22px; font-size: 0.82rem; font-weight: 600;
+  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  transition: all 0.3s; letter-spacing: 0.03em;
+}
+.start-cam-btn:hover:not(:disabled) {
+  transform: scale(1.04);
+  box-shadow: 0 8px 24px var(--gold-glow);
+}
+.start-cam-btn:disabled {
+  opacity: 0.35; cursor: not-allowed;
+}
+
+/* ── ROOMS PANEL ── */
+.rooms-panel {
+  width: 300px; flex-shrink: 0;
+  background: var(--bg2);
+  border-left: 1px solid var(--gold-border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--gold-border);
+  flex-shrink: 0;
+}
+.panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 600; color: var(--text);
+}
+.panel-sub { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+.add-room-btn {
+  background: var(--gold-soft); border: 1px solid var(--gold-border);
+  color: var(--gold); font-size: 0.75rem; font-weight: 500;
+  padding: 6px 14px; border-radius: 8px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.add-room-btn:hover { background: rgba(212,175,55,0.2); }
+
+.rooms-list {
+  flex: 1; overflow-y: auto;
+  padding: 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.rooms-list::-webkit-scrollbar { width: 3px; }
+.rooms-list::-webkit-scrollbar-thumb { background: var(--gold-border); border-radius: 2px; }
+
+.room-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(6px);
+  position: relative;
+}
+.room-card:hover { border-color: var(--gold-border); background: rgba(255,255,255,0.07); }
+.room-card.active {
+  border-color: var(--gold);
+  background: var(--gold-soft);
+  box-shadow: 0 0 18px rgba(212,175,55,0.1);
+}
+.room-card.captured { border-color: rgba(76,175,125,0.4); }
+
+.room-icon { font-size: 1.5rem; flex-shrink: 0; }
+.room-info { flex: 1; min-width: 0; }
+.room-name {
+  font-size: 0.84rem; font-weight: 500; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.room-status-text { font-size: 0.7rem; margin-top: 2px; color: var(--muted); }
+.room-status-text.done { color: var(--success); }
+
+.room-badge {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; flex-shrink: 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--gold-border);
+  color: var(--muted);
+}
+.room-badge.done {
+  background: rgba(76,175,125,0.15);
+  border-color: rgba(76,175,125,0.4);
+  color: var(--success);
+}
+.room-badge.active-ind {
+  background: var(--gold-soft);
+  border-color: var(--gold);
+  color: var(--gold);
+  animation: badge-pulse 1.5s ease-in-out infinite;
+}
+@keyframes badge-pulse {
+  0%,100% { box-shadow: 0 0 0 0 var(--gold-glow); }
+  50% { box-shadow: 0 0 0 5px rgba(212,175,55,0); }
+}
+
+/* PANEL FOOTER */
+.panel-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--gold-border);
+  flex-shrink: 0;
+}
+.captured-count {
+  font-size: 0.75rem; color: var(--muted);
+  margin-bottom: 10px;
+  display: flex; gap: 4px; align-items: center;
+}
+.captured-count span { color: var(--gold); font-weight: 600; }
+.captured-bar {
+  height: 3px; background: var(--gold-border);
+  border-radius: 2px; overflow: hidden;
+}
+.captured-fill {
+  height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-hi));
+  border-radius: 2px; transition: width 0.5s ease;
+}
+
+/* ── PREVIEW MODAL ── */
+.preview-modal {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,0.85);
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(12px);
+  animation: modal-in 0.3s ease;
+}
+.preview-modal.open { display: flex; }
+@keyframes modal-in {
+  from { opacity: 0; } to { opacity: 1; }
+}
+.preview-inner {
+  background: var(--bg2);
+  border: 1px solid var(--gold-border);
+  border-radius: 20px;
+  overflow: hidden;
+  width: 90%; max-width: 680px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+  animation: modal-scale 0.3s ease;
+}
+@keyframes modal-scale {
+  from { transform: scale(0.96); } to { transform: scale(1); }
+}
+.preview-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--gold-border);
+}
+.preview-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem; font-weight: 600; color: var(--text);
+}
+.preview-close {
+  background: none; border: none; color: var(--muted);
+  font-size: 0.9rem; cursor: pointer; transition: color 0.2s;
+}
+.preview-close:hover { color: var(--gold); }
+.preview-canvas {
+  width: 100%; display: block;
+  max-height: 300px; object-fit: cover;
+  background: #000;
+}
+.preview-actions {
+  display: flex; justify-content: flex-end; gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--gold-border);
+}
+.preview-btn {
+  padding: 10px 24px; border-radius: 10px;
+  font-size: 0.8rem; font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: all 0.2s; letter-spacing: 0.03em;
+}
+.preview-btn.secondary {
+  background: var(--card); border: 1px solid var(--gold-border); color: var(--text2);
+}
+.preview-btn.secondary:hover { border-color: var(--gold); color: var(--gold); }
+.preview-btn.primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-hi));
+  color: #000; border: none;
+}
+.preview-btn.primary:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 20px var(--gold-glow);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .capture-layout { flex-direction: column; }
+  .camera-section { flex: 1; min-height: 0; }
+  .rooms-panel {
+    width: 100%; height: 180px;
+    border-left: none; border-top: 1px solid var(--gold-border);
+  }
+  .rooms-list { flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 8px; }
+  .room-card { min-width: 120px; flex-direction: column; text-align: center; padding: 10px 8px; }
+  .panel-footer { padding: 10px 16px; }
+}
+/* Override base.html for capture page */
+.main-content {
+  margin-top: 0 !important;
+  padding: 0 !important;
+}
+
+footer {
+  display: none !important;
+}
+/* Hide base navbar and footer on capture page */
+.navbar {
+  display: none !important;
+}
+
+footer {
+  display: none !important;
+}
+
+.main-content {
+  margin-top: 0 !important;
+  padding: 0 !important;
+}
+
+.capture-layout {
+  height: 100vh;
+}

@@ -52,6 +52,9 @@ def sell_page(request):
 def ai_advisor_page(request):
     return render(request, 'ai_advisor.html')
 
+def capture360(request):
+    return render(request, 'capture360.html')
+
 
 # ── GET all properties with filters ─────────────────────────────
 @api_view(['GET'])
