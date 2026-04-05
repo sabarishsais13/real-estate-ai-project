@@ -34,13 +34,13 @@ class Property(models.Model):
     facing        = models.CharField(max_length=50, blank=True, null=True)
     description   = models.TextField(blank=True, null=True)
     amenities     = models.TextField(blank=True, null=True)
-    image         = models.URLField(max_length=500, blank=True, null=True)
+    image         = models.ImageField(upload_to='property_images/', blank=True, null=True)
     
-    # 360 viewer assets
-    living_room_360 = models.URLField(max_length=500, blank=True, null=True)
-    kitchen_360     = models.URLField(max_length=500, blank=True, null=True)
-    bedroom_360     = models.URLField(max_length=500, blank=True, null=True)
-    bathroom_360    = models.URLField(max_length=500, blank=True, null=True)
+    # 360 viewer assets (stores base64 data URLs)
+    living_room_360 = models.TextField(blank=True, null=True)
+    kitchen_360     = models.TextField(blank=True, null=True)
+    bedroom_360     = models.TextField(blank=True, null=True)
+    bathroom_360    = models.TextField(blank=True, null=True)
 
     # Extra functional fields
     city          = models.CharField(max_length=100, blank=True, null=True)

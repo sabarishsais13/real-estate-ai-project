@@ -2,139 +2,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}EstateVista AI | Premium Real Estate Platform{% endblock %}</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/glass.css' %}">
-    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
-    <style>
-        .icon-gold {
-            width: 48px;
-            height: 48px;
-            margin-bottom: var(--spacing-small);
-            stroke: var(--luxury-gold);
-            stroke-width: 1.5;
-            fill: none;
-            filter: drop-shadow(0 0 5px var(--soft-gold-glow));
-        }
-        .card-title {
-            font-size: 18px;
-            color: var(--luxury-gold);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: var(--spacing-micro);
-            text-shadow: 0 0 10px var(--soft-gold-glow);
-        }
-        .card-subtitle {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-    </style>
-    {% block extra_css %}{% endblock %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{% block title %}GRIHA | Premium Real Estate Platform{% endblock %}</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="{% static 'css/glass.css' %}">
+<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+
+<style>
+/* ================= CHATBOT ================= */
+
+.vastu-chatbot {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.chatbot-header {
+    background: rgba(212, 175, 55, 0.2);
+    padding: 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    cursor: grab;
+}
+
+.chatbot-body {
+    display: none;
+    flex-direction: column;
+    background: rgba(0,0,0,0.85);
+    height: 150px;
+}
+
+#chatMessages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    font-size: 13px;
+}
+
+.chat-input {
+    display: flex;
+    border-top: 1px solid gold;
+}
+
+#vastu-query {
+    flex: 1;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    color: white;
+}
+
+.chat-input button {
+    background: gold;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+/* Floating Button */
+.open-chat-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: gold;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Smooth animation */
+.chatbot-body.show {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+</style>
+
+{% block extra_css %}{% endblock %}
 </head>
+
 <body>
-    <canvas id="particle-canvas"></canvas>
 
-    <nav class="navbar">
-        <a href="{% url 'home' %}" class="logo">EstateVista<span>AI</span></a>
-        <ul class="nav-links">
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'discover' %}">Discover</a></li>
-            <li><a href="{% url 'sell' %}">Sell</a></li>
-            <li><a href="{% url 'ai_advisor' %}">AI Advisor</a></li>
-        </ul>
-        <!-- Re-using Virtual Tour as generic if 0, else they navigate from discover page -->
-        <a href="{% url 'discover' %}" class="btn btn-outline" style="padding: 10px 25px; font-size: 12px;">Get Started</a>
-    </nav>
+<canvas id="particle-canvas"></canvas>
 
-    <main class="main-content" style="margin-top: 70px; position: relative; z-index: 10;">
-        {% block content %}{% endblock %}
-    </main>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="{% url 'home' %}" class="logo">GRIHA</a>
+    <ul class="nav-links">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'discover' %}">Discover</a></li>
+        <li><a href="{% url 'sell' %}">Sell</a></li>
+        <li><a href="{% url 'ai_advisor' %}">AI Advisor</a></li>
+    </ul>
+    <a href="{% url 'discover' %}" class="btn btn-outline">Get Started</a>
+</nav>
 
-    <footer class="section" style="border-top: 1px solid var(--gold-border); text-align: center; padding: 40px;">
-        <p style="color: var(--text-muted); font-size: 14px;">&copy; 2026 EstateVista AI. The Pinnacle of Real Estate Intelligence.</p>
-    </footer>
+<main class="main-content" style="margin-top:70px;">
+{% block content %}{% endblock %}
+</main>
 
-    <!-- Floating Chatbot Vastu Guide -->
-    <div id="vastu-chatbot" class="vastu-chatbot glass-card">
-        <div class="chatbot-header">
-            <span>Vastu AI Guide</span>
-            <span class="close-chat" style="font-size:24px; cursor:pointer;" onclick="toggleChat()">&times;</span>
-        </div>
-        <div class="chatbot-body" id="chatbot-body" style="display:none;">
-            <p>How can I assist you with Vastu compliance for your properties today?</p>
-            <input type="text" placeholder="Ask Vastu AI..." style="width:100%; padding: 8px; margin-top:10px; background:rgba(255,255,255,0.1); border:1px solid var(--luxury-gold); color:white; outline:none; border-radius:4px;">
-        </div>
+<footer class="section" style="text-align:center; padding:40px;">
+<p>&copy; 2026 GRIHA</p>
+</footer>
+
+
+
+<!-- CHATBOT -->
+<div id="chatbot" class="vastu-chatbot glass-card">
+
+    <div class="chatbot-header" id="chatHeader">
+        <span>Vastu AI Guide</span>
+        <span onclick="toggleChat()">✖</span>
     </div>
 
-    <!-- Base Scripts -->
-    <script>
-        // Inline particle script or external
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const particleCount = 60;
+    <div class="chatbot-body" id="chatBody">
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        <div id="chatMessages"></div>
 
-        window.addEventListener('resize', resize);
-        resize();
+        <div class="chat-input">
+            <input id="vastu-query" placeholder="Ask Vastu..." />
+            <button onclick="askVastu()">Send</button>
+        </div>
 
-        class Particle {
-            constructor() { this.init(); }
-            init() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height + canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedY = Math.random() * 0.3 + 0.1;
-                this.opacity = Math.random() * 0.3 + 0.1;
-            }
-            update() {
-                this.y -= this.speedY;
-                if (this.y < -10) this.init();
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
-                ctx.fill();
-            }
-        }
+    </div>
+</div>
 
-        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+<script>
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        animate();
+/* ================= CHAT ================= */
 
-        // Reveal on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                }
-            });
-        }, { threshold: 0.1 });
+function toggleChat(){
+    document.getElementById("chatBody").classList.toggle("show");
+}
 
-        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+/* ENTER KEY SUPPORT */
+document.getElementById("vastu-query").addEventListener("keypress", function(e){
+    if(e.key === "Enter") askVastu();
+});
 
-        function toggleChat() {
-            const body = document.getElementById('chatbot-body');
-            body.style.display = body.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
-    {% block extra_js %}{% endblock %}
+/* CSRF */
+function getCSRFToken(){
+    return document.cookie.split('; ')
+        .find(row => row.startsWith('csrftoken'))
+        ?.split('=')[1];
+}
+
+/* ASK BOT */
+function askVastu(){
+    let input = document.getElementById("vastu-query");
+    let msg = input.value.trim();
+    if(!msg) return;
+
+    let chat = document.getElementById("chatMessages");
+
+    chat.innerHTML = `<p><b>You:</b> ${msg}</p>`;
+
+    fetch("/vastu-chat/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify({query: msg})
+    })
+    .then(res => res.json())
+    .then(data => {
+        chat.innerHTML += `<p><b>Bot:</b> ${data.response}</p>`;
+        chat.scrollTop = chat.scrollHeight;
+    });
+
+    input.value = "";
+}
+
+/* ================= DRAG ONLY HEADER ================= */
+
+const chatbot = document.getElementById("chatbot");
+const header = document.getElementById("chatHeader");
+
+let isDragging = false, offsetX, offsetY;
+
+header.addEventListener("mousedown", e => {
+    isDragging = true;
+    offsetX = e.clientX - chatbot.offsetLeft;
+    offsetY = e.clientY - chatbot.offsetTop;
+});
+
+document.addEventListener("mousemove", e => {
+    if(isDragging){
+        chatbot.style.left = (e.clientX - offsetX) + "px";
+        chatbot.style.top = (e.clientY - offsetY) + "px";
+        chatbot.style.bottom = "auto";
+        chatbot.style.right = "auto";
+    }
+});
+
+document.addEventListener("mouseup", () => isDragging = false);
+
+</script>
+
+{% block extra_js %}{% endblock %}
 </body>
 </html>

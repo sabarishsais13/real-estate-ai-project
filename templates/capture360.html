@@ -33,12 +33,17 @@
           </svg>
         </div>
         <h2 class="idle-title">Ready to Capture</h2>
-        <p class="idle-sub">Select a room from the right panel, then start capturing your 360° tour</p>
+        <p class="idle-sub">Follow each step carefully to record a clean 360° room view.</p>
         <div class="idle-steps">
-          <div class="idle-step"><span class="step-num">1</span><span>Select a room</span></div>
-          <div class="idle-step"><span class="step-num">2</span><span>Tap Start Camera</span></div>
-          <div class="idle-step"><span class="step-num">3</span><span>Slowly rotate your phone</span></div>
-          <div class="idle-step"><span class="step-num">4</span><span>Tap Capture to save</span></div>
+          <div class="idle-step"><span class="step-num">1</span><span>Submit your property first on the Sell page.</span></div>
+          <div class="idle-step"><span class="step-num">2</span><span>Select a room from the right panel.</span></div>
+          <div class="idle-step"><span class="step-num">3</span><span>Tap Start Camera and keep your phone level.</span></div>
+          <div class="idle-step"><span class="step-num">4</span><span>Slowly rotate in place for a full 360° while recording.</span></div>
+          <div class="idle-step"><span class="step-num">5</span><span>Tap Capture again to finish and preview the panorama.</span></div>
+          <div class="idle-step"><span class="step-num">6</span><span>If it looks good, save it and continue to the next room.</span></div>
+        </div>
+        <div class="idle-note" style="margin-top:14px; color:#f8e6b2; font-size:0.95rem; line-height:1.5;">
+          Tip: Do not walk around. Keep your feet planted and rotate slowly, using the ring as a guide.
         </div>
       </div>
     </div>
@@ -113,6 +118,9 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
         Start Camera
       </button>
+      <div style="margin-top:10px; color:#f5e4b7; font-size:0.92rem;">
+        Choose a room first, then press Start Camera. Keep the phone still in a fixed position and rotate smoothly.
+      </div>
     </div>
 
   </div>
@@ -169,6 +177,29 @@
 </div>
 
 <canvas id="stitchCanvas" style="display:none"></canvas>
+
+<script>
+// Extract property_id from URL params
+const urlParams = new URLSearchParams(window.location.search);
+const PROPERTY_ID = urlParams.get('property_id') ? parseInt(urlParams.get('property_id')) : null;
+
+if (!PROPERTY_ID) {
+  const warning = document.createElement('div');
+  warning.style.margin = '20px auto';
+  warning.style.padding = '18px';
+  warning.style.maxWidth = '900px';
+  warning.style.background = 'rgba(255, 95, 95, 0.12)';
+  warning.style.color = '#ffe8e8';
+  warning.style.border = '1px solid rgba(255, 95, 95, 0.2)';
+  warning.style.borderRadius = '16px';
+  warning.style.textAlign = 'center';
+  warning.style.fontSize = '0.95rem';
+  warning.innerHTML =
+    '<strong>No property selected.</strong> Please submit your property on the Sell page first.\n' +
+    '<br>After submission you will be redirected here automatically with a property ID.';
+  document.body.insertBefore(warning, document.querySelector('.capture-layout'));
+}
+</script>
 
 <script src="{% static 'js/capture360.js' %}"></script>
 
