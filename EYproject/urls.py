@@ -24,4 +24,3 @@ urlpatterns = [
     path('',       include('listings.urls')),
     path('', include('recommendation.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
