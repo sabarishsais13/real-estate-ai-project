@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Sell Property{% endblock %}
+{% block title %}Sell Property | GRIHA{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -79,15 +79,46 @@
 
         <div class="form-grid">
             <input type="text" name="title" placeholder="Property Title" required class="form-input">
-            <input type="text" name="location" placeholder="Location" required class="form-input">
+            <input type="text" name="location" placeholder="Location / Address" required class="form-input">
+            <select name="city" required class="form-input">
+                <option value="">Select City</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Hyderabad">Hyderabad</option>
+            </select>
 
-            <input type="number" name="price" placeholder="Price (₹)" required class="form-input">
-            <input type="number" name="bhk" placeholder="Bedrooms (BHK)" class="form-input">
+            <select name="price" required class="form-input">
+                <option value="">Select Price Range</option>
+                <option value="15">Under ₹20L</option>
+                <option value="35">₹20L–₹50L</option>
+                <option value="75">₹50L–1Cr</option>
+                <option value="150">Above ₹1Cr</option>
+            </select>
+            <select name="bhk" class="form-input">
+                <option value="">Select BHK</option>
+                <option value="Studio">Studio</option>
+                <option value="1 BHK">1 BHK</option>
+                <option value="2 BHK">2 BHK</option>
+                <option value="3 BHK">3 BHK</option>
+                <option value="4 BHK">4 BHK</option>
+                <option value="5 BHK">5 BHK</option>
+                <option value="Plot">Plot</option>
+            </select>
 
             <input type="number" name="area" placeholder="Area (sq.ft)" class="form-input">
             <input type="number" name="floor" placeholder="Floor" class="form-input">
 
-            <input type="text" name="type" placeholder="Type (Apartment/Villa)" class="form-input">
+            <select name="type" class="form-input">
+                <option value="">Select Type</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Villa">Villa</option>
+                <option value="Independent House">Independent House</option>
+                <option value="Plot">Plot</option>
+                <option value="Studio">Studio</option>
+                <option value="Penthouse">Penthouse</option>
+            </select>
             <input type="text" name="status" placeholder="Status (Ready to Move)" class="form-input">
         </div>
 
@@ -99,8 +130,8 @@
 
         <!-- Image Upload -->
         <div class="file-upload">
-            <input type="file" name="image" required>
-            <p>Upload Property Image</p>
+            <input type="file" name="image" accept="image/png,image/jpeg,image/jpg" required>
+            <p>Upload Property Image (PNG, JPEG, JPG)</p>
         </div>
 
         <br>
@@ -113,12 +144,13 @@
     </h3>
 
     <p style="color: var(--text-secondary); font-size:14px;">
-        Optional — Enhance your listing with immersive property views
+        Optional — You can submit your property now and add a 360° tour later if you want.
     </p>
 
-    <button type="button" class="btn btn-outline vr-btn" style="margin-top:10px;" onclick="window.location.href='{% url 'capture360' %}'">
-    + Add 360° View
-    </button>
+    <div style="margin-top:10px; color:#f5e4b7; font-size:0.95rem; line-height:1.5;">
+        Submit the property first, then add your 360° virtual tour on the next page.
+        If you want, you can also add the tour later from the property details page.
+    </div>
 
 </div>
 

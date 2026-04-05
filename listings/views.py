@@ -26,13 +26,20 @@ def virtual_tour_page(request, id):
 
 def sell_page(request):
     if request.method == 'POST':
-        price = request.POST.get('price')
+        price_value_str = request.POST.get('price')
+        price_options = {
+            '15': '₹ 15 L',
+            '35': '₹ 35 L',
+            '75': '₹ 75 L',
+            '150': '₹ 150 L',
+        }
+        price = price_options.get(price_value_str, price_value_str)
 
-        Property.objects.create(
+        new_property = Property.objects.create(
             title=request.POST.get('title'),
             location=request.POST.get('location'),
             price=price,
-            price_value=float(price),  # 🔥 IMPORTANT
+            price_value=float(price_value_str),
             bhk=request.POST.get('bhk'),
             type=request.POST.get('type'),
             area=request.POST.get('area'),
@@ -40,12 +47,13 @@ def sell_page(request):
             facing=request.POST.get('facing'),
             description=request.POST.get('description'),
             amenities=request.POST.get('amenities'),
-            image=request.POST.get('image'),  # URL
-            city=request.POST.get('location'),
+            image=request.FILES.get('image'),  # File upload
+            city=request.POST.get('city'),
             is_active=True
         )
 
-        return redirect('discover')
+        # Redirect to capture360 with the new property ID
+        return redirect(f'/capture360/?property_id={new_property.id}')
 
     return render(request, 'sell.html')
 
@@ -67,7 +75,7 @@ def get_properties(request):
     bhk       = request.GET.get('bhk',    None)
 
     if city and city != 'all' and city != 'All':
-        # Assuming city might be stored in location or city field. 
+        # Assuming city might be stored in location or city field.
         # Using icontains on location for flexibility.
         from django.db.models import Q
         queryset = queryset.filter(Q(city__iexact=city) | Q(location__icontains=city))
@@ -89,7 +97,7 @@ def get_properties(request):
         elif budget == 'above100':
             queryset = queryset.filter(price_value__gte=100)
 
-    serializer = PropertySerializer(queryset, many=True)
+    serializer = PropertySerializer(queryset, many=True, context={'request': request})
     return Response({
         'count':      queryset.count(),
         'properties': serializer.data
@@ -106,8 +114,50 @@ def get_property_detail(request, pk):
             {'error': 'Property not found'},
             status=status.HTTP_404_NOT_FOUND
         )
-    serializer = PropertySerializer(prop)
+    serializer = PropertySerializer(prop, context={'request': request})
     return Response(serializer.data)
+
+
+# ── UPDATE property 360 views ───────────────────────────────────────
+@api_view(['POST'])
+def update_property_360(request):
+    """Save 360-degree views for a property"""
+    try:
+        property_id = request.data.get('property_id')
+        if not property_id:
+            return Response(
+                {'error': 'property_id is required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        prop = Property.objects.get(pk=property_id, is_active=True)
+
+        # Update 360 view fields
+        if request.data.get('living_room_360'):
+            prop.living_room_360 = request.data.get('living_room_360')
+        if request.data.get('kitchen_360'):
+            prop.kitchen_360 = request.data.get('kitchen_360')
+        if request.data.get('bedroom_360'):
+            prop.bedroom_360 = request.data.get('bedroom_360')
+        if request.data.get('bathroom_360'):
+            prop.bathroom_360 = request.data.get('bathroom_360')
+
+        prop.save()
+
+        return Response(
+            {'status': 'success', 'message': '360 views updated'},
+            status=status.HTTP_200_OK
+        )
+    except Property.DoesNotExist:
+        return Response(
+            {'error': 'Property not found'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 # ── GET filter dropdown options ──────────────────────────────────

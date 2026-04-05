@@ -39,6 +39,17 @@ document.addEventListener("DOMContentLoaded", () => {
   updateProgress();
   initParticles();
   requestGyro();
+
+  if (!PROPERTY_ID) {
+    const startBtn = document.getElementById('btnStartCamera');
+    const captureBtn = document.getElementById('btnCapture');
+    const flipBtn = document.getElementById('btnFlip');
+    if (startBtn) startBtn.disabled = true;
+    if (captureBtn) captureBtn.disabled = true;
+    if (flipBtn) flipBtn.disabled = true;
+    const startName = document.getElementById('startRoomName');
+    if (startName) startName.textContent = 'Submit a property first';
+  }
 });
 
 // ─── BUILD ROOMS LIST ─────────────────────────────────────────────────────────
@@ -72,6 +83,11 @@ function selectRoom(room) {
   if (stream) stopCamera();
 
   activeRoom = room;
+
+  if (!PROPERTY_ID) {
+    alert("This page requires a valid property. Submit the property first and then capture the 360° room.");
+    return;
+  }
 
   // Update card styles
   document.querySelectorAll(".room-card").forEach(c => {
@@ -158,6 +174,21 @@ async function flipCamera() {
 
 // ─── CAPTURE FRAMES ───────────────────────────────────────────────────────────
 function captureFrames() {
+  if (!PROPERTY_ID) {
+    alert("Please submit your property first. Then open this page with a property ID before recording.");
+    return;
+  }
+
+  if (!activeRoom) {
+    alert("Please select a room from the right panel before starting the capture.");
+    return;
+  }
+
+  if (!stream) {
+    alert("Start the camera first before tapping Capture.");
+    return;
+  }
+
   if (isCapturing) {
     // Stop capturing
     stopFrameCapture();
@@ -409,29 +440,83 @@ function addRoom() {
 }
 
 // ─── FINISH & PASS DATA ───────────────────────────────────────────────────────
-function finishCapture() {
+async function finishCapture() {
   const captured = rooms.filter(r => r.captured);
   if (captured.length === 0) {
     alert("Please capture at least one room before continuing.");
     return;
   }
 
-  // In real app: send imageData to Django backend via fetch/FormData
-  // For now, store in sessionStorage and go back to sell page
-  const data = rooms.map(r => ({
-    id: r.id,
-    name: r.name,
-    icon: r.icon,
-    captured: r.captured,
-    imageData: r.imageData
-  }));
+  if (!PROPERTY_ID) {
+    alert("No property selected. Please submit a property first.");
+    return;
+  }
 
-  sessionStorage.setItem("capturedRooms", JSON.stringify(
-    data.map(r => ({ ...r, imageData: r.imageData ? "[captured]" : null }))
-  ));
+  // Show a saving indicator
+  const btn = document.querySelector('button[onclick*="finishCapture"]');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Saving 360 Views...";
+  }
 
-  // Navigate back to sell page
-  window.location.href = "/sell/";
+  try {
+    const payload = {
+      property_id: PROPERTY_ID
+    };
+
+    // Map captured rooms to their model field names
+    const roomMapping = {
+      "living": "living_room_360",
+      "kitchen": "kitchen_360",
+      "master": "bedroom_360",
+      "bathroom": "bathroom_360"
+    };
+
+    // Add captured image data to payload
+    captured.forEach(room => {
+      const fieldName = roomMapping[room.id];
+      if (fieldName && room.imageData) {
+        // Convert canvas/blob to data URL if needed
+        payload[fieldName] = room.imageData;
+      }
+    });
+
+    // Send to Django API
+    const res = await fetch('/api/properties/360/update/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      // Clear sessionStorage
+      sessionStorage.removeItem("capturedRooms");
+
+      // Redirect to virtual tour of the property
+      window.location.href = `/virtual-tour/${PROPERTY_ID}/`;
+    } else {
+      alert("Error saving 360 views: " + (data.error || "Unknown error"));
+      btn.disabled = false;
+      btn.textContent = "Done & Continue →";
+    }
+  } catch (e) {
+    console.error("Error:", e);
+    alert("Failed to save 360 views. Please try again.");
+    btn.disabled = false;
+    btn.textContent = "Done & Continue →";
+  }
+}
+
+// ─── GET CSRF TOKEN ───────────────────────────────────────────────────────────
+function getCSRFToken() {
+  return document.cookie.split('; ')
+    .find(row => row.startsWith('csrftoken'))
+    ?.split('=')[1] || '';
 }
 
 // ─── GOLD PARTICLES ───────────────────────────────────────────────────────────
