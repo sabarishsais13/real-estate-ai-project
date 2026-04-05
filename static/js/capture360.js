@@ -11,7 +11,7 @@ const rooms = [
 // ─── STATE ────────────────────────────────────────────────────────────────────
 let activeRoom       = null;
 let stream           = null;
-let facingMode       = "environment"; // rear camera
+let facingMode       = "environment";
 let capturedFrames   = [];
 let isCapturing      = false;
 let captureInterval  = null;
@@ -20,8 +20,8 @@ let gyroStart        = null;
 let lastGyroY        = null;
 let previewRoomId    = null;
 
-const FRAME_COUNT    = 24;   // frames to capture while rotating
-const FRAME_DELAY    = 200;  // ms between frames
+const FRAME_COUNT    = 24;
+const FRAME_DELAY    = 200;
 
 // ─── DOM REFS ─────────────────────────────────────────────────────────────────
 const idleScreen      = () => document.getElementById("idleScreen");
@@ -79,7 +79,6 @@ function buildRoomsList() {
 
 // ─── SELECT ROOM ──────────────────────────────────────────────────────────────
 function selectRoom(room) {
-  // Stop any active camera first
   if (stream) stopCamera();
 
   activeRoom = room;
@@ -89,7 +88,6 @@ function selectRoom(room) {
     return;
   }
 
-  // Update card styles
   document.querySelectorAll(".room-card").forEach(c => {
     c.classList.remove("active");
     const badge = c.querySelector(".room-badge");
@@ -102,12 +100,10 @@ function selectRoom(room) {
     if (badge && !room.captured) badge.classList.add("active-ind");
   }
 
-  // Update start bar
   document.getElementById("startRoomIcon").textContent = room.icon;
   document.getElementById("startRoomName").textContent = room.name;
   document.getElementById("btnStartCamera").disabled = false;
 
-  // Show idle if camera not active
   showState("idle");
 }
 
@@ -129,7 +125,6 @@ async function startCamera() {
     video.srcObject = stream;
     await video.play();
 
-    // Reset state
     capturedFrames = [];
     rotationDeg = 0;
     gyroStart = null;
@@ -137,7 +132,6 @@ async function startCamera() {
     updateArc(0);
     rotPct().textContent = "0°";
 
-    // Update cam label
     document.getElementById("camRoomLabel").textContent = activeRoom.name;
 
     showState("camera");
@@ -175,7 +169,7 @@ async function flipCamera() {
 // ─── CAPTURE FRAMES ───────────────────────────────────────────────────────────
 function captureFrames() {
   if (!PROPERTY_ID) {
-    alert("Please submit your property first. Then open this page with a property ID before recording.");
+    alert("Please submit your property first.");
     return;
   }
 
@@ -190,7 +184,6 @@ function captureFrames() {
   }
 
   if (isCapturing) {
-    // Stop capturing
     stopFrameCapture();
     if (capturedFrames.length >= 4) {
       startStitching();
@@ -200,13 +193,11 @@ function captureFrames() {
     return;
   }
 
-  // Start capturing
   isCapturing = true;
   capturedFrames = [];
   rotationDeg = 0;
   updateArc(0);
 
-  // Visual feedback on shutter
   const shutter = document.getElementById("btnCapture");
   shutter.style.borderColor = "#ff4444";
   shutter.innerHTML = `
@@ -218,7 +209,6 @@ function captureFrames() {
 
   captureInterval = setInterval(() => {
     captureOneFrame();
-    // Simulate rotation progress if no gyro
     if (!gyroStart) {
       rotationDeg = Math.min(360, rotationDeg + (360 / FRAME_COUNT));
       updateArc(rotationDeg / 360);
@@ -242,7 +232,6 @@ function stopFrameCapture() {
   isCapturing = false;
   if (captureInterval) { clearInterval(captureInterval); captureInterval = null; }
 
-  // Reset shutter
   const shutter = document.getElementById("btnCapture");
   if (shutter) {
     shutter.style.borderColor = "";
@@ -271,35 +260,50 @@ function startStitching() {
   }, 60);
 }
 
-function stitchFrames() {
+// ─── STITCH FRAMES VIA OPENCV API ────────────────────────────────────────────
+async function stitchFrames() {
   const frames = capturedFrames;
   if (!frames.length) { showState("idle"); return; }
 
-  const canvas = document.getElementById("stitchCanvas");
-  const frameW = frames[0].width;
-  const frameH = frames[0].height;
+  const framesB64 = frames.map(canvas => canvas.toDataURL("image/jpeg", 0.8));
 
-  // Stitch: place frames side by side (simple panorama)
-  const sliceW = Math.floor(frameW / 3); // take center slice of each frame
-  canvas.width  = sliceW * frames.length;
-  canvas.height = frameH;
+  try {
+    const response = await fetch('/api/stitch-frames/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: JSON.stringify({ frames: framesB64 })
+    });
 
-  const ctx = canvas.getContext("2d");
-  frames.forEach((frame, i) => {
-    const sx = Math.floor((frameW - sliceW) / 2);
-    ctx.drawImage(frame, sx, 0, sliceW, frameH, i * sliceW, 0, sliceW, frameH);
-  });
+    const result = await response.json();
 
-  stitchFill().style.width = "100%";
-
-  setTimeout(() => {
-    // Save result
-    if (activeRoom) {
-      activeRoom.imageData = canvas.toDataURL("image/jpeg", 0.9);
-      activeRoom.captured = true;
+    if (result.image) {
+      stitchFill().style.width = "100%";
+      setTimeout(() => {
+        if (activeRoom) {
+          activeRoom.imageData = result.image;
+          activeRoom.captured = true;
+        }
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.getElementById("stitchCanvas");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          canvas.getContext("2d").drawImage(img, 0, 0);
+          showPreview();
+        };
+        img.src = result.image;
+      }, 400);
+    } else {
+      alert("Stitching failed. Please try again.");
+      showState("idle");
     }
-    showPreview();
-  }, 400);
+  } catch (err) {
+    alert("Error connecting to server. Please try again.");
+    showState("idle");
+  }
 }
 
 // ─── PREVIEW MODAL ────────────────────────────────────────────────────────────
@@ -313,7 +317,6 @@ function showPreview() {
   previewRoomId = activeRoom?.id;
   title.textContent = `${activeRoom?.name} — 360° Preview`;
 
-  // Draw stitched image on preview canvas
   const stitched = document.getElementById("stitchCanvas");
   canvas.width  = stitched.width;
   canvas.height = stitched.height;
@@ -342,7 +345,6 @@ function saveRoom() {
   buildRoomsList();
   updateProgress();
 
-  // Auto-select next uncaptured room
   const next = rooms.find(r => !r.captured);
   if (next) selectRoom(next);
   else showState("idle");
@@ -376,7 +378,6 @@ function updateArc(pct) {
 function requestGyro() {
   if (typeof DeviceOrientationEvent !== "undefined" &&
       typeof DeviceOrientationEvent.requestPermission === "function") {
-    // iOS 13+
     document.addEventListener("click", async () => {
       try {
         const perm = await DeviceOrientationEvent.requestPermission();
@@ -392,15 +393,13 @@ function listenGyro() {
   window.addEventListener("deviceorientation", (e) => {
     if (!isCapturing) return;
 
-    const alpha = e.alpha; // compass heading 0-360
-    const beta  = e.beta;  // tilt -180 to 180
+    const alpha = e.alpha;
+    const beta  = e.beta;
 
-    // Update tilt bar
     const tiltNorm = Math.max(0, Math.min(1, (beta + 90) / 180));
     const tiltFillEl = document.querySelector(".tilt-fill");
     if (tiltFillEl) tiltFillEl.style.height = `${tiltNorm * 100}%`;
 
-    // Track rotation
     if (alpha !== null) {
       if (gyroStart === null) { gyroStart = alpha; lastGyroY = alpha; }
 
@@ -415,7 +414,6 @@ function listenGyro() {
       updateArc(pct);
       rotPct().textContent = `${Math.round(rotationDeg)}°`;
 
-      // Auto stop at 360
       if (rotationDeg >= 360 && isCapturing) {
         stopFrameCapture();
         startStitching();
@@ -439,7 +437,7 @@ function addRoom() {
   updateProgress();
 }
 
-// ─── FINISH & PASS DATA ───────────────────────────────────────────────────────
+// ─── FINISH & SAVE TO DJANGO ──────────────────────────────────────────────────
 async function finishCapture() {
   const captured = rooms.filter(r => r.captured);
   if (captured.length === 0) {
@@ -452,7 +450,6 @@ async function finishCapture() {
     return;
   }
 
-  // Show a saving indicator
   const btn = document.querySelector('button[onclick*="finishCapture"]');
   if (btn) {
     btn.disabled = true;
@@ -460,28 +457,22 @@ async function finishCapture() {
   }
 
   try {
-    const payload = {
-      property_id: PROPERTY_ID
-    };
+    const payload = { property_id: PROPERTY_ID };
 
-    // Map captured rooms to their model field names
     const roomMapping = {
-      "living": "living_room_360",
-      "kitchen": "kitchen_360",
-      "master": "bedroom_360",
+      "living":   "living_room_360",
+      "kitchen":  "kitchen_360",
+      "master":   "bedroom_360",
       "bathroom": "bathroom_360"
     };
 
-    // Add captured image data to payload
     captured.forEach(room => {
       const fieldName = roomMapping[room.id];
       if (fieldName && room.imageData) {
-        // Convert canvas/blob to data URL if needed
         payload[fieldName] = room.imageData;
       }
     });
 
-    // Send to Django API
     const res = await fetch('/api/properties/360/update/', {
       method: 'POST',
       headers: {
@@ -494,21 +485,16 @@ async function finishCapture() {
     const data = await res.json();
 
     if (res.ok) {
-      // Clear sessionStorage
       sessionStorage.removeItem("capturedRooms");
-
-      // Redirect to virtual tour of the property
       window.location.href = `/virtual-tour/${PROPERTY_ID}/`;
     } else {
       alert("Error saving 360 views: " + (data.error || "Unknown error"));
-      btn.disabled = false;
-      btn.textContent = "Done & Continue →";
+      if (btn) { btn.disabled = false; btn.textContent = "Done & Continue →"; }
     }
   } catch (e) {
     console.error("Error:", e);
     alert("Failed to save 360 views. Please try again.");
-    btn.disabled = false;
-    btn.textContent = "Done & Continue →";
+    if (btn) { btn.disabled = false; btn.textContent = "Done & Continue →"; }
   }
 }
 
