@@ -4,6 +4,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Property
 from .serializers import PropertySerializer
+import cv2
+import numpy as np
+import base64
+import json
+from django.http import JsonResponse
 
 # ── UI Pages ──────────────────────────────────────────────
 
@@ -17,8 +22,6 @@ def discover_page(request):
     return render(request, 'discover.html')
 
 def property_detail_page(request, id):
-    # Just render the template. The frontend will fetch data via API or we can pass it here.
-    # We will pass the property ID so JS can fetch or we can pass context.
     return render(request, 'property_detail.html', {'property_id': id})
 
 def virtual_tour_page(request, id):
@@ -47,12 +50,11 @@ def sell_page(request):
             facing=request.POST.get('facing'),
             description=request.POST.get('description'),
             amenities=request.POST.get('amenities'),
-            image=request.FILES.get('image'),  # File upload
+            image=request.FILES.get('image'),
             city=request.POST.get('city'),
             is_active=True
         )
 
-        # Redirect to capture360 with the new property ID
         return redirect(f'/capture360/?property_id={new_property.id}')
 
     return render(request, 'sell.html')
@@ -61,7 +63,36 @@ def ai_advisor_page(request):
     return render(request, 'ai_advisor.html')
 
 def capture360(request):
-    return render(request, 'capture360.html')
+    property_id = request.GET.get('property_id')
+    return render(request, 'capture360.html', {'property_id': property_id})
+
+def stitch_frames(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        frames_b64 = data.get('frames', [])
+
+        images = []
+        for f in frames_b64:
+            img_data = base64.b64decode(f.split(',')[1])
+            np_arr = np.frombuffer(img_data, np.uint8)
+            img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            if img is not None:
+                images.append(img)
+
+        if len(images) < 2:
+            return JsonResponse({'error': 'Need at least 2 frames'}, status=400)
+
+        stitcher = cv2.Stitcher.create(cv2.Stitcher_PANORAMA)
+        stitch_status, stitched = stitcher.stitch(images)
+
+        if stitch_status == cv2.Stitcher_OK:
+            _, buffer = cv2.imencode('.jpg', stitched)
+            stitched_b64 = base64.b64encode(buffer).decode('utf-8')
+            return JsonResponse({'image': f'data:image/jpeg;base64,{stitched_b64}'})
+        else:
+            return JsonResponse({'error': 'Stitching failed'}, status=500)
+
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
 # ── GET all properties with filters ─────────────────────────────
@@ -75,8 +106,6 @@ def get_properties(request):
     bhk       = request.GET.get('bhk',    None)
 
     if city and city != 'all' and city != 'All':
-        # Assuming city might be stored in location or city field.
-        # Using icontains on location for flexibility.
         from django.db.models import Q
         queryset = queryset.filter(Q(city__iexact=city) | Q(location__icontains=city))
 
@@ -86,7 +115,6 @@ def get_properties(request):
     if bhk and bhk != 'all':
         queryset = queryset.filter(bhk=bhk)
 
-    # Budget filter in Lakhs
     if budget and budget != 'all':
         if budget == 'under20':
             queryset = queryset.filter(price_value__lt=20)
@@ -121,7 +149,6 @@ def get_property_detail(request, pk):
 # ── UPDATE property 360 views ───────────────────────────────────────
 @api_view(['POST'])
 def update_property_360(request):
-    """Save 360-degree views for a property"""
     try:
         property_id = request.data.get('property_id')
         if not property_id:
@@ -132,7 +159,6 @@ def update_property_360(request):
 
         prop = Property.objects.get(pk=property_id, is_active=True)
 
-        # Update 360 view fields
         if request.data.get('living_room_360'):
             prop.living_room_360 = request.data.get('living_room_360')
         if request.data.get('kitchen_360'):
@@ -163,7 +189,6 @@ def update_property_360(request):
 # ── GET filter dropdown options ──────────────────────────────────
 @api_view(['GET'])
 def get_filter_options(request):
-    # Static options as defined in the plan/UI
     cities = ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Hyderabad']
     types = ['Apartment', 'Villa', 'Independent House', 'Plot', 'Studio', 'Penthouse']
     bhks = ['Studio', '1 BHK', '2 BHK', '3 BHK', '4 BHK', '5 BHK', 'Plot']

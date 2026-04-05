@@ -10,6 +10,10 @@
 
 {% block content %}
 
+<script>
+  const PROPERTY_ID = {{ property_id|default:"null" }};
+</script>
+
 <canvas id="particles" class="particles-canvas"></canvas>
 
 <!-- MAIN -->
