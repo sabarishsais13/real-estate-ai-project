@@ -160,36 +160,70 @@ document.getElementById("vastu-query").addEventListener("keypress", function(e){
 
 /* CSRF */
 function getCSRFToken(){
-    return document.cookie.split('; ')
-        .find(row => row.startsWith('csrftoken'))
-        ?.split('=')[1];
+    const name = 'csrftoken';
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 /* ASK BOT */
 function askVastu(){
     let input = document.getElementById("vastu-query");
+    let chat = document.getElementById("chatMessages");
     let msg = input.value.trim();
+    
     if(!msg) return;
 
-    let chat = document.getElementById("chatMessages");
+    // Display user message
+    let userMsgDiv = document.createElement('p');
+    userMsgDiv.innerHTML = `<b>You:</b> ${msg}`;
+    chat.appendChild(userMsgDiv);
+    chat.scrollTop = chat.scrollHeight;
 
-    chat.innerHTML = `<p><b>You:</b> ${msg}</p>`;
+    // Clear input
+    input.value = "";
 
+    // Send to backend
+    const csrfToken = getCSRFToken();
+    
     fetch("/vastu-chat/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": getCSRFToken()
+            "X-CSRFToken": csrfToken || ""
         },
         body: JSON.stringify({query: msg})
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            return res.json().then(data => {
+                throw new Error(data.error || 'Server error');
+            });
+        }
+        return res.json();
+    })
     .then(data => {
-        chat.innerHTML += `<p><b>Bot:</b> ${data.response}</p>`;
+        let botMsgDiv = document.createElement('p');
+        botMsgDiv.innerHTML = `<b>Bot:</b> ${data.response || 'Sorry, I could not answer that.'}`;
+        chat.appendChild(botMsgDiv);
+        chat.scrollTop = chat.scrollHeight;
+    })
+    .catch(error => {
+        console.error('Vastu Chat Error:', error);
+        let botMsgDiv = document.createElement('p');
+        botMsgDiv.innerHTML = `<b>Bot:</b> Sorry, I could not answer that. (${error.message})`;
+        chat.appendChild(botMsgDiv);
         chat.scrollTop = chat.scrollHeight;
     });
-
-    input.value = "";
 }
 
 /* ================= DRAG ONLY HEADER ================= */

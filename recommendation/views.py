@@ -2,11 +2,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import render
-import os, sys
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+import logging
 
-# Add ml_model path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'ml_model'))
-from predict import get_recommendations, VALID_CITIES, VALID_BHK, VALID_TYPES
+from .ml_model.predict import get_recommendations, VALID_CITIES, VALID_BHK, VALID_TYPES
+from .vastu_chatbot import get_answer
+
+logger = logging.getLogger(__name__)
 
 
 class RecommendAPIView(APIView):
@@ -55,3 +59,25 @@ def ai_advisor_view(request):
         'bhk':    VALID_BHK,
         'types':  VALID_TYPES,
     })
+
+
+@csrf_exempt
+def vastu_chat_view(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST requests are allowed.'}, status=405)
+
+    try:
+        payload = json.loads(request.body.decode('utf-8'))
+    except json.JSONDecodeError:
+        logger.warning("Invalid JSON payload received in vastu chat")
+        return JsonResponse({'error': 'Invalid JSON payload.'}, status=400)
+
+    query = payload.get('query', '').strip()
+    if not query:
+        logger.warning("Empty query received in vastu chat")
+        return JsonResponse({'error': 'Query cannot be blank.'}, status=400)
+
+    logger.debug(f"Vastu Query: '{query}'")
+    response_text = get_answer(query)
+    logger.debug(f"Vastu Response: '{response_text}'")
+    return JsonResponse({'response': response_text})
