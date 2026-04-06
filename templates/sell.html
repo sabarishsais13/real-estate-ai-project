@@ -4,75 +4,13 @@
 {% block title %}Sell Property | GRIHA{% endblock %}
 
 {% block extra_css %}
-<style>
-.sell-container {
-    max-width: 900px;
-    margin: 80px auto;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.form-input, .form-textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--gold-border);
-    padding: 14px;
-    border-radius: 8px;
-    color: white;
-}
-
-.form-textarea {
-    min-height: 120px;
-}
-
-.file-upload {
-    border: 2px dashed var(--luxury-gold);
-    padding: 30px;
-    text-align: center;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-/* Upload box hover */
-.file-upload:hover {
-    background: rgba(212, 175, 55, 0.1);
-    box-shadow: 0 0 12px var(--soft-gold-glow);
-    transform: translateY(-2px);
-    transition: var(--transition-smooth);
-}
-
-/* Button hover (general) */
-.btn-filled:hover {
-    box-shadow: 0 0 15px var(--soft-gold-glow);
-    transform: translateY(-2px);
-}
-
-/* 360 section hover */
-.vr-section {
-    transition: var(--transition-smooth);
-}
-
-.vr-section:hover {
-    box-shadow: 0 0 15px var(--soft-gold-glow);
-    transform: translateY(-3px);
-}
-
-/* 360 button hover */
-.vr-btn:hover {
-    box-shadow: 0 0 10px var(--soft-gold-glow);
-    transform: scale(1.05);
-}
-</style>
+<link rel="stylesheet" href="{% static 'css/pages/sell.css' %}">
 {% endblock %}
 
 {% block content %}
 
 <section class="section">
-    <h2 style="text-align:center; color:var(--luxury-gold);">Sell Your Property</h2>
+    <h2 class="sell-title">Sell Your Property</h2>
 
     <form method="POST" enctype="multipart/form-data" class="sell-container">
         {% csrf_token %}
@@ -137,17 +75,17 @@
         <br>
 
         <!-- 360 View Optional Section -->
-<div class="glass-card vr-section" style="padding:20px; margin-top:20px; text-align:center;">
+<div class="glass-card vr-section">
     
-    <h3 style="color: var(--luxury-gold); margin-bottom:10px;">
+    <h3 class="vr-title">
         Add 360° Virtual Tour
     </h3>
 
-    <p style="color: var(--text-secondary); font-size:14px;">
+    <p class="vr-subtitle">
         Optional — You can submit your property now and add a 360° tour later if you want.
     </p>
 
-    <div style="margin-top:10px; color:#f5e4b7; font-size:0.95rem; line-height:1.5;">
+    <div class="vr-note">
         Submit the property first, then add your 360° virtual tour on the next page.
         If you want, you can also add the tour later from the property details page.
     </div>
