@@ -1,22 +1,1164 @@
 [
   {
     "question": "north facing house good",
-    "answer": "North-facing houses are very auspicious."
+    "answer": "North-facing houses are considered highly auspicious as they are associated with wealth and prosperity governed by Kubera."
+  },
+  {
+    "question": "east facing house benefits",
+    "answer": "East-facing houses bring positive energy and sunlight, promoting health, growth, and spiritual well-being."
   },
   {
     "question": "south facing house vastu",
-    "answer": "South-facing houses are generally not preferred."
+    "answer": "South-facing houses are not always bad but require proper Vastu corrections to avoid negative effects."
+  },
+  {
+    "question": "west facing house vastu",
+    "answer": "West-facing houses can be good for stability and success if designed correctly with proper Vastu alignment."
+  },
+  {
+    "question": "best direction for main door",
+    "answer": "The main door should ideally be in the north, east, or northeast direction for maximum positive energy."
   },
   {
     "question": "kitchen direction vastu",
-    "answer": "Kitchen should be in southeast direction."
+    "answer": "The kitchen should be in the southeast direction, which is governed by the fire element."
   },
   {
     "question": "bedroom direction vastu",
-    "answer": "Bedroom should be in southwest."
+    "answer": "The master bedroom should be in the southwest direction for stability and strong relationships."
   },
   {
     "question": "toilet direction vastu",
-    "answer": "Toilet should be in northwest or southeast."
+    "answer": "Toilets should be placed in the northwest or southeast direction to minimize negative energy."
+  },
+  {
+    "question": "pooja room direction",
+    "answer": "The pooja room should be in the northeast direction, which is considered the most sacred zone."
+  },
+  {
+    "question": "staircase direction vastu",
+    "answer": "Staircases should be in the south, west, or southwest direction and should always go clockwise."
+  },
+
+  {
+    "question": "is northeast plot good",
+    "answer": "Yes, northeast plots are highly auspicious as they attract divine energy and prosperity."
+  },
+  {
+    "question": "is corner plot good",
+    "answer": "Corner plots can be beneficial if both road directions are favorable like north and east."
+  },
+  {
+    "question": "plot slope direction vastu",
+    "answer": "The plot should slope from south to north or west to east for positive energy flow."
+  },
+  {
+    "question": "underground water tank direction",
+    "answer": "The underground water tank should be in the northeast direction for prosperity."
+  },
+  {
+    "question": "overhead tank direction",
+    "answer": "Overhead tanks should be placed in the southwest direction to maintain balance."
+  },
+
+  {
+    "question": "mirror placement vastu",
+    "answer": "Mirrors should be placed on north or east walls and should not reflect the bed."
+  },
+  {
+    "question": "sleeping direction vastu",
+    "answer": "Sleeping with your head towards the south is considered the best for health and longevity."
+  },
+  {
+    "question": "study room direction",
+    "answer": "The study room should be in the east or northeast direction to improve concentration."
+  },
+  {
+    "question": "living room direction",
+    "answer": "The living room should ideally be in the north or east direction to welcome positive energy."
+  },
+  {
+    "question": "garage direction vastu",
+    "answer": "The garage should be in the northwest or southeast direction depending on usage."
+  },
+
+  {
+    "question": "can kumbha rasi live in north facing house",
+    "answer": "Yes, Kumbha Rasi (Aquarius) individuals benefit from north-facing houses as it enhances financial growth and stability."
+  },
+  {
+    "question": "can mesha rasi live in south facing house",
+    "answer": "Mesha Rasi (Aries) people can live in south-facing houses if proper Vastu corrections are applied, as they are fire-dominant."
+  },
+  {
+    "question": "which house direction for rishaba rasi",
+    "answer": "Rishaba Rasi (Taurus) individuals benefit from west or south-facing houses that provide stability and material comfort."
+  },
+  {
+    "question": "mithuna rasi house direction",
+    "answer": "Mithuna Rasi (Gemini) people prefer north or east-facing homes for intellectual growth and communication success."
+  },
+  {
+    "question": "kadaga rasi house vastu",
+    "answer": "Kadaga Rasi (Cancer) natives should prefer north-facing houses to enhance emotional well-being and peace."
+  },
+
+  {
+    "question": "simha rasi house direction",
+    "answer": "Simha Rasi (Leo) individuals benefit from east-facing homes as it aligns with their leadership and energy."
+  },
+  {
+    "question": "kanni rasi house vastu",
+    "answer": "Kanni Rasi (Virgo) natives should prefer north-facing homes for analytical thinking and prosperity."
+  },
+  {
+    "question": "thula rasi house direction",
+    "answer": "Thula Rasi (Libra) people benefit from west-facing houses for balance and harmony."
+  },
+  {
+    "question": "vrischika rasi house vastu",
+    "answer": "Vrischika Rasi (Scorpio) individuals should prefer south-facing houses with proper corrections."
+  },
+  {
+    "question": "dhanusu rasi house direction",
+    "answer": "Dhanusu Rasi (Sagittarius) natives benefit from east-facing homes for spiritual growth."
+  },
+
+  {
+    "question": "makara rasi house vastu",
+    "answer": "Makara Rasi (Capricorn) people should choose south or west-facing homes for stability and discipline."
+  },
+  {
+    "question": "makara rasi",
+    "answer": "Makara Rasi (Capricorn) people should choose south or west-facing homes for stability and discipline."
+  },
+  {
+    "question": "makara",
+    "answer": "Makara Rasi (Capricorn) people should choose south or west-facing homes for stability and discipline."
+  },
+  {
+    "question": "magara rasi",
+    "answer": "Makara Rasi (Capricorn) people should choose south or west-facing homes for stability and discipline."
+  },
+  {
+    "question": "magara",
+    "answer": "Makara Rasi (Capricorn) people should choose south or west-facing homes for stability and discipline."
+  },
+  {
+    "question": "kumbha rasi",
+    "answer": "Kumbha Rasi (Aquarius) individuals benefit from north-facing houses as it enhances financial growth and stability."
+  },
+  {
+    "question": "kumbha",
+    "answer": "Kumbha Rasi (Aquarius) individuals benefit from north-facing houses as it enhances financial growth and stability."
+  },
+  {
+    "question": "kumba",
+    "answer": "Kumbha Rasi (Aquarius) individuals benefit from north-facing houses as it enhances financial growth and stability."
+  },
+  {
+    "question": "rasi",
+    "answer": "Rasi or zodiac sign determines the best house direction and Vastu principles for an individual in astrology."
+  },
+  {
+    "question": "open ground",
+    "answer": "Open ground and open spaces in the north and east directions are ideal in Vastu to invite positive energy."
+  },
+  {
+    "question": "open plot vastu",
+    "answer": "Open plots are best in the north or east directions and should remain clean and clutter-free for good energy flow."
+  },
+  {
+    "question": "open land vastu",
+    "answer": "Open land, especially in the north or east, is considered beneficial in Vastu and helps maintain positive energy circulation."
+  },
+  {
+    "question": "kumbha rasi house",
+    "answer": "Kumbha Rasi individuals benefit from north-facing houses and open spaces that support their air-element nature."
+  },
+  {
+    "question": "makara rasi house",
+    "answer": "Makara Rasi individuals are comfortable in south or west-facing homes that support stability and discipline."
+  },
+  {
+    "question": "meen rasi house direction",
+    "answer": "Meen Rasi (Pisces) natives benefit from northeast-facing homes for spiritual growth."
+  },
+
+  {
+    "question": "is staircase in northeast bad",
+    "answer": "Yes, placing a staircase in the northeast is considered inauspicious and blocks positive energy."
+  },
+  {
+    "question": "can kitchen be in northeast",
+    "answer": "No, the kitchen should not be in the northeast as it disturbs the spiritual energy."
+  },
+  {
+    "question": "can toilet be in northeast",
+    "answer": "No, toilets in the northeast are highly inauspicious and should be avoided."
+  },
+
+  {
+    "question": "how to fix vastu defects",
+    "answer": "Vastu defects can be corrected using mirrors, pyramids, colors, and proper placement of elements."
+  },
+  {
+    "question": "best color for house vastu",
+    "answer": "Light colors like white, cream, and pastel shades are ideal for maintaining positive energy."
+  },
+  {
+    "question": "which plant good for vastu",
+    "answer": "Tulsi plant is considered highly auspicious and should be placed in the northeast direction."
+  },
+  {
+    "question": "money attracting vastu tips",
+    "answer": "Keep the north direction clean and place a water feature to attract wealth."
+  },
+  {
+    "question": "entrance vastu tips",
+    "answer": "The entrance should be well-lit, clean, and free of obstacles to allow positive energy flow."
+  },
+
+  {
+    "question": "can unmarried couple follow vastu",
+    "answer": "Yes, Vastu principles apply to everyone and can improve harmony and well-being."
+  },
+  {
+    "question": "does vastu really work",
+    "answer": "Vastu works by balancing natural elements and energies, which can positively influence life."
+  },
+  {
+    "question": "is vastu scientific",
+    "answer": "Vastu is based on ancient architectural principles aligned with natural forces, though not fully scientific."
+  },
+  {
+    "question": "best direction for office",
+    "answer": "The office should face north or east for productivity and success."
+  },
+  {
+    "question": "where to keep safe locker",
+    "answer": "The locker should be placed in the southwest and open towards the north."
+  },
+
+  {
+    "question": "can bed face north",
+    "answer": "Sleeping with head towards north is not recommended as it may cause health issues."
+  },
+  {
+    "question": "best direction for dining room",
+    "answer": "The dining room should be in the west or southeast direction."
+  },
+  {
+    "question": "best direction for balcony",
+    "answer": "Balconies in the north or east are ideal for positive energy and sunlight."
+  },
+  {
+    "question": "is basement good vastu",
+    "answer": "Basements are acceptable if used for storage and not for living purposes."
+  },
+  {
+    "question": "can pooja room be in bedroom",
+    "answer": "It is not recommended but can be adjusted with proper placement and cleanliness."
+  },
+
+  {
+    "question": "nakshatra based house selection",
+    "answer": "Nakshatra-based selection depends on birth star compatibility with directions for better results."
+  },
+  {
+    "question": "ashwini nakshatra house direction",
+    "answer": "Ashwini natives benefit from east-facing houses for growth and success."
+  },
+  {
+    "question": "rohini nakshatra house direction",
+    "answer": "Rohini natives should prefer north-facing homes for wealth and stability."
+  },
+  {
+    "question": "magha nakshatra house direction",
+    "answer": "Magha natives benefit from south-facing homes with proper corrections."
+  },
+  {
+    "question": "revathi nakshatra house direction",
+    "answer": "Revathi natives should choose northeast-facing homes for peace and spirituality."
+  },
+
+  {
+    "question": "can vastu improve career",
+    "answer": "Yes, proper Vastu alignment can enhance focus, productivity, and career growth."
+  },
+  {
+    "question": "can vastu improve marriage",
+    "answer": "Yes, placing bedroom in southwest can improve marital harmony."
+  },
+  {
+    "question": "can vastu remove negativity",
+    "answer": "Yes, proper ventilation, sunlight, and layout can remove negative energy."
+  },
+  {
+    "question": "is open space important in vastu",
+    "answer": "Yes, open spaces especially in the north and east bring positive energy."
+  },
+  {
+    "question": "is open ground good",
+    "answer": "Yes, open ground is ideal in Vastu when located in the north or east, because it encourages good energy flow."
+  },
+  {
+    "question": "what is the best direction for open ground",
+    "answer": "Open ground is best placed in the north or east to let positive energy circulate freely."
+  },
+  {
+    "question": "is open plot good",
+    "answer": "Open plots are considered good in Vastu if they face the north or east and remain clean and well-managed."
+  },
+  {
+    "question": "best direction for open plot",
+    "answer": "The best directions for an open plot are north or east since they attract light, air, and prosperity."
+  },
+  {
+    "question": "can vastu affect health",
+    "answer": "Yes, improper layout can disturb energy flow and affect physical and mental health."
+  },
+  {
+    "question": "what happens if main door faces south west",
+    "answer": "A southwest-facing main door is considered inauspicious as it may bring instability, financial loss, and health issues. Remedies include placing Vastu pyramids, keeping the entrance well-lit, and using protective symbols."
+  },
+  {
+    "question": "can we buy a plot with irregular shape",
+    "answer": "Irregular plots can disturb energy balance. Square or rectangular plots are ideal. If unavoidable, corrections like boundary walls or landscaping can help regularize the shape."
+  },
+  {
+    "question": "is it good to have road hitting plot",
+    "answer": "Road hitting plots (Veedi Shoola) can be negative depending on direction. A road hitting from northeast is good, while from southwest is harmful."
+  },
+  {
+    "question": "can kitchen and toilet share wall",
+    "answer": "It is not recommended as it mixes fire and waste energy. If unavoidable, ensure proper insulation and separation."
+  },
+  {
+    "question": "what is brahmasthan in vastu",
+    "answer": "Brahmasthan is the center of the house and should be kept open and clutter-free for energy circulation."
+  },
+
+  {
+    "question": "can we keep aquarium in house vastu",
+    "answer": "Yes, aquariums attract wealth when placed in the north or east. Avoid placing them in bedrooms or kitchens."
+  },
+  {
+    "question": "best place for refrigerator vastu",
+    "answer": "The refrigerator should be placed in the southeast or southwest direction, avoiding northeast."
+  },
+  {
+    "question": "can we build house without vastu",
+    "answer": "Yes, but ignoring Vastu may lead to imbalance in energy which can affect mental peace and success."
+  },
+  {
+    "question": "importance of sunlight in vastu",
+    "answer": "Sunlight, especially morning sunlight from the east, brings positive energy and improves health."
+  },
+  {
+    "question": "is open terrace good vastu",
+    "answer": "Yes, open terraces are good, especially in north and east directions, allowing energy flow."
+  },
+
+  {
+    "question": "can kumbha rasi buy west facing plot",
+    "answer": "Kumbha Rasi individuals can buy west-facing plots as it supports stability and career growth if Vastu is properly followed."
+  },
+  {
+    "question": "what is best for kumbha rasi",
+    "answer": "Kumbha Rasi individuals benefit most from north-facing houses and open, airy spaces in Vastu."
+  },
+  {
+    "question": "best direction for kumbha rasi",
+    "answer": "North-facing homes are usually best for Kumbha Rasi, as they support wealth and stability in Vastu."
+  },
+  {
+    "question": "kumbha rasi best house direction",
+    "answer": "A north-facing house with open spaces is ideal for Kumbha Rasi in Vastu."
+  },
+  {
+    "question": "what is best for makara rasi",
+    "answer": "Makara Rasi people do well in south- or west-facing homes, as these directions provide stability and discipline."
+  },
+  {
+    "question": "best direction for makara rasi",
+    "answer": "South or west-facing houses are generally best for Makara Rasi according to Vastu."
+  },
+  {
+    "question": "what is best for magara rasi",
+    "answer": "Magara Rasi (Makara) individuals should choose south- or west-facing homes for discipline and stability."
+  },
+  {
+    "question": "kumbha rasi house",
+    "answer": "Kumbha Rasi individuals benefit from north-facing houses and open spaces that support their air-element nature."
+  },
+  {
+    "question": "makara rasi house",
+    "answer": "Makara Rasi individuals are comfortable in south or west-facing homes that support stability and discipline."
+  },
+  {
+    "question": "magara rasi",
+    "answer": "Makara Rasi (Capricorn) people should choose south or west-facing homes for stability and discipline."
+  },
+  {
+    "question": "kumbha rasi",
+    "answer": "Kumbha Rasi (Aquarius) individuals benefit from north-facing houses as it enhances financial growth and stability."
+  },
+  {
+    "question": "kumbh rasi",
+    "answer": "Kumbha Rasi (Aquarius) individuals benefit from north-facing houses as it enhances financial growth and stability."
+  },
+  {
+    "question": "makar rasi",
+    "answer": "Makara Rasi (Capricorn) people should choose south or west-facing homes for stability and discipline."
+  },
+  {
+    "question": "is north east extension good for dhanusu rasi",
+    "answer": "Yes, northeast extension is highly beneficial for Dhanusu Rasi as it enhances spiritual growth and luck."
+  },
+  {
+    "question": "can meen rasi people live in south facing house",
+    "answer": "Meen Rasi individuals should avoid south-facing houses unless corrected, as it may disturb emotional balance."
+  },
+  {
+    "question": "which direction suits simha rasi for business",
+    "answer": "Simha Rasi individuals benefit from east-facing business establishments for leadership and visibility."
+  },
+  {
+    "question": "is southwest bedroom good for thula rasi",
+    "answer": "Yes, southwest bedrooms provide stability and balance, which suits Thula Rasi individuals."
+  },
+
+  {
+    "question": "can we keep shoes near entrance",
+    "answer": "Shoes near entrance can block positive energy. Keep them in a closed cabinet preferably in the west or southwest."
+  },
+  {
+    "question": "is false ceiling good in vastu",
+    "answer": "False ceilings are fine if not too low and designed symmetrically without heavy beams."
+  },
+  {
+    "question": "can we place tv in bedroom vastu",
+    "answer": "TV in bedroom is not ideal but can be placed in southeast direction and covered when not in use."
+  },
+  {
+    "question": "is placing clock important in vastu",
+    "answer": "Yes, clocks should be placed on north or east walls and should always be working."
+  },
+  {
+    "question": "can we keep plants inside house",
+    "answer": "Indoor plants are good but avoid thorny plants. Keep them in east or north directions."
+  },
+
+  {
+    "question": "is vastu important for rented house",
+    "answer": "Yes, even in rented houses, Vastu affects mental peace and success, though structural changes may be limited."
+  },
+  {
+    "question": "can we change vastu after construction",
+    "answer": "Yes, many Vastu defects can be corrected using remedies without structural changes."
+  },
+  {
+    "question": "can mirrors fix vastu defects",
+    "answer": "Yes, mirrors can redirect energy but must be used carefully and not reflect negative spaces."
+  },
+  {
+    "question": "is overhead beam above bed bad",
+    "answer": "Yes, beams above bed create pressure and stress. Avoid sleeping under beams."
+  },
+  {
+    "question": "can we keep safe in north direction",
+    "answer": "Yes, keeping a safe in north direction enhances wealth, especially if it opens towards north."
+  },
+
+  {
+    "question": "is north west bedroom good for guests",
+    "answer": "Yes, northwest bedrooms are ideal for guests as it encourages short stays."
+  },
+  {
+    "question": "can staircase be anti clockwise",
+    "answer": "Anti-clockwise staircases are not recommended as they disrupt energy flow."
+  },
+  {
+    "question": "is septic tank placement important",
+    "answer": "Yes, septic tanks should be in northwest or southeast, avoiding northeast."
+  },
+  {
+    "question": "can we sleep under staircase",
+    "answer": "Sleeping under staircase is not recommended as it creates pressure and discomfort."
+  },
+  {
+    "question": "is center of house heavy load bad",
+    "answer": "Yes, heavy load in center blocks energy flow and should be avoided."
+  },
+
+  {
+    "question": "which vastu is good for students",
+    "answer": "Students should study facing east or north for better concentration and memory."
+  },
+  {
+    "question": "can vastu affect exam results",
+    "answer": "Indirectly yes, as proper environment improves focus and reduces stress."
+  },
+  {
+    "question": "is northeast cut harmful",
+    "answer": "Yes, northeast cut reduces positive energy and prosperity."
+  },
+  {
+    "question": "is southwest extension bad",
+    "answer": "Yes, southwest extension can bring instability and financial issues."
+  },
+  {
+    "question": "can we build well in south",
+    "answer": "No, water sources should be in north or northeast."
+  },
+
+  {
+    "question": "is vastu important for apartments",
+    "answer": "Yes, entrance direction, kitchen, and bedroom placement still matter in apartments."
+  },
+  {
+    "question": "can lift placement affect vastu",
+    "answer": "Yes, lifts should not be in northeast as it blocks positive energy."
+  },
+  {
+    "question": "is balcony in south good",
+    "answer": "South balconies are less favorable; use shading and plants to balance energy."
+  },
+  {
+    "question": "can we keep washing machine in kitchen",
+    "answer": "Not recommended; keep it in northwest or southeast."
+  },
+  {
+    "question": "is dark house bad in vastu",
+    "answer": "Yes, lack of light leads to stagnant energy and negativity."
+  },
+
+  {
+    "question": "can vastu improve business profit",
+    "answer": "Yes, proper seating direction and entrance placement can improve financial flow."
+  },
+  {
+    "question": "best direction for shop entrance",
+    "answer": "North or east entrances are best for attracting customers."
+  },
+  {
+    "question": "can cashier sit facing south",
+    "answer": "No, cashier should face north or east for financial growth."
+  },
+  {
+    "question": "is water fountain good for office",
+    "answer": "Yes, placing a fountain in north enhances wealth and positivity."
+  },
+  {
+    "question": "can vastu affect relationships",
+    "answer": "Yes, wrong bedroom placement or clutter can affect harmony."
+  },
+
+  {
+    "question": "is red color good for bedroom",
+    "answer": "Red is too intense; use light shades for calmness."
+  },
+  {
+    "question": "can we keep god photos in bedroom",
+    "answer": "Not recommended; keep them in pooja room."
+  },
+  {
+    "question": "is broken items bad in vastu",
+    "answer": "Yes, broken items attract negative energy and should be removed."
+  },
+  {
+    "question": "can we keep dustbin in kitchen",
+    "answer": "Yes, but keep it covered and in southeast."
+  },
+  {
+    "question": "is clutter bad in vastu",
+    "answer": "Yes, clutter blocks energy flow and causes stress."
+  },
+
+  {
+    "question": "which direction for meditation room",
+    "answer": "Northeast is ideal for meditation and spiritual practices."
+  },
+  {
+    "question": "can vastu help in mental peace",
+    "answer": "Yes, balanced energy improves mental clarity and reduces stress."
+  },
+  {
+    "question": "is chanting area direction important",
+    "answer": "Yes, northeast direction enhances spiritual vibrations."
+  },
+  {
+    "question": "can we build temple outside house",
+    "answer": "Yes, but ensure it is clean and in northeast."
+  },
+  {
+    "question": "is entrance gate direction important",
+    "answer": "Yes, gate direction should align with main door for proper energy flow."
+  },
+
+  {
+    "question": "can we have two main doors",
+    "answer": "Yes, but one should be clearly dominant to avoid confusion in energy flow."
+  },
+  {
+    "question": "is spiral staircase good vastu",
+    "answer": "Spiral staircases are not ideal as they create unstable energy."
+  },
+  {
+    "question": "can we keep locker in bedroom",
+    "answer": "Yes, place it in southwest corner of bedroom."
+  },
+  {
+    "question": "is north west kitchen ok",
+    "answer": "Yes, northwest kitchen is acceptable if southeast is not possible."
+  },
+  {
+    "question": "can vastu affect children growth",
+    "answer": "Yes, proper room placement and study direction improve development."
+  },
+
+  {
+    "question": "is east extension good",
+    "answer": "Yes, east extension brings health and prosperity."
+  },
+  {
+    "question": "is west cut bad",
+    "answer": "Yes, west cut can reduce stability and gains."
+  },
+  {
+    "question": "can we keep pets in house vastu",
+    "answer": "Yes, pets bring positive energy if maintained well."
+  },
+  {
+    "question": "is wind direction important in vastu",
+    "answer": "Yes, proper ventilation ensures energy circulation."
+  },
+  {
+    "question": "can we use basement as bedroom",
+    "answer": "Not recommended due to lack of sunlight and energy flow."
+  },
+
+  {
+    "question": "which direction is best for water tank for kumbha rasi",
+    "answer": "Kumbha Rasi individuals should keep water sources in northeast for better emotional balance and prosperity."
+  },
+  {
+    "question": "is south west entrance ok for makara rasi",
+    "answer": "Makara Rasi individuals may tolerate southwest entrances with proper remedies."
+  },
+  {
+    "question": "can mithuna rasi use north west bedroom",
+    "answer": "Yes, Mithuna Rasi individuals can use northwest bedrooms for active and dynamic energy."
+  },
+  {
+    "question": "is east facing house good for meen rasi",
+    "answer": "Yes, east-facing houses support spiritual and emotional well-being for Meen Rasi."
+  },
+  {
+    "question": "which direction for office for kanni rasi",
+    "answer": "Kanni Rasi individuals benefit from north-facing offices for analytical success."
+  },
+  {
+    "question": "why is northeast considered most important in vastu",
+    "answer": "Northeast is governed by the water element and is considered the entry point of divine energy. It should be open, clean, and lower in height to allow positive energy to flow freely into the house."
+  },
+  {
+    "question": "what happens if southwest is lower than northeast",
+    "answer": "If the southwest is lower than the northeast, it weakens stability, causing financial problems and lack of control in life. Southwest should always be higher and heavier."
+  },
+  {
+    "question": "why should kitchen not be in northeast",
+    "answer": "Northeast represents water and spirituality, while kitchen represents fire. Placing fire in a water zone creates conflict, leading to mental stress and financial instability."
+  },
+  {
+    "question": "what is vastu purusha mandala",
+    "answer": "Vastu Purusha Mandala is the energy grid that divides a space into zones, each governed by different elements and deities, helping in optimal placement of rooms."
+  },
+  {
+    "question": "why is center of house kept empty",
+    "answer": "The center (Brahmasthan) is the core energy zone. Keeping it open ensures proper energy circulation throughout the house."
+  },
+
+  {
+    "question": "how does vastu relate to five elements",
+    "answer": "Vastu is based on balancing five elements: earth (stability), water (flow), fire (energy), air (movement), and space (expansion). Imbalance leads to problems."
+  },
+  {
+    "question": "what happens if fire element is weak in house",
+    "answer": "Weak fire element can lead to lack of motivation, health issues, and financial struggles. It can be corrected by proper kitchen placement and lighting."
+  },
+  {
+    "question": "what if water element is in wrong direction",
+    "answer": "Misplaced water elements can cause emotional instability and financial losses. Water should ideally be in north or northeast."
+  },
+  {
+    "question": "how to balance air element in house",
+    "answer": "Ensure proper ventilation, windows in north and east, and avoid blocking airflow."
+  },
+  {
+    "question": "importance of space element in vastu",
+    "answer": "Space element allows energy to move freely. Overcrowding and clutter disturb this balance."
+  },
+
+  {
+    "question": "how to identify vastu defects in house",
+    "answer": "Check direction of rooms, entrance placement, slope, and energy flow. Symptoms include stress, losses, and health issues."
+  },
+  {
+    "question": "can vastu affect sleep quality",
+    "answer": "Yes, wrong sleeping direction or bed placement can disturb magnetic alignment and reduce sleep quality."
+  },
+  {
+    "question": "why head should face south while sleeping",
+    "answer": "South aligns with Earth's magnetic field, improving blood circulation and deep sleep."
+  },
+  {
+    "question": "what happens if head faces north while sleeping",
+    "answer": "It can cause disturbed sleep, stress, and health issues due to magnetic repulsion."
+  },
+  {
+    "question": "can bed be placed in center of room",
+    "answer": "No, bed should have a solid wall support, preferably in southwest."
+  },
+
+  {
+    "question": "how to choose plot based on surroundings",
+    "answer": "Avoid plots near graveyards, hospitals, or noisy areas. Prefer calm surroundings with good sunlight."
+  },
+  {
+    "question": "is plot near temple good",
+    "answer": "Living too close to a temple can create high energy imbalance. Maintain some distance."
+  },
+  {
+    "question": "is plot near water body good",
+    "answer": "Yes, especially if water is in north or east direction, enhancing prosperity."
+  },
+  {
+    "question": "how road direction affects vastu",
+    "answer": "Roads bring energy into the plot. Favorable directions are north and east."
+  },
+  {
+    "question": "can slope outside house affect vastu",
+    "answer": "Yes, downward slope towards house from south brings negative energy."
+  },
+
+  {
+    "question": "how vastu works in apartments",
+    "answer": "Focus on entrance, kitchen, bedroom placement, and ventilation even in apartments."
+  },
+  {
+    "question": "can vastu be ignored in flats",
+    "answer": "Not completely, as internal layout still affects energy flow."
+  },
+  {
+    "question": "best floor in apartment as per vastu",
+    "answer": "Middle floors are generally better than extreme top or ground floors."
+  },
+  {
+    "question": "does lift position affect flat vastu",
+    "answer": "Yes, lift in northeast of building is not preferred."
+  },
+  {
+    "question": "can shared walls affect vastu",
+    "answer": "Yes, especially if neighboring layout is highly imbalanced."
+  },
+
+  {
+    "question": "how vastu affects career growth",
+    "answer": "Proper seating, direction, and energy balance improve focus and opportunities."
+  },
+  {
+    "question": "why sitting direction matters in office",
+    "answer": "Facing north or east aligns with positive energy flow and enhances decision-making."
+  },
+  {
+    "question": "how to arrange work desk as per vastu",
+    "answer": "Keep desk facing north or east, clutter-free, with solid wall behind."
+  },
+  {
+    "question": "can vastu affect business losses",
+    "answer": "Yes, wrong entrance or seating can block financial flow."
+  },
+  {
+    "question": "importance of entrance in office vastu",
+    "answer": "Entrance determines energy inflow; wrong direction can reduce customer flow."
+  },
+
+  {
+    "question": "how vastu affects relationships",
+    "answer": "Bedroom placement and energy imbalance can create conflicts and misunderstandings."
+  },
+  {
+    "question": "best bedroom for couples vastu",
+    "answer": "Southwest bedroom strengthens stability and bonding."
+  },
+  {
+    "question": "can mirror cause relationship issues",
+    "answer": "Yes, mirrors reflecting bed can disturb peace and create conflicts."
+  },
+  {
+    "question": "how colors affect vastu",
+    "answer": "Colors influence mood and energy; light tones promote calmness."
+  },
+  {
+    "question": "can lighting affect vastu energy",
+    "answer": "Yes, bright and natural lighting enhances positivity."
+  },
+
+  {
+    "question": "how kumbha rasi aligns with vastu elements",
+    "answer": "Kumbha Rasi is air-dominant, so open spaces and north-facing houses suit them."
+  },
+  {
+    "question": "why mesha rasi needs fire element balance",
+    "answer": "Mesha is fire-based, so balanced kitchen placement prevents aggression and stress."
+  },
+  {
+    "question": "best vastu for rishaba rasi stability",
+    "answer": "Earth-dominant Rishaba benefits from southwest strength and heavy structures."
+  },
+  {
+    "question": "how mithuna rasi benefits from airflow",
+    "answer": "Good ventilation and north-facing homes enhance communication and creativity."
+  },
+  {
+    "question": "why kadaga rasi needs water balance",
+    "answer": "Water placement in northeast improves emotional stability for Kadaga natives."
+  },
+
+  {
+    "question": "can vastu remedies work without reconstruction",
+    "answer": "Yes, using symbols, colors, and rearrangements can correct many defects."
+  },
+  {
+    "question": "how pyramids help in vastu",
+    "answer": "Pyramids balance energy fields and reduce negative effects."
+  },
+  {
+    "question": "can crystals improve vastu",
+    "answer": "Yes, crystals like quartz can enhance positive vibrations."
+  },
+  {
+    "question": "how salt removes negative energy",
+    "answer": "Salt absorbs negative energy when placed in corners or used in cleaning."
+  },
+  {
+    "question": "importance of daily cleaning in vastu",
+    "answer": "Cleanliness ensures smooth energy flow and positivity."
+  },
+
+  {
+    "question": "can vastu affect health issues",
+    "answer": "Yes, imbalance in elements can lead to stress and illness."
+  },
+  {
+    "question": "which direction affects mental health",
+    "answer": "Blocked northeast can affect clarity and peace of mind."
+  },
+  {
+    "question": "can kitchen defects affect digestion",
+    "answer": "Yes, improper fire element placement can impact digestion."
+  },
+  {
+    "question": "can clutter cause anxiety vastu",
+    "answer": "Yes, clutter blocks energy and increases stress."
+  },
+  {
+    "question": "importance of fresh air in vastu",
+    "answer": "Fresh air maintains life energy (prana) in the house."
+  },
+
+  {
+    "question": "how nakshatra influences house choice",
+    "answer": "Each nakshatra aligns with elements and directions influencing compatibility with house orientation."
+  },
+  {
+    "question": "why ashwini prefers east direction",
+    "answer": "Ashwini natives benefit from sunrise energy, boosting growth and vitality."
+  },
+  {
+    "question": "why rohini suits north direction",
+    "answer": "Rohini aligns with prosperity, making north ideal for wealth."
+  },
+  {
+    "question": "why magha can handle south energy",
+    "answer": "Magha natives have strong energy, allowing them to manage south direction with corrections."
+  },
+  {
+    "question": "why revathi suits northeast",
+    "answer": "Revathi is spiritual, and northeast enhances this trait."
+  },
+
+  {
+    "question": "how to design house as per vastu from start",
+    "answer": "Start with plot selection, align rooms as per directions, ensure proper slope, and maintain element balance."
+  },
+  {
+    "question": "what are common vastu mistakes people make",
+    "answer": "Ignoring entrance direction, clutter, wrong room placement, and poor lighting."
+  },
+  {
+    "question": "can vastu change luck",
+    "answer": "It improves environment, which indirectly influences opportunities and mindset."
+  },
+  {
+    "question": "is vastu same for all religions",
+    "answer": "Yes, it is based on natural principles, not religion."
+  },
+  {
+    "question": "can vastu be applied in modern architecture",
+    "answer": "Yes, it can be integrated with modern designs without compromising aesthetics."
+  },
+  {
+    "question": "why is northeast considered most important in vastu",
+    "answer": "Northeast is governed by the water element and is considered the entry point of divine energy. It should be open, clean, and lower in height to allow positive energy to flow freely into the house."
+  },
+  {
+    "question": "what happens if southwest is lower than northeast",
+    "answer": "If the southwest is lower than the northeast, it weakens stability, causing financial problems and lack of control in life. Southwest should always be higher and heavier."
+  },
+  {
+    "question": "why should kitchen not be in northeast",
+    "answer": "Northeast represents water and spirituality, while kitchen represents fire. Placing fire in a water zone creates conflict, leading to mental stress and financial instability."
+  },
+  {
+    "question": "what is vastu purusha mandala",
+    "answer": "Vastu Purusha Mandala is the energy grid that divides a space into zones, each governed by different elements and deities, helping in optimal placement of rooms."
+  },
+  {
+    "question": "why is center of house kept empty",
+    "answer": "The center (Brahmasthan) is the core energy zone. Keeping it open ensures proper energy circulation throughout the house."
+  },
+
+  {
+    "question": "how does vastu relate to five elements",
+    "answer": "Vastu is based on balancing five elements: earth (stability), water (flow), fire (energy), air (movement), and space (expansion). Imbalance leads to problems."
+  },
+  {
+    "question": "what happens if fire element is weak in house",
+    "answer": "Weak fire element can lead to lack of motivation, health issues, and financial struggles. It can be corrected by proper kitchen placement and lighting."
+  },
+  {
+    "question": "what if water element is in wrong direction",
+    "answer": "Misplaced water elements can cause emotional instability and financial losses. Water should ideally be in north or northeast."
+  },
+  {
+    "question": "how to balance air element in house",
+    "answer": "Ensure proper ventilation, windows in north and east, and avoid blocking airflow."
+  },
+  {
+    "question": "importance of space element in vastu",
+    "answer": "Space element allows energy to move freely. Overcrowding and clutter disturb this balance."
+  },
+
+  {
+    "question": "how to identify vastu defects in house",
+    "answer": "Check direction of rooms, entrance placement, slope, and energy flow. Symptoms include stress, losses, and health issues."
+  },
+  {
+    "question": "can vastu affect sleep quality",
+    "answer": "Yes, wrong sleeping direction or bed placement can disturb magnetic alignment and reduce sleep quality."
+  },
+  {
+    "question": "why head should face south while sleeping",
+    "answer": "South aligns with Earth's magnetic field, improving blood circulation and deep sleep."
+  },
+  {
+    "question": "what happens if head faces north while sleeping",
+    "answer": "It can cause disturbed sleep, stress, and health issues due to magnetic repulsion."
+  },
+  {
+    "question": "can bed be placed in center of room",
+    "answer": "No, bed should have a solid wall support, preferably in southwest."
+  },
+
+  {
+    "question": "how to choose plot based on surroundings",
+    "answer": "Avoid plots near graveyards, hospitals, or noisy areas. Prefer calm surroundings with good sunlight."
+  },
+  {
+    "question": "is plot near temple good",
+    "answer": "Living too close to a temple can create high energy imbalance. Maintain some distance."
+  },
+  {
+    "question": "is plot near water body good",
+    "answer": "Yes, especially if water is in north or east direction, enhancing prosperity."
+  },
+  {
+    "question": "how road direction affects vastu",
+    "answer": "Roads bring energy into the plot. Favorable directions are north and east."
+  },
+  {
+    "question": "can slope outside house affect vastu",
+    "answer": "Yes, downward slope towards house from south brings negative energy."
+  },
+
+  {
+    "question": "how vastu works in apartments",
+    "answer": "Focus on entrance, kitchen, bedroom placement, and ventilation even in apartments."
+  },
+  {
+    "question": "can vastu be ignored in flats",
+    "answer": "Not completely, as internal layout still affects energy flow."
+  },
+  {
+    "question": "best floor in apartment as per vastu",
+    "answer": "Middle floors are generally better than extreme top or ground floors."
+  },
+  {
+    "question": "does lift position affect flat vastu",
+    "answer": "Yes, lift in northeast of building is not preferred."
+  },
+  {
+    "question": "can shared walls affect vastu",
+    "answer": "Yes, especially if neighboring layout is highly imbalanced."
+  },
+
+  {
+    "question": "how vastu affects career growth",
+    "answer": "Proper seating, direction, and energy balance improve focus and opportunities."
+  },
+  {
+    "question": "why sitting direction matters in office",
+    "answer": "Facing north or east aligns with positive energy flow and enhances decision-making."
+  },
+  {
+    "question": "how to arrange work desk as per vastu",
+    "answer": "Keep desk facing north or east, clutter-free, with solid wall behind."
+  },
+  {
+    "question": "can vastu affect business losses",
+    "answer": "Yes, wrong entrance or seating can block financial flow."
+  },
+  {
+    "question": "importance of entrance in office vastu",
+    "answer": "Entrance determines energy inflow; wrong direction can reduce customer flow."
+  },
+
+  {
+    "question": "how vastu affects relationships",
+    "answer": "Bedroom placement and energy imbalance can create conflicts and misunderstandings."
+  },
+  {
+    "question": "best bedroom for couples vastu",
+    "answer": "Southwest bedroom strengthens stability and bonding."
+  },
+  {
+    "question": "can mirror cause relationship issues",
+    "answer": "Yes, mirrors reflecting bed can disturb peace and create conflicts."
+  },
+  {
+    "question": "how colors affect vastu",
+    "answer": "Colors influence mood and energy; light tones promote calmness."
+  },
+  {
+    "question": "can lighting affect vastu energy",
+    "answer": "Yes, bright and natural lighting enhances positivity."
+  },
+
+  {
+    "question": "how kumbha rasi aligns with vastu elements",
+    "answer": "Kumbha Rasi is air-dominant, so open spaces and north-facing houses suit them."
+  },
+  {
+    "question": "why mesha rasi needs fire element balance",
+    "answer": "Mesha is fire-based, so balanced kitchen placement prevents aggression and stress."
+  },
+  {
+    "question": "best vastu for rishaba rasi stability",
+    "answer": "Earth-dominant Rishaba benefits from southwest strength and heavy structures."
+  },
+  {
+    "question": "how mithuna rasi benefits from airflow",
+    "answer": "Good ventilation and north-facing homes enhance communication and creativity."
+  },
+  {
+    "question": "why kadaga rasi needs water balance",
+    "answer": "Water placement in northeast improves emotional stability for Kadaga natives."
+  },
+
+  {
+    "question": "can vastu remedies work without reconstruction",
+    "answer": "Yes, using symbols, colors, and rearrangements can correct many defects."
+  },
+  {
+    "question": "how pyramids help in vastu",
+    "answer": "Pyramids balance energy fields and reduce negative effects."
+  },
+  {
+    "question": "can crystals improve vastu",
+    "answer": "Yes, crystals like quartz can enhance positive vibrations."
+  },
+  {
+    "question": "how salt removes negative energy",
+    "answer": "Salt absorbs negative energy when placed in corners or used in cleaning."
+  },
+  {
+    "question": "importance of daily cleaning in vastu",
+    "answer": "Cleanliness ensures smooth energy flow and positivity."
+  },
+
+  {
+    "question": "can vastu affect health issues",
+    "answer": "Yes, imbalance in elements can lead to stress and illness."
+  },
+  {
+    "question": "which direction affects mental health",
+    "answer": "Blocked northeast can affect clarity and peace of mind."
+  },
+  {
+    "question": "can kitchen defects affect digestion",
+    "answer": "Yes, improper fire element placement can impact digestion."
+  },
+  {
+    "question": "can clutter cause anxiety vastu",
+    "answer": "Yes, clutter blocks energy and increases stress."
+  },
+  {
+    "question": "importance of fresh air in vastu",
+    "answer": "Fresh air maintains life energy (prana) in the house."
+  },
+
+  {
+    "question": "how nakshatra influences house choice",
+    "answer": "Each nakshatra aligns with elements and directions influencing compatibility with house orientation."
+  },
+  {
+    "question": "why ashwini prefers east direction",
+    "answer": "Ashwini natives benefit from sunrise energy, boosting growth and vitality."
+  },
+  {
+    "question": "why rohini suits north direction",
+    "answer": "Rohini aligns with prosperity, making north ideal for wealth."
+  },
+  {
+    "question": "why magha can handle south energy",
+    "answer": "Magha natives have strong energy, allowing them to manage south direction with corrections."
+  },
+  {
+    "question": "why revathi suits northeast",
+    "answer": "Revathi is spiritual, and northeast enhances this trait."
+  },
+
+  {
+    "question": "how to design house as per vastu from start",
+    "answer": "Start with plot selection, align rooms as per directions, ensure proper slope, and maintain element balance."
+  },
+  {
+    "question": "what are common vastu mistakes people make",
+    "answer": "Ignoring entrance direction, clutter, wrong room placement, and poor lighting."
+  },
+  {
+    "question": "can vastu change luck",
+    "answer": "It improves environment, which indirectly influences opportunities and mindset."
+  },
+  {
+    "question": "is vastu same for all religions",
+    "answer": "Yes, it is based on natural principles, not religion."
+  },
+  {
+    "question": "can vastu be applied in modern architecture",
+    "answer": "Yes, it can be integrated with modern designs without compromising aesthetics."
   }
 ]
