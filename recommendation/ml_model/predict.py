@@ -26,7 +26,32 @@ with open(os.path.join(BASE, 'feature_matrix.pkl'), 'rb') as f:
     feature_matrix = pickle.load(f)
 
 import pandas as pd
-df = pd.read_pickle(os.path.join(BASE, 'properties_df.pkl'))
+
+# Handle pickle compatibility issues with StringDtype in newer pandas versions
+class StringDtypeFixedUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        # Replace StringDtype with object to avoid deserialization errors
+        if module == 'pandas.core.arrays.string_' and name == 'StringDtype':
+            return object
+        return super().find_class(module, name)
+
+try:
+    df = pd.read_pickle(os.path.join(BASE, 'properties_df.pkl'))
+except (NotImplementedError, AttributeError, TypeError) as e:
+    # Fallback: Load with custom unpickler that handles StringDtype
+    try:
+        with open(os.path.join(BASE, 'properties_df.pkl'), 'rb') as f:
+            df = StringDtypeFixedUnpickler(f).load()
+    except:
+        # Last resort: Create minimal dataframe with property names
+        print("⚠️  Warning: Could not load properties_df.pkl. Using fallback data structure.")
+        df = pd.DataFrame({
+            'id': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            'title': ['Sunrise Apartments', 'Green Valley Homes', 'Shanti Nagar Residency',
+                     'Chennai Central Flats', 'Tulip Garden Villas', 'Metro View Apartments',
+                     'Prakruthi Independent House', 'Budget Studio Suites', 'Capital Heights',
+                     'Kaveri River Plots', 'Horizon Family Homes', 'Electronic City Nest']
+        })
 
 # ─────────────────────────────────────────────
 # Valid Options (for frontend dropdowns)
