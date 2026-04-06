@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign Up | GRIHA{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts/auth.css' %}">{% endblock %}
+
+{% block content %}
+<section class="section auth-wrap auth-wrap-signup">
+    <h2 class="auth-title">Create Account</h2>
+    <p class="auth-subtitle">Join GRIHA and get a personalized property experience.</p>
+    <form method="post" class="glass-card auth-card" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="auth-error">{{ form.non_field_errors|join:", " }}</div>
+        {% endif %}
+        <div class="auth-field">
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            <input class="auth-input" id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" value="{{ form.username.value|default:'' }}" required autocomplete="username">
+            {% if form.username.errors %}<div class="auth-error">{{ form.username.errors|join:", " }}</div>{% endif %}
+        </div>
+        <div class="auth-field">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            <input type="email" class="auth-input" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" value="{{ form.email.value|default:'' }}" required autocomplete="email">
+            {% if form.email.errors %}<div class="auth-error">{{ form.email.errors|join:", " }}</div>{% endif %}
+        </div>
+        <div class="auth-field">
+            <label for="{{ form.password1.id_for_label }}">Password</label>
+            <input type="password" class="auth-input" id="{{ form.password1.id_for_label }}" name="{{ form.password1.html_name }}" required autocomplete="new-password">
+            {% if form.password1.errors %}<div class="auth-error">{{ form.password1.errors|join:", " }}</div>{% endif %}
+        </div>
+        <div class="auth-field">
+            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+            <input type="password" class="auth-input" id="{{ form.password2.id_for_label }}" name="{{ form.password2.html_name }}" required autocomplete="new-password">
+            {% if form.password2.errors %}<div class="auth-error">{{ form.password2.errors|join:", " }}</div>{% endif %}
+        </div>
+        <button type="submit" class="btn btn-filled auth-submit-btn">Sign Up</button>
+    </form>
+    <p class="auth-footer-link">
+        Already registered? <a href="{% url 'login' %}">Login</a>
+    </p>
+</section>
+{% endblock %}

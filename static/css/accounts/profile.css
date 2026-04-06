@@ -1,0 +1,13 @@
+.profile-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.profile-title {
+    text-align: center;
+    color: var(--luxury-gold);
+}
+
+.profile-form {
+    padding: 24px;
+}

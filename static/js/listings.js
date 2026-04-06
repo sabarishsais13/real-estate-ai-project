@@ -1,5 +1,33 @@
 const API_BASE = window.location.origin;
 
+function getCSRFToken() {
+    const name = 'csrftoken=';
+    const cookieParts = document.cookie.split(';');
+    for (let i = 0; i < cookieParts.length; i++) {
+        const c = cookieParts[i].trim();
+        if (c.startsWith(name)) return decodeURIComponent(c.substring(name.length));
+    }
+    return '';
+}
+
+async function trackInteraction(propertyId, interactionType = 'click') {
+    try {
+        await fetch(`${API_BASE}/api/properties/track-interaction/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken(),
+            },
+            body: JSON.stringify({
+                property_id: propertyId,
+                interaction_type: interactionType,
+            }),
+        });
+    } catch (err) {
+        console.warn('Interaction tracking failed:', err);
+    }
+}
+
 async function loadProperties(params = {}) {
     const query = new URLSearchParams(params).toString();
     const url = `${API_BASE}/api/properties/${query ? '?' + query : ''}`;
@@ -60,7 +88,7 @@ function createCardHTML(p, index) {
             </div>
             <div class="card-price">${p.price}</div>
             <div class="card-actions">
-                <a href="/property/${p.id}/" class="btn-card btn-outline">
+                <a href="/property/${p.id}/" class="btn-card btn-outline track-click" data-property-id="${p.id}">
                     View Details
                 </a>
                 <a href="/virtual-tour/${p.id}/" class="btn-card btn-filled">
@@ -88,6 +116,13 @@ function renderCards(list) {
     const newCards = grid.querySelectorAll('.listing-card');
     setTimeout(() => {
         newCards.forEach(c => c.classList.add('show'));
+        const clickLinks = grid.querySelectorAll('.track-click');
+        clickLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const propertyId = link.getAttribute('data-property-id');
+                trackInteraction(propertyId, 'click');
+            });
+        });
     }, 10);
 }
 

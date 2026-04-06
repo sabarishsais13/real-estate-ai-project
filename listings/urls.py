@@ -5,6 +5,7 @@ urlpatterns = [
     # API endpoints
     path('api/properties/',            views.get_properties,       name='get_properties'),
     path('api/properties/<int:pk>/',   views.get_property_detail,  name='get_property_detail'),
+    path('api/properties/track-interaction/', views.track_property_interaction, name='track_property_interaction'),
     path('api/properties/360/update/', views.update_property_360,  name='update_360'),
     path('api/filter-options/',        views.get_filter_options,   name='filter_options'),
 
@@ -17,5 +18,6 @@ urlpatterns = [
     path('sell/',                      views.sell_page,            name='sell'),
     path('ai-advisor/',                views.ai_advisor_page,      name='ai_advisor'),
     path('capture360/',                views.capture360,           name='capture360'),
+    path('property/<int:id>/edit/',    views.edit_property_page,   name='edit_property'),
     path('api/stitch-frames/', views.stitch_frames, name='stitch_frames'),
 ]

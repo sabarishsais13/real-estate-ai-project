@@ -20,7 +20,7 @@ let gyroStart        = null;
 let lastGyroY        = null;
 let previewRoomId    = null;
 
-const FRAME_COUNT    = 24;
+const FRAME_COUNT    = 16;
 const FRAME_DELAY    = 200;
 
 // ─── DOM REFS ─────────────────────────────────────────────────────────────────
@@ -221,8 +221,12 @@ function captureFrames() {
 function captureOneFrame() {
   const video = videoEl();
   const canvas = document.createElement("canvas");
-  canvas.width = video.videoWidth   || 640;
-  canvas.height = video.videoHeight || 360;
+  const srcW = video.videoWidth || 640;
+  const srcH = video.videoHeight || 360;
+  const maxWidth = 960;
+  const scale = srcW > maxWidth ? maxWidth / srcW : 1;
+  canvas.width = Math.round(srcW * scale);
+  canvas.height = Math.round(srcH * scale);
   const ctx = canvas.getContext("2d");
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
   capturedFrames.push(canvas);
@@ -265,7 +269,7 @@ async function stitchFrames() {
   const frames = capturedFrames;
   if (!frames.length) { showState("idle"); return; }
 
-  const framesB64 = frames.map(canvas => canvas.toDataURL("image/jpeg", 0.8));
+  const framesB64 = frames.map(canvas => canvas.toDataURL("image/jpeg", 0.62));
 
   try {
     const response = await fetch('/api/stitch-frames/', {
@@ -277,7 +281,20 @@ async function stitchFrames() {
       body: JSON.stringify({ frames: framesB64 })
     });
 
-    const result = await response.json();
+    const raw = await response.text();
+    let result = {};
+    try {
+      result = raw ? JSON.parse(raw) : {};
+    } catch (_) {
+      result = {};
+    }
+
+    if (!response.ok) {
+      const message = result.error || `Stitch API failed (${response.status})`;
+      alert(message);
+      showState("idle");
+      return;
+    }
 
     if (result.image) {
       stitchFill().style.width = "100%";
@@ -301,7 +318,7 @@ async function stitchFrames() {
       showState("idle");
     }
   } catch (err) {
-    alert("Error connecting to server. Please try again.");
+    alert("Unable to reach stitching service. Please check server and try again.");
     showState("idle");
   }
 }

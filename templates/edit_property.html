@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Property | GRIHA{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/sell.css' %}">
+<link rel="stylesheet" href="{% static 'css/pages/edit_property.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="section edit-property-wrap">
+    <h2 class="edit-property-title">Edit Property</h2>
+    <form method="POST" enctype="multipart/form-data" class="glass-card edit-property-form">
+        {% csrf_token %}
+        <div class="edit-property-grid">
+            <input type="text" name="title" value="{{ property.title }}" required class="form-input">
+            <input type="text" name="location" value="{{ property.location }}" required class="form-input">
+            <input type="text" name="city" value="{{ property.city }}" class="form-input">
+            <select name="price" class="form-input">
+                <option value="">Keep Existing Price</option>
+                <option value="15">Under ₹20L</option>
+                <option value="35">₹20L–₹50L</option>
+                <option value="75">₹50L–1Cr</option>
+                <option value="150">Above ₹1Cr</option>
+            </select>
+            <input type="text" name="bhk" value="{{ property.bhk }}" class="form-input">
+            <input type="text" name="type" value="{{ property.type }}" class="form-input">
+            <input type="text" name="area" value="{{ property.area }}" class="form-input">
+            <input type="text" name="floor" value="{{ property.floor }}" class="form-input">
+            <input type="text" name="facing" value="{{ property.facing }}" class="form-input">
+            <input type="file" name="image" class="form-input">
+        </div>
+        <textarea name="description" class="form-textarea edit-property-spacer">{{ property.description }}</textarea>
+        <textarea name="amenities" class="form-textarea edit-property-spacer">{{ property.amenities }}</textarea>
+        <button type="submit" class="btn btn-filled edit-property-spacer">Update Property</button>
+    </form>
+</section>
+{% endblock %}

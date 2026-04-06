@@ -1,0 +1,196 @@
+.main-content {
+    margin-top: 0 !important;
+}
+
+.hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../../images/hero_mansion.jpg") no-repeat center center;
+    background-size: cover;
+    filter: brightness(0.55);
+    z-index: -1;
+    transition: transform 0.1s ease-out;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.65) 50%, rgba(0, 0, 0, 0.85) 100%);
+    z-index: -1;
+}
+
+.hero-content {
+    max-width: 900px;
+    padding: 0 20px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeIn 1.2s forwards 0.4s;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: clamp(48px, 8vw, 64px);
+    margin-bottom: var(--spacing-small);
+    letter-spacing: 2px;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.hero p {
+    font-size: clamp(18px, 3vw, 22px);
+    color: var(--text-secondary);
+    opacity: 0.85;
+    margin-bottom: var(--spacing-medium);
+}
+
+.hero-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 14px;
+    color: var(--luxury-gold);
+}
+
+.search-container {
+    margin-top: var(--spacing-medium);
+    margin-bottom: var(--spacing-medium);
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 12px;
+    padding: 2px 10px;
+    width: 600px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    transition: var(--transition-smooth);
+}
+
+.ai-search {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 14px;
+    color: var(--text-primary);
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    outline: none;
+}
+
+.ai-search::placeholder {
+    color: var(--text-muted);
+}
+
+.search-container:focus-within {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    border: 1px solid var(--luxury-gold);
+}
+
+.search-btn {
+    background: transparent;
+    border: none;
+    color: var(--luxury-gold);
+    padding: 10px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.search-btn:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 5px var(--soft-gold-glow));
+}
+
+.search-btn-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-sell {
+    border: 1px solid var(--luxury-gold);
+    color: var(--luxury-gold);
+    background: transparent;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-sell::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(212, 175, 55, 0.4), transparent);
+    transition: 0.6s;
+}
+
+.btn-sell:hover::before {
+    left: 100%;
+}
+
+.btn-sell:hover {
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}
+
+.home-feature-delay {
+    transition-delay: 0.2s;
+}
+
+.home-discoveries-title {
+    text-align: center;
+    margin-bottom: var(--spacing-medium);
+    font-size: 36px;
+}
+
+.home-discoveries-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+
+.home-property-card {
+    padding: 0;
+}
+
+.home-property-info {
+    padding: 20px;
+}
+
+.home-property-city {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.home-property-name {
+    margin-bottom: 10px;
+}
+
+.home-villa-image {
+    background-image: url("../../images/villa1.jpg");
+}
+
+.home-penthouse-image {
+    background-image: url("../../images/penthouse1.jpg");
+}

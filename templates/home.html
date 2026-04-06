@@ -4,163 +4,7 @@
 {% block title %}Home | GRIHA{% endblock %}
 
 {% block extra_css %}
-<style>
-/* Adjust main content positioning since home has a fullscreen hero */
-.main-content {
-    margin-top: 0 !important;
-}
-
-/* Hero Section */
-.hero {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
-}
-
-.hero-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('{% static "images/hero_mansion.jpg" %}') no-repeat center center;
-    background-size: cover;
-    filter: brightness(0.55);
-    z-index: -1;
-    transition: transform 0.1s ease-out; /* For parallax */
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.75) 0%,
-        rgba(0,0,0,0.65) 50%,
-        rgba(0,0,0,0.85) 100%
-    );
-    z-index: -1;
-}
-
-.hero-content {
-    max-width: 900px;
-    padding: 0 20px;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeIn 1.2s forwards 0.4s;
-    z-index: 2;
-}
-
-.hero h1 {
-    font-size: clamp(48px, 8vw, 64px);
-    margin-bottom: var(--spacing-small);
-    letter-spacing: 2px;
-    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.hero p {
-    font-size: clamp(18px, 3vw, 22px);
-    color: var(--text-secondary);
-    opacity: 0.85;
-    margin-bottom: var(--spacing-medium);
-}
-
-/* AI Search in Hero */
-.search-container {
-    margin-top: var(--spacing-medium);
-    margin-bottom: var(--spacing-medium);
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.08); /* Rule 10 */
-    backdrop-filter: var(--glass-blur);
-    border-radius: 12px;
-    padding: 2px 10px;
-    width: 600px;
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    transition: var(--transition-smooth);
-}
-
-.ai-search {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: 14px;
-    color: var(--text-primary);
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    outline: none;
-}
-
-.ai-search::placeholder {
-    color: var(--text-muted);
-}
-
-.search-container:focus-within {
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-    border: 1px solid var(--luxury-gold);
-}
-
-.search-btn {
-    background: transparent;
-    border: none;
-    color: var(--luxury-gold);
-    padding: 10px;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-}
-
-.search-btn:hover {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 5px var(--soft-gold-glow));
-}
-/* Sell Property Button (Luxury Highlight CTA) */
-.btn-sell {
-    border: 1px solid var(--luxury-gold);
-    color: var(--luxury-gold);
-    background: transparent;
-    padding: 12px 22px;
-    border-radius: 8px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    transition: var(--transition-smooth);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Glow effect */
-.btn-sell::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(212,175,55,0.4), transparent);
-    transition: 0.6s;
-}
-
-/* Hover animation */
-.btn-sell:hover::before {
-    left: 100%;
-}
-
-.btn-sell:hover {
-    background: rgba(212, 175, 55, 0.1);
-    box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
-    transform: translateY(-2px);
-}
-</style>
+<link rel="stylesheet" href="{% static 'css/pages/home.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -168,14 +12,14 @@
     <div class="hero-bg" id="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <p style="text-transform: uppercase; letter-spacing: 5px; font-size: 14px; color: var(--luxury-gold);">Experience Excellence</p>
-        <h1>Cinematic Real Estate <br> Powered by AI</h1>
+        <p class="hero-eyebrow">Experience Excellence</p>
+        <h1>Real Estate <br> Powered by AI</h1>
         <p>Intelligence tailored for high-end luxury property investments.</p>
         
         <div class="search-container">
             <input type="text" class="ai-search" placeholder="Describe your dream villa (e.g. 'Modern villa with beach view in Dubai')">
             <button class="search-btn">
-                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" style="width: 20px; height: 20px;">
+                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" class="search-btn-icon">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
@@ -199,7 +43,7 @@
             <div class="card-title">AI PROPERTY ENGINE</div>
             <div class="card-subtitle">Predicting market trends with absolute precision.</div>
         </div>
-        <div class="glass-card reveal-on-scroll" style="transition-delay: 0.2s;">
+        <div class="glass-card reveal-on-scroll home-feature-delay">
             <svg class="icon-gold" viewBox="0 0 24 24" stroke="currentColor" fill="none">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -210,21 +54,21 @@
 </section>
 
 <section class="section">
-    <h2 style="text-align: center; margin-bottom: var(--spacing-medium); font-size: 36px;" class="reveal-on-scroll">Exclusive Discoveries</h2>
-    <div class="glass-grid reveal-on-scroll" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
-        <div class="property-card-comp glass-card" style="padding: 0;">
-            <div class="property-image" style="background-image: url('{% static 'images/villa1.jpg' %}');"></div>
-            <div class="property-info" style="padding:20px;">
-                <div class="card-subtitle" style="font-size: 12px; margin-bottom: 5px;">MUMBAI, INDIA</div>
-                <h3 style="margin-bottom: 10px;">The Golden Horizon Villa</h3>
+    <h2 class="reveal-on-scroll home-discoveries-title">Exclusive Discoveries</h2>
+    <div class="glass-grid reveal-on-scroll home-discoveries-grid">
+        <div class="property-card-comp glass-card home-property-card">
+            <div class="property-image home-villa-image"></div>
+            <div class="property-info home-property-info">
+                <div class="card-subtitle home-property-city">MUMBAI, INDIA</div>
+                <h3 class="home-property-name">The Golden Horizon Villa</h3>
                 <div class="property-price">$12,500,000</div>
             </div>
         </div>
-        <div class="property-card-comp glass-card" style="padding: 0;">
-            <div class="property-image" style="background-image: url('{% static 'images/penthouse1.jpg' %}');"></div>
-            <div class="property-info" style="padding:20px;">
-                <div class="card-subtitle" style="font-size: 12px; margin-bottom: 5px;">NEW YORK, USA</div>
-                <h3 style="margin-bottom: 10px;">Skyline Luxury Penthouse</h3>
+        <div class="property-card-comp glass-card home-property-card">
+            <div class="property-image home-penthouse-image"></div>
+            <div class="property-info home-property-info">
+                <div class="card-subtitle home-property-city">NEW YORK, USA</div>
+                <h3 class="home-property-name">Skyline Luxury Penthouse</h3>
                 <div class="property-price">$24,900,000</div>
             </div>
         </div>
@@ -241,5 +85,25 @@ window.addEventListener('mousemove', (e) => {
     const heroBg = document.getElementById('hero-bg');
     if(heroBg) heroBg.style.transform = `scale(1.1) translate(${x * 30}px, ${y * 30}px)`;
 });
+
+// Scroll down past hero -> Discover page
+let hasRedirectedToDiscover = false;
+let lastScrollY = window.scrollY;
+
+window.addEventListener('scroll', () => {
+    if (hasRedirectedToDiscover) return;
+
+    const currentScrollY = window.scrollY;
+    const isScrollingDown = currentScrollY > lastScrollY;
+    lastScrollY = currentScrollY;
+
+    const redirectThreshold = Math.max(260, window.innerHeight * 0.45);
+    const crossedThreshold = currentScrollY >= redirectThreshold;
+
+    if (isScrollingDown && crossedThreshold) {
+        hasRedirectedToDiscover = true;
+        window.location.href = "{% url 'discover' %}";
+    }
+}, { passive: true });
 </script>
 {% endblock %}

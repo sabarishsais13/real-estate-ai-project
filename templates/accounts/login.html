@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login | GRIHA{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts/auth.css' %}">{% endblock %}
+
+{% block content %}
+<section class="section auth-wrap auth-wrap-login">
+    <h2 class="auth-title">Login</h2>
+    <p class="auth-subtitle">Welcome back. Access your dashboard instantly.</p>
+    <form method="post" class="glass-card auth-card" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="auth-error">{{ form.non_field_errors|join:", " }}</div>
+        {% endif %}
+
+        <div class="auth-field">
+            <label for="{{ form.identifier.id_for_label }}">{{ form.identifier.label }}</label>
+            <input
+                class="auth-input"
+                id="{{ form.identifier.id_for_label }}"
+                name="{{ form.identifier.html_name }}"
+                value="{{ form.identifier.value|default:'' }}"
+                placeholder="Enter username or email"
+                autocomplete="username"
+                required
+            >
+            {% if form.identifier.errors %}<div class="auth-error">{{ form.identifier.errors|join:", " }}</div>{% endif %}
+        </div>
+
+        <div class="auth-field">
+            <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+            <input
+                type="password"
+                class="auth-input"
+                id="{{ form.password.id_for_label }}"
+                name="{{ form.password.html_name }}"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required
+            >
+            {% if form.password.errors %}<div class="auth-error">{{ form.password.errors|join:", " }}</div>{% endif %}
+        </div>
+
+        <div class="auth-actions">
+            <label class="auth-remember-label">
+                {{ form.remember_me }}
+                <span>Remember me</span>
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-filled auth-submit-btn">Login</button>
+    </form>
+    <p class="auth-footer-link">
+        New here? <a href="{% url 'signup' %}">Create an account</a>
+    </p>
+</section>
+{% endblock %}
