@@ -76,7 +76,7 @@
 
     <div class="chatbot-header" id="chatHeader">
         <span>Vastu AI Guide</span>
-        <span onclick="toggleChat()">✖</span>
+        <button id="closeChatBtn" class="chat-close-btn" type="button" aria-label="Close chatbot">✖</button>
     </div>
 
     <div class="chatbot-body" id="chatBody">
@@ -95,9 +95,29 @@
 
 /* ================= CHAT ================= */
 
-function toggleChat(){
-    document.getElementById("chatBody").classList.toggle("show");
+const chatbot = document.getElementById("chatbot");
+const chatBody = document.getElementById("chatBody");
+const chatHeader = document.getElementById("chatHeader");
+const closeChatBtn = document.getElementById("closeChatBtn");
+
+function openChat() {
+    if (chatBody.classList.contains("show")) return;
+    chatBody.classList.add("show");
 }
+
+function closeChat() {
+    if (!chatBody.classList.contains("show")) return;
+    chatBody.classList.remove("show");
+}
+
+chatHeader.addEventListener("click", openChat);
+closeChatBtn.addEventListener("click", closeChat);
+closeChatBtn.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
+});
+closeChatBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+});
 
 /* ENTER KEY SUPPORT */
 document.getElementById("vastu-query").addEventListener("keypress", function(e){
@@ -174,7 +194,6 @@ function askVastu(){
 
 /* ================= DRAG ONLY HEADER ================= */
 
-const chatbot = document.getElementById("chatbot");
 const header = document.getElementById("chatHeader");
 
 let isDragging = false, offsetX, offsetY;

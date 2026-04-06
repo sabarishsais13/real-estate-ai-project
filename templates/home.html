@@ -85,5 +85,25 @@ window.addEventListener('mousemove', (e) => {
     const heroBg = document.getElementById('hero-bg');
     if(heroBg) heroBg.style.transform = `scale(1.1) translate(${x * 30}px, ${y * 30}px)`;
 });
+
+// Scroll down past hero -> Discover page
+let hasRedirectedToDiscover = false;
+let lastScrollY = window.scrollY;
+
+window.addEventListener('scroll', () => {
+    if (hasRedirectedToDiscover) return;
+
+    const currentScrollY = window.scrollY;
+    const isScrollingDown = currentScrollY > lastScrollY;
+    lastScrollY = currentScrollY;
+
+    const redirectThreshold = Math.max(260, window.innerHeight * 0.45);
+    const crossedThreshold = currentScrollY >= redirectThreshold;
+
+    if (isScrollingDown && crossedThreshold) {
+        hasRedirectedToDiscover = true;
+        window.location.href = "{% url 'discover' %}";
+    }
+}, { passive: true });
 </script>
 {% endblock %}

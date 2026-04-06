@@ -52,15 +52,12 @@
     cursor: pointer;
 }
 
-.open-chat-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: gold;
+.chat-close-btn {
+    background: transparent;
     border: none;
-    padding: 12px 16px;
-    border-radius: 50px;
-    font-weight: bold;
+    color: inherit;
+    font-size: 16px;
+    line-height: 1;
     cursor: pointer;
 }
 

@@ -20,7 +20,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url("../images/hero_mansion.jpg") no-repeat center center;
+    background: url("../../images/hero_mansion.jpg") no-repeat center center;
     background-size: cover;
     filter: brightness(0.55);
     z-index: -1;
@@ -188,9 +188,9 @@
 }
 
 .home-villa-image {
-    background-image: url("../images/villa1.jpg");
+    background-image: url("../../images/villa1.jpg");
 }
 
 .home-penthouse-image {
-    background-image: url("../images/penthouse1.jpg");
+    background-image: url("../../images/penthouse1.jpg");
 }

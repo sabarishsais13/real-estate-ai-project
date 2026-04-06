@@ -12,6 +12,7 @@ import numpy as np
 import base64
 import json
 from django.http import JsonResponse
+from django.core.exceptions import RequestDataTooBig
 
 # ── UI Pages ──────────────────────────────────────────────
 
@@ -115,7 +116,15 @@ def edit_property_page(request, id):
 
 def stitch_frames(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except RequestDataTooBig:
+            return JsonResponse(
+                {'error': 'Captured frames are too large. Please capture again with fewer/shorter frames.'},
+                status=413
+            )
+        except Exception:
+            return JsonResponse({'error': 'Invalid stitch payload'}, status=400)
         frames_b64 = data.get('frames', [])
 
         images = []
