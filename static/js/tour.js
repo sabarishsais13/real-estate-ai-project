@@ -1,5 +1,4 @@
 // ─── ROOM DEFINITIONS ────────────────────────────────────────────────────────
-// These IDs exactly match the model fields in models.py
 const rooms = [
   { id: "living_room_360", name: "Living Room",   icon: "🛋️", src: "" },
   { id: "kitchen_360",     name: "Kitchen",        icon: "🍳", src: "" },
@@ -13,9 +12,6 @@ let rotationY   = -90;
 let rotationX   = 0;
 let rotInterval = null;
 
-// PROPERTY_ID and FALLBACK_IMAGE are set in virtual_tour.html by Django
-// const PROPERTY_ID    = {{ property_id|default:0 }};
-// const FALLBACK_IMAGE = '...';
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", async () => {
@@ -29,7 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // ─── FETCH FROM DJANGO API ────────────────────────────────────────────────────
 async function loadPropertyData() {
-  // If no property ID, use fallback images for all rooms
   if (typeof PROPERTY_ID === "undefined" || PROPERTY_ID === 0) {
     rooms.forEach(r => r.src = FALLBACK_IMAGE);
     return;
@@ -202,19 +197,46 @@ function vastuSend(e) {
   if (e.key === "Enter") vastuSendBtn();
 }
 
+function getCSRFToken() {
+  return document.cookie.split('; ')
+    .find(row => row.startsWith('csrftoken'))
+    ?.split('=')[1];
+}
+
 function vastuSendBtn() {
   const input = document.getElementById("vastuInput");
   const msg   = input.value.trim();
   if (!msg) return;
+
   input.value = "";
   addVastuMsg(msg, "user");
-  setTimeout(() => addVastuMsg(getVastuResponse(msg), "bot"), 700);
+  addVastuMsg("Typing...", "bot", true);
+
+  fetch("/vastu-chat/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCSRFToken(),
+    },
+    body: JSON.stringify({ query: msg }),
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Network response was not ok');
+    return res.json();
+  })
+  .then(data => {
+    updateLastBotMessage(data.response || 'Sorry, I could not answer that.');
+  })
+  .catch(() => {
+    updateLastBotMessage('Sorry, I could not answer that.');
+  });
 }
 
-function addVastuMsg(text, type) {
+function addVastuMsg(text, type, temporary = false) {
   const messages = document.getElementById("vastuMessages");
   const div = document.createElement("div");
   div.className = type === "bot" ? "bot-msg" : "user-msg";
+  div.dataset.temporary = temporary ? "true" : "false";
   div.innerHTML = type === "bot"
     ? `<span class="bot-avatar">🔮</span><span>${text}</span>`
     : `<span>${text}</span>`;
@@ -222,16 +244,16 @@ function addVastuMsg(text, type) {
   messages.scrollTop = messages.scrollHeight;
 }
 
-function getVastuResponse(msg) {
-  const m = msg.toLowerCase();
-  if (m.includes("kitchen"))                        return "Ideal Vastu for kitchen is the South-East corner (Agni corner). Avoid North-East. 🔥";
-  if (m.includes("bedroom") || m.includes("room"))  return "Master bedroom is best in South-West direction for stability and good health. 🛏️";
-  if (m.includes("entrance") || m.includes("door")) return "North or East-facing entrance is most auspicious for prosperity and positive energy. 🚪";
-  if (m.includes("bathroom") || m.includes("toilet"))return "Bathrooms should be in North-West or West direction. Avoid South-East. 🚿";
-  if (m.includes("living"))                         return "Living room in the North or North-East zone invites positive energy and good relationships. 🛋️";
-  if (m.includes("window"))                         return "Windows on North and East walls allow positive morning sunlight and energy flow. ☀️";
-  if (m.includes("color") || m.includes("colour"))  return "Earthy tones like cream, beige, and light yellow are Vastu-friendly. Avoid dark red in bedrooms. 🎨";
-  return "According to Vastu Shastra, this property shows good energy alignment. What specific aspect would you like me to analyse? 🏠";
+function updateLastBotMessage(text) {
+  const messages = document.getElementById("vastuMessages");
+  const botMessages = Array.from(messages.querySelectorAll('.bot-msg'));
+  const lastBot = botMessages[botMessages.length - 1];
+  if (lastBot && lastBot.dataset.temporary === "true") {
+    lastBot.dataset.temporary = "false";
+    lastBot.innerHTML = `<span class="bot-avatar">🔮</span><span>${text}</span>`;
+  } else {
+    addVastuMsg(text, "bot");
+  }
 }
 
 // ─── GOLD PARTICLES ───────────────────────────────────────────────────────────

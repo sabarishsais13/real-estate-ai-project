@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Property(models.Model):
 
@@ -47,6 +48,14 @@ class Property(models.Model):
     badge         = models.CharField(max_length=20, blank=True, null=True)
     is_active     = models.BooleanField(default=True)
     created_at    = models.DateTimeField(auto_now_add=True)
+    owner         = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="listed_properties",
+        null=True,
+        blank=True,
+    )
+    views_count   = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['-created_at']
@@ -54,3 +63,36 @@ class Property(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.location} - {self.price}"
+
+
+class PropertyInteraction(models.Model):
+    VIEW = "view"
+    CLICK = "click"
+    SUBMIT = "submit"
+    SAVE = "save"
+
+    INTERACTION_CHOICES = [
+        (VIEW, "View"),
+        (CLICK, "Click"),
+        (SUBMIT, "Submit"),
+        (SAVE, "Save"),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="property_interactions",
+    )
+    property = models.ForeignKey(
+        Property,
+        on_delete=models.CASCADE,
+        related_name="interactions",
+    )
+    interaction_type = models.CharField(max_length=20, choices=INTERACTION_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user.username} {self.interaction_type} {self.property_id}"

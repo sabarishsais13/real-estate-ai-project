@@ -6,6 +6,7 @@
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cinzel:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="{% static 'css/capture360.css' %}">
+<link rel="stylesheet" href="{% static 'css/pages/capture360_page.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -46,7 +47,7 @@
           <div class="idle-step"><span class="step-num">5</span><span>Tap Capture again to finish and preview the panorama.</span></div>
           <div class="idle-step"><span class="step-num">6</span><span>If it looks good, save it and continue to the next room.</span></div>
         </div>
-        <div class="idle-note" style="margin-top:14px; color:#f8e6b2; font-size:0.95rem; line-height:1.5;">
+        <div class="idle-note capture-idle-note">
           Tip: Do not walk around. Keep your feet planted and rotate slowly, using the ring as a guide.
         </div>
       </div>
@@ -122,7 +123,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
         Start Camera
       </button>
-      <div style="margin-top:10px; color:#f5e4b7; font-size:0.92rem;">
+      <div class="capture-start-note">
         Choose a room first, then press Start Camera. Keep the phone still in a fixed position and rotate smoothly.
       </div>
     </div>
@@ -144,22 +145,10 @@
         <span id="capturedNum">0</span> of <span id="totalNum">6</span> rooms captured
       </div>
       <div class="captured-bar">
-        <div class="captured-fill" id="capturedFill" style="width:0%"></div>
+        <div class="captured-fill capture-progress-fill" id="capturedFill"></div>
       </div>
       <!-- DONE BUTTON -->
-      <button onclick="finishCapture()" style="
-        width: 100%;
-        margin-top: 14px;
-        background: linear-gradient(135deg, #d4af37, #ffd700);
-        color: #000;
-        border: none;
-        border-radius: 10px;
-        padding: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        font-size: 0.82rem;
-        letter-spacing: 0.03em;
-      ">Done & Continue →</button>
+      <button onclick="finishCapture()" class="capture-done-btn">Done & Continue →</button>
     </div>
   </div>
 
@@ -180,7 +169,7 @@
   </div>
 </div>
 
-<canvas id="stitchCanvas" style="display:none"></canvas>
+<canvas id="stitchCanvas" class="stitch-canvas-hidden"></canvas>
 
 <script>
 // Extract property_id from URL params

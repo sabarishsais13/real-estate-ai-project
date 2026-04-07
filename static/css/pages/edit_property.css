@@ -1,0 +1,23 @@
+.edit-property-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.edit-property-title {
+    text-align: center;
+    color: var(--luxury-gold);
+}
+
+.edit-property-form {
+    padding: 24px;
+}
+
+.edit-property-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.edit-property-spacer {
+    margin-top: 14px;
+}

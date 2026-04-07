@@ -1,14 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Property
+from django.db.models import F
+from .models import Property, PropertyInteraction
 from .serializers import PropertySerializer
 import cv2
 import numpy as np
 import base64
 import json
 from django.http import JsonResponse
+from django.core.exceptions import RequestDataTooBig
 
 # ── UI Pages ──────────────────────────────────────────────
 
@@ -27,6 +31,7 @@ def property_detail_page(request, id):
 def virtual_tour_page(request, id):
     return render(request, 'virtual_tour.html', {'property_id': id})
 
+@login_required
 def sell_page(request):
     if request.method == 'POST':
         price_value_str = request.POST.get('price')
@@ -52,7 +57,13 @@ def sell_page(request):
             amenities=request.POST.get('amenities'),
             image=request.FILES.get('image'),
             city=request.POST.get('city'),
-            is_active=True
+            is_active=True,
+            owner=request.user,
+        )
+        PropertyInteraction.objects.create(
+            user=request.user,
+            property=new_property,
+            interaction_type=PropertyInteraction.SUBMIT,
         )
 
         return redirect(f'/capture360/?property_id={new_property.id}')
@@ -62,13 +73,58 @@ def sell_page(request):
 def ai_advisor_page(request):
     return render(request, 'ai_advisor.html')
 
+@login_required
 def capture360(request):
     property_id = request.GET.get('property_id')
     return render(request, 'capture360.html', {'property_id': property_id})
 
+
+@login_required
+def edit_property_page(request, id):
+    prop = get_object_or_404(Property, id=id, owner=request.user)
+
+    if request.method == "POST":
+        price_value_str = request.POST.get('price')
+        price_options = {
+            '15': '₹ 15 L',
+            '35': '₹ 35 L',
+            '75': '₹ 75 L',
+            '150': '₹ 150 L',
+        }
+        prop.title = request.POST.get('title')
+        prop.location = request.POST.get('location')
+        prop.city = request.POST.get('city')
+        if price_value_str:
+            prop.price_value = float(price_value_str)
+            prop.price = price_options.get(price_value_str, price_value_str)
+        prop.bhk = request.POST.get('bhk')
+        prop.type = request.POST.get('type')
+        prop.area = request.POST.get('area')
+        prop.floor = request.POST.get('floor')
+        prop.facing = request.POST.get('facing')
+        prop.description = request.POST.get('description')
+        prop.amenities = request.POST.get('amenities')
+
+        if request.FILES.get('image'):
+            prop.image = request.FILES.get('image')
+
+        prop.save()
+        messages.success(request, "Property updated successfully.")
+        return redirect("dashboard")
+
+    return render(request, "edit_property.html", {"property": prop})
+
 def stitch_frames(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except RequestDataTooBig:
+            return JsonResponse(
+                {'error': 'Captured frames are too large. Please capture again with fewer/shorter frames.'},
+                status=413
+            )
+        except Exception:
+            return JsonResponse({'error': 'Invalid stitch payload'}, status=400)
         frames_b64 = data.get('frames', [])
 
         images = []
@@ -142,6 +198,14 @@ def get_property_detail(request, pk):
             {'error': 'Property not found'},
             status=status.HTTP_404_NOT_FOUND
         )
+    Property.objects.filter(pk=prop.pk).update(views_count=F("views_count") + 1)
+    prop.refresh_from_db()
+    if request.user.is_authenticated:
+        PropertyInteraction.objects.create(
+            user=request.user,
+            property=prop,
+            interaction_type=PropertyInteraction.VIEW,
+        )
     serializer = PropertySerializer(prop, context={'request': request})
     return Response(serializer.data)
 
@@ -158,6 +222,8 @@ def update_property_360(request):
             )
 
         prop = Property.objects.get(pk=property_id, is_active=True)
+        if request.user.is_authenticated and prop.owner_id and prop.owner_id != request.user.id:
+            return Response({'error': 'Not authorized'}, status=status.HTTP_403_FORBIDDEN)
 
         if request.data.get('living_room_360'):
             prop.living_room_360 = request.data.get('living_room_360')
@@ -184,6 +250,26 @@ def update_property_360(request):
             {'error': str(e)},
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+@api_view(['POST'])
+def track_property_interaction(request):
+    property_id = request.data.get("property_id")
+    interaction_type = request.data.get("interaction_type", PropertyInteraction.CLICK)
+
+    if not request.user.is_authenticated:
+        return Response({"status": "ignored"}, status=status.HTTP_200_OK)
+
+    if interaction_type not in dict(PropertyInteraction.INTERACTION_CHOICES):
+        return Response({"error": "Invalid interaction_type"}, status=status.HTTP_400_BAD_REQUEST)
+
+    prop = get_object_or_404(Property, pk=property_id, is_active=True)
+    PropertyInteraction.objects.create(
+        user=request.user,
+        property=prop,
+        interaction_type=interaction_type,
+    )
+    return Response({"status": "tracked"}, status=status.HTTP_201_CREATED)
 
 
 # ── GET filter dropdown options ──────────────────────────────────

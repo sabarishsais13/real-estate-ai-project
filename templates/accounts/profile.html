@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile | GRIHA{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts/profile.css' %}">{% endblock %}
+
+{% block content %}
+<section class="section profile-wrap">
+    <h2 class="profile-title">Profile</h2>
+    <form method="post" enctype="multipart/form-data" class="glass-card profile-form">
+        {% csrf_token %}
+        <h3>Account</h3>
+        {{ user_form.as_p }}
+        <h3>Profile Details</h3>
+        {{ profile_form.as_p }}
+        <button type="submit" class="btn btn-filled">Save Changes</button>
+    </form>
+</section>
+{% endblock %}
