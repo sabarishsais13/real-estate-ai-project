@@ -1,13 +1,208 @@
-.profile-wrap {
-    max-width: 700px;
+/* ── Profile Page ── */
+.profile-section {
+    min-height: 100vh;
+    padding: 120px 5% 80px;
+    max-width: 780px;
     margin: 0 auto;
 }
 
-.profile-title {
+/* Header */
+.profile-header {
     text-align: center;
-    color: var(--luxury-gold);
+    margin-bottom: 50px;
 }
 
-.profile-form {
-    padding: 24px;
+.profile-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    color: var(--luxury-gold);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.profile-subtitle {
+    color: var(--text-muted);
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+/* Container */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Each Block */
+.profile-block {
+    padding: 36px 40px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    backdrop-filter: blur(20px);
+    transition: 0.3s ease;
+}
+
+.profile-block:hover {
+    border-color: rgba(212, 175, 55, 0.35);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Block Header */
+.block-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.block-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.block-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+}
+
+.block-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Form Fields - Style Django's as_p output */
+.form-fields p {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-fields label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.form-fields input[type="text"],
+.form-fields input[type="email"],
+.form-fields input[type="number"],
+.form-fields input[type="tel"],
+.form-fields input[type="password"],
+.form-fields select,
+.form-fields textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 10px;
+    padding: 13px 16px;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+    transition: 0.3s ease;
+}
+
+.form-fields input:focus,
+.form-fields select:focus,
+.form-fields textarea:focus {
+    border-color: var(--luxury-gold);
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.form-fields textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-fields select option {
+    background-color: #151515;
+    color: #ffffff;
+}
+
+.form-fields input[type="file"] {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(212, 175, 55, 0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text-muted);
+    font-size: 13px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.form-fields input::placeholder,
+.form-fields textarea::placeholder {
+    color: #555;
+}
+
+/* Help text from Django */
+.form-fields .helptext,
+.form-fields span.helptext {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* Save Button */
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.save-btn {
+    padding: 14px 48px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    border-radius: 10px;
+    background: linear-gradient(45deg, var(--luxury-gold), var(--highlight-gold));
+    color: #000;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.save-btn:hover {
+    transform: scale(1.04);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.35);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .profile-section {
+        padding: 100px 4% 60px;
+    }
+
+    .profile-block {
+        padding: 24px 20px;
+    }
+
+    .profile-title {
+        font-size: 32px;
+    }
+
+    .profile-actions {
+        justify-content: center;
+    }
+
+    .save-btn {
+        width: 100%;
+    }
 }

@@ -5,15 +5,48 @@
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts/profile.css' %}">{% endblock %}
 
 {% block content %}
-<section class="section profile-wrap">
-    <h2 class="profile-title">Profile</h2>
-    <form method="post" enctype="multipart/form-data" class="glass-card profile-form">
+<section class="profile-section">
+    <div class="profile-header">
+        <h2 class="profile-title">My Profile</h2>
+        <p class="profile-subtitle">Manage your account and personal details</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="profile-container">
         {% csrf_token %}
-        <h3>Account</h3>
-        {{ user_form.as_p }}
-        <h3>Profile Details</h3>
-        {{ profile_form.as_p }}
-        <button type="submit" class="btn btn-filled">Save Changes</button>
+
+        <!-- Account Block -->
+        <div class="profile-block glass-card">
+            <div class="block-header">
+                <div class="block-icon">✉</div>
+                <div>
+                    <h3 class="block-title">Account</h3>
+                    <p class="block-desc">Your login credentials</p>
+                </div>
+            </div>
+            <div class="form-fields">
+                {{ user_form.as_p }}
+            </div>
+        </div>
+
+        <!-- Profile Details Block -->
+        <div class="profile-block glass-card">
+            <div class="block-header">
+                <div class="block-icon">👤</div>
+                <div>
+                    <h3 class="block-title">Profile Details</h3>
+                    <p class="block-desc">Your personal information</p>
+                </div>
+            </div>
+            <div class="form-fields">
+                {{ profile_form.as_p }}
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="profile-actions">
+            <button type="submit" class="btn btn-filled save-btn">Save Changes</button>
+        </div>
+
     </form>
 </section>
 {% endblock %}
