@@ -129,7 +129,14 @@
             {% for field in form %}
             <div class="input-group">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
+                {% if field.name == 'password1' or field.name == 'password2' %}
+                <div class="password-toggle-group">
+                    {{ field }}
+                    <button type="button" class="password-toggle-btn" aria-label="Show password">👁</button>
+                </div>
+                {% else %}
+                    {{ field }}
+                {% endif %}
                 {% if field.help_text %}
                     <span class="helptext">{{ field.help_text }}</span>
                 {% endif %}

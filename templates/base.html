@@ -33,7 +33,7 @@
     </ul>
     {% if user.is_authenticated %}
     <div class="auth-menu">
-        <a href="{% url 'dashboard' %}" class="profile-toggle">
+        <a href="{% url 'dashboard' %}" class="profile-toggle" aria-haspopup="true" aria-expanded="false">
             <span class="profile-avatar">
                 {% if user.profile.profile_picture %}
                     <img src="{{ user.profile.profile_picture.url }}" alt="Profile" class="profile-avatar-image">
@@ -43,9 +43,15 @@
             </span>
             <span>{{ user.username }}</span>
         </a>
-        <div class="profile-dropdown">
-            <a href="{% url 'dashboard' %}">Dashboard</a>
+        <div class="profile-dropdown" role="menu">
             <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'profile' %}">Settings</a>
+            <button type="button" class="profile-dropdown-button" id="themeToggleButton" aria-label="Toggle theme">
+                <span class="theme-label">Dark Mode</span>
+                <span class="theme-switch" aria-hidden="true">
+                    <span class="theme-thumb"></span>
+                </span>
+            </button>
             <a href="{% url 'logout' %}">Logout</a>
         </div>
     </div>
@@ -417,6 +423,70 @@ function askVastu(){
         console.error(err);
     });
 }
+
+/* ── Theme + Profile Dropdown + Password Toggle ── */
+(function() {
+    const body = document.body;
+    const storedTheme = localStorage.getItem('theme');
+    const themeButton = document.getElementById('themeToggleButton');
+    const authMenu = document.querySelector('.auth-menu');
+    const profileToggle = document.querySelector('.profile-toggle');
+
+    const defaultTheme = storedTheme || 'dark';
+    body.dataset.theme = defaultTheme;
+    updateThemeLabel(defaultTheme);
+
+    if (themeButton) {
+        themeButton.addEventListener('click', () => {
+            const nextTheme = body.dataset.theme === 'light' ? 'dark' : 'light';
+            body.dataset.theme = nextTheme;
+            localStorage.setItem('theme', nextTheme);
+            updateThemeLabel(nextTheme);
+        });
+    }
+
+    if (profileToggle && authMenu) {
+        profileToggle.addEventListener('click', event => {
+            event.preventDefault();
+            authMenu.classList.toggle('dropdown-open');
+        });
+
+        document.addEventListener('click', event => {
+            if (!authMenu.contains(event.target)) {
+                authMenu.classList.remove('dropdown-open');
+            }
+        });
+    }
+
+    function updateThemeLabel(theme) {
+        if (!themeButton) return;
+        const label = themeButton.querySelector('.theme-label');
+        if (!label) return;
+        label.textContent = theme === 'light' ? 'Light Mode' : 'Dark Mode';
+        themeButton.classList.toggle('is-light', theme === 'light');
+    }
+
+    function updatePasswordToggles() {
+        document.querySelectorAll('.password-toggle-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const wrapper = button.closest('.password-toggle-group');
+                if (!wrapper) return;
+                const input = wrapper.querySelector('input');
+                if (!input) return;
+                const showing = input.type === 'password';
+                input.type = showing ? 'text' : 'password';
+                button.textContent = showing ? '🙈' : '👁';
+                input.focus();
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updatePasswordToggles);
+    } else {
+        updatePasswordToggles();
+    }
+})();
 
 </script>
 

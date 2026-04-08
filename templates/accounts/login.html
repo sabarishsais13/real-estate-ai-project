@@ -169,7 +169,10 @@
             </div>
             <div class="input-group">
                 <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-                {{ form.password }}
+                <div class="password-toggle-group">
+                    {{ form.password }}
+                    <button type="button" class="password-toggle-btn" aria-label="Show password">👁</button>
+                </div>
             </div>
             
             <div class="auth-options">

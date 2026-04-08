@@ -15,61 +15,106 @@
     <form method="POST" enctype="multipart/form-data" class="sell-container">
         {% csrf_token %}
 
+        {% if form.non_field_errors %}
+            <div class="error-messages">
+                {% for error in form.non_field_errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <div class="form-grid">
-            <input type="text" name="title" placeholder="Property Title" required class="form-input">
-            <input type="text" name="location" placeholder="Location / Address" required class="form-input">
-            <select name="city" required class="form-input">
-                <option value="">Select City</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Bangalore">Bangalore</option>
-                <option value="Chennai">Chennai</option>
-                <option value="Hyderabad">Hyderabad</option>
-            </select>
+            <div class="form-field">
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <span class="field-error">{{ form.title.errors.0 }}</span>
+                {% endif %}
+            </div>
 
-            <select name="price" required class="form-input">
-                <option value="">Select Price Range</option>
-                <option value="15">Under ₹20L</option>
-                <option value="35">₹20L–₹50L</option>
-                <option value="75">₹50L–1Cr</option>
-                <option value="150">Above ₹1Cr</option>
-            </select>
-            <select name="bhk" class="form-input">
-                <option value="">Select BHK</option>
-                <option value="Studio">Studio</option>
-                <option value="1 BHK">1 BHK</option>
-                <option value="2 BHK">2 BHK</option>
-                <option value="3 BHK">3 BHK</option>
-                <option value="4 BHK">4 BHK</option>
-                <option value="5 BHK">5 BHK</option>
-                <option value="Plot">Plot</option>
-            </select>
+            <div class="form-field">
+                {{ form.location }}
+                {% if form.location.errors %}
+                    <span class="field-error">{{ form.location.errors.0 }}</span>
+                {% endif %}
+            </div>
 
-            <input type="number" name="area" placeholder="Area (sq.ft)" class="form-input">
-            <input type="number" name="floor" placeholder="Floor" class="form-input">
+            <div class="form-field">
+                {{ form.city }}
+                {% if form.city.errors %}
+                    <span class="field-error">{{ form.city.errors.0 }}</span>
+                {% endif %}
+            </div>
 
-            <select name="type" class="form-input">
-                <option value="">Select Type</option>
-                <option value="Apartment">Apartment</option>
-                <option value="Villa">Villa</option>
-                <option value="Independent House">Independent House</option>
-                <option value="Plot">Plot</option>
-                <option value="Studio">Studio</option>
-                <option value="Penthouse">Penthouse</option>
-            </select>
-            <input type="text" name="status" placeholder="Status (Ready to Move)" class="form-input">
+            <div class="form-field">
+                {{ form.price }}
+                {% if form.price.errors %}
+                    <span class="field-error">{{ form.price.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.bhk }}
+                {% if form.bhk.errors %}
+                    <span class="field-error">{{ form.bhk.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.area }}
+                {% if form.area.errors %}
+                    <span class="field-error">{{ form.area.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.floor }}
+                {% if form.floor.errors %}
+                    <span class="field-error">{{ form.floor.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.type }}
+                {% if form.type.errors %}
+                    <span class="field-error">{{ form.type.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.facing }}
+                {% if form.facing.errors %}
+                    <span class="field-error">{{ form.facing.errors.0 }}</span>
+                {% endif %}
+            </div>
         </div>
 
         <br>
 
-        <textarea name="description" placeholder="Description" class="form-textarea"></textarea>
+        <div class="form-field">
+            {{ form.description }}
+            {% if form.description.errors %}
+                <span class="field-error">{{ form.description.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <br>
+
+        <div class="form-field">
+            {{ form.amenities }}
+            {% if form.amenities.errors %}
+                <span class="field-error">{{ form.amenities.errors.0 }}</span>
+            {% endif %}
+        </div>
 
         <br>
 
         <!-- Image Upload -->
         <div class="file-upload">
-            <input type="file" name="image" accept="image/png,image/jpeg,image/jpg" required>
-            <p>Upload Property Image (PNG, JPEG, JPG)</p>
+            {{ form.image }}
+            {% if form.image.errors %}
+                <span class="field-error">{{ form.image.errors.0 }}</span>
+            {% endif %}
+            <p>Upload Property Image (PNG, JPEG, JPG). Max size: 5MB. Min dimensions: 200x200px.</p>
         </div>
 
         <br>

@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import F
 from .models import Property, PropertyInteraction
+from .forms import PropertyForm
 from .serializers import PropertySerializer
 import cv2
 import numpy as np
@@ -26,7 +27,10 @@ def discover_page(request):
     return render(request, 'discover.html')
 
 def property_detail_page(request, id):
-    return render(request, 'property_detail.html', {'property_id': id})
+    return render(request, 'property_detail.html', {
+        'property_id': id,
+        'property_url': request.build_absolute_uri(),
+    })
 
 def virtual_tour_page(request, id):
     return render(request, 'virtual_tour.html', {'property_id': id})
@@ -34,41 +38,28 @@ def virtual_tour_page(request, id):
 @login_required
 def sell_page(request):
     if request.method == 'POST':
-        price_value_str = request.POST.get('price')
-        price_options = {
-            '15': '₹ 15 L',
-            '35': '₹ 35 L',
-            '75': '₹ 75 L',
-            '150': '₹ 150 L',
-        }
-        price = price_options.get(price_value_str, price_value_str)
+        form = PropertyForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_property = form.save(commit=False)
+            new_property.price_value = float(request.POST.get('price'))
+            new_property.owner = request.user
+            new_property.is_active = True
+            new_property.save()
 
-        new_property = Property.objects.create(
-            title=request.POST.get('title'),
-            location=request.POST.get('location'),
-            price=price,
-            price_value=float(price_value_str),
-            bhk=request.POST.get('bhk'),
-            type=request.POST.get('type'),
-            area=request.POST.get('area'),
-            floor=request.POST.get('floor'),
-            facing=request.POST.get('facing'),
-            description=request.POST.get('description'),
-            amenities=request.POST.get('amenities'),
-            image=request.FILES.get('image'),
-            city=request.POST.get('city'),
-            is_active=True,
-            owner=request.user,
-        )
-        PropertyInteraction.objects.create(
-            user=request.user,
-            property=new_property,
-            interaction_type=PropertyInteraction.SUBMIT,
-        )
+            PropertyInteraction.objects.create(
+                user=request.user,
+                property=new_property,
+                interaction_type=PropertyInteraction.SUBMIT,
+            )
 
-        return redirect(f'/capture360/?property_id={new_property.id}')
+            messages.success(request, 'Property submitted successfully!')
+            return redirect(f'/capture360/?property_id={new_property.id}')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = PropertyForm()
 
-    return render(request, 'sell.html')
+    return render(request, 'sell.html', {'form': form})
 
 def ai_advisor_page(request):
     return render(request, 'ai_advisor.html')
@@ -84,35 +75,19 @@ def edit_property_page(request, id):
     prop = get_object_or_404(Property, id=id, owner=request.user)
 
     if request.method == "POST":
-        price_value_str = request.POST.get('price')
-        price_options = {
-            '15': '₹ 15 L',
-            '35': '₹ 35 L',
-            '75': '₹ 75 L',
-            '150': '₹ 150 L',
-        }
-        prop.title = request.POST.get('title')
-        prop.location = request.POST.get('location')
-        prop.city = request.POST.get('city')
-        if price_value_str:
-            prop.price_value = float(price_value_str)
-            prop.price = price_options.get(price_value_str, price_value_str)
-        prop.bhk = request.POST.get('bhk')
-        prop.type = request.POST.get('type')
-        prop.area = request.POST.get('area')
-        prop.floor = request.POST.get('floor')
-        prop.facing = request.POST.get('facing')
-        prop.description = request.POST.get('description')
-        prop.amenities = request.POST.get('amenities')
+        form = PropertyForm(request.POST, request.FILES, instance=prop)
+        if form.is_valid():
+            updated_property = form.save(commit=False)
+            updated_property.price_value = float(request.POST.get('price'))
+            updated_property.save()
+            messages.success(request, "Property updated successfully.")
+            return redirect("dashboard")
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = PropertyForm(instance=prop)
 
-        if request.FILES.get('image'):
-            prop.image = request.FILES.get('image')
-
-        prop.save()
-        messages.success(request, "Property updated successfully.")
-        return redirect("dashboard")
-
-    return render(request, "edit_property.html", {"property": prop})
+    return render(request, "edit_property.html", {"property": prop, "form": form})
 
 def stitch_frames(request):
     if request.method == 'POST':

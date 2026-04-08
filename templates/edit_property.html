@@ -12,26 +12,104 @@
     <h2 class="edit-property-title">Edit Property</h2>
     <form method="POST" enctype="multipart/form-data" class="glass-card edit-property-form">
         {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="error-messages">
+                {% for error in form.non_field_errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <div class="edit-property-grid">
-            <input type="text" name="title" value="{{ property.title }}" required class="form-input">
-            <input type="text" name="location" value="{{ property.location }}" required class="form-input">
-            <input type="text" name="city" value="{{ property.city }}" class="form-input">
-            <select name="price" class="form-input">
-                <option value="">Keep Existing Price</option>
-                <option value="15">Under ₹20L</option>
-                <option value="35">₹20L–₹50L</option>
-                <option value="75">₹50L–1Cr</option>
-                <option value="150">Above ₹1Cr</option>
-            </select>
-            <input type="text" name="bhk" value="{{ property.bhk }}" class="form-input">
-            <input type="text" name="type" value="{{ property.type }}" class="form-input">
-            <input type="text" name="area" value="{{ property.area }}" class="form-input">
-            <input type="text" name="floor" value="{{ property.floor }}" class="form-input">
-            <input type="text" name="facing" value="{{ property.facing }}" class="form-input">
-            <input type="file" name="image" class="form-input">
+            <div class="form-field">
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <span class="field-error">{{ form.title.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.location }}
+                {% if form.location.errors %}
+                    <span class="field-error">{{ form.location.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.city }}
+                {% if form.city.errors %}
+                    <span class="field-error">{{ form.city.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.price }}
+                {% if form.price.errors %}
+                    <span class="field-error">{{ form.price.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.bhk }}
+                {% if form.bhk.errors %}
+                    <span class="field-error">{{ form.bhk.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.type }}
+                {% if form.type.errors %}
+                    <span class="field-error">{{ form.type.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.area }}
+                {% if form.area.errors %}
+                    <span class="field-error">{{ form.area.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.floor }}
+                {% if form.floor.errors %}
+                    <span class="field-error">{{ form.floor.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.facing }}
+                {% if form.facing.errors %}
+                    <span class="field-error">{{ form.facing.errors.0 }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-field">
+                {{ form.image }}
+                {% if form.image.errors %}
+                    <span class="field-error">{{ form.image.errors.0 }}</span>
+                {% endif %}
+                {% if property.image %}
+                    <p>Current image: <img src="{{ property.image.url }}" alt="Current" style="max-width: 100px;"></p>
+                {% endif %}
+            </div>
         </div>
-        <textarea name="description" class="form-textarea edit-property-spacer">{{ property.description }}</textarea>
-        <textarea name="amenities" class="form-textarea edit-property-spacer">{{ property.amenities }}</textarea>
+
+        <div class="form-field">
+            {{ form.description }}
+            {% if form.description.errors %}
+                <span class="field-error">{{ form.description.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            {{ form.amenities }}
+            {% if form.amenities.errors %}
+                <span class="field-error">{{ form.amenities.errors.0 }}</span>
+            {% endif %}
+        </div>
+
         <button type="submit" class="btn btn-filled edit-property-spacer">Update Property</button>
     </form>
 </section>

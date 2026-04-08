@@ -57,7 +57,7 @@ function createCardHTML(p, index) {
     const badgeHTML = p.badge
         ? `<span class="card-badge">${p.badge}</span>` : '';
     // Use fallbacks for missing images
-    let imageUrl = p.image || p.image_url || 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800';
+    let imageUrl = p.image_url || p.image || 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800';
     if (imageUrl && !imageUrl.startsWith('http')) {
         imageUrl = imageUrl.startsWith('/') ? `${API_BASE}${imageUrl}` : `${API_BASE}/${imageUrl}`;
     }
