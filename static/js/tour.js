@@ -12,6 +12,96 @@ let rotationY   = -90;
 let rotationX   = 0;
 let rotInterval = null;
 
+const zoomConfig = {
+  cameraEl: null,
+  baseFov: 80,
+  current: 1.0,
+  target: 1.0,
+  minScale: 0.5,
+  maxScale: 3.0,
+  step: 0.1,
+  smooth: 0.14,
+};
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function getAFrameCamera() {
+  return document.querySelector('#aScene a-camera');
+}
+
+function updateZoomIndicator() {
+  const indicator = document.getElementById('zoomIndicator');
+  if (!indicator) return;
+  indicator.textContent = `Zoom ${zoomConfig.current.toFixed(1)}x`;
+}
+
+function setCameraFov(scale) {
+  const camera = zoomConfig.cameraEl || getAFrameCamera();
+  if (!camera) return;
+  const clampedScale = clamp(scale, zoomConfig.minScale, zoomConfig.maxScale);
+  const fov = clamp(zoomConfig.baseFov / clampedScale, 25, 100);
+  camera.setAttribute('camera', 'fov', fov);
+  const threeCam = camera.getObject3D('camera');
+  if (threeCam) {
+    threeCam.fov = fov;
+    threeCam.updateProjectionMatrix();
+  }
+  zoomConfig.current = clampedScale;
+}
+
+function applyZoomTarget() {
+  const delta = zoomConfig.target - zoomConfig.current;
+  if (Math.abs(delta) < 0.001) {
+    zoomConfig.current = zoomConfig.target;
+    setCameraFov(zoomConfig.current);
+    return;
+  }
+  zoomConfig.current += delta * zoomConfig.smooth;
+  setCameraFov(zoomConfig.current);
+}
+
+function handleZoomWheel(event) {
+  if (!activeRoom) return;
+  event.preventDefault();
+  const direction = event.deltaY < 0 ? 1 : -1;
+  zoomConfig.target = clamp(zoomConfig.target + direction * zoomConfig.step, zoomConfig.minScale, zoomConfig.maxScale);
+  updateZoomIndicator();
+}
+
+function handleZoomKey(event) {
+  if (!activeRoom) return;
+  if (event.key === '+' || event.key === '=' || event.key === 'Add') {
+    event.preventDefault();
+    zoomConfig.target = clamp(zoomConfig.target + zoomConfig.step, zoomConfig.minScale, zoomConfig.maxScale);
+  } else if (event.key === '-' || event.key === '_' || event.key === 'Subtract') {
+    event.preventDefault();
+    zoomConfig.target = clamp(zoomConfig.target - zoomConfig.step, zoomConfig.minScale, zoomConfig.maxScale);
+  } else if (event.key === '0') {
+    event.preventDefault();
+    zoomConfig.target = 1.0;
+  } else {
+    return;
+  }
+  updateZoomIndicator();
+}
+
+function setupZoom() {
+  const container = document.getElementById('viewerContainer');
+  zoomConfig.cameraEl = getAFrameCamera();
+  if (container) {
+    container.addEventListener('wheel', handleZoomWheel, { passive: false });
+  }
+  window.addEventListener('keydown', handleZoomKey);
+  setCameraFov(zoomConfig.current);
+  updateZoomIndicator();
+  requestAnimationFrame(function zoomLoop() {
+    applyZoomTarget();
+    requestAnimationFrame(zoomLoop);
+  });
+}
+
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", async () => {
@@ -19,6 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   buildRoomsList();
   setupArrows();
   setupFullscreen();
+  setupZoom();
   detectGyro();
   initParticles();
 });
