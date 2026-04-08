@@ -112,30 +112,62 @@
 
 .profile-dropdown {
     position: absolute;
-    top: 42px;
+    top: 45px;
     right: 0;
-    min-width: 170px;
-    display: none;
-    background: rgba(12, 12, 12, 0.95);
-    border: 1px solid var(--gold-border);
-    border-radius: 10px;
-    overflow: hidden;
+    min-width: 190px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(15, 15, 15, 0.98);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
     z-index: 2000;
+}
+
+/* Invisible bridge to fix the hover gap issue */
+.profile-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: transparent;
 }
 
 .profile-dropdown a {
     display: block;
-    color: #fff;
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
     text-decoration: none;
-    padding: 10px 14px;
+    padding: 12px 20px;
+    transition: all 0.2s ease;
+}
+
+.profile-dropdown a:first-of-type {
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+}
+
+.profile-dropdown a:last-of-type {
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
 }
 
 .profile-dropdown a:hover {
     background: rgba(212, 175, 55, 0.15);
+    color: #d4af37;
+    padding-left: 26px; /* Premium indent effect */
 }
 
 .auth-menu:hover .profile-dropdown {
-    display: block;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .main-content-offset {

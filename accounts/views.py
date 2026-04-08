@@ -1,7 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 from listings.models import Property, PropertyInteraction
 
@@ -15,11 +22,74 @@ def signup_view(request):
 
     form = SignUpForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
-        user = form.save()
-        login(request, user)
-        messages.success(request, "Account created successfully.")
-        return redirect("dashboard")
+        user = form.save(commit=False)
+        user.is_active = False # Deactivate until email verification
+        user.save()
+        
+        # Send Verification Email
+        current_site = get_current_site(request)
+        mail_subject = "Verify your GRIHA account"
+        message = render_to_string("accounts/verification_email.html", {
+            "user": user,
+            "domain": current_site.domain,
+            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+            "token": default_token_generator.make_token(user),
+        })
+        to_email = form.cleaned_data.get("email")
+        email = EmailMessage(mail_subject, message, to=[to_email])
+        email.content_subtype = "html"
+        email.send()
+        
+        return render(request, "accounts/verification_sent.html", {"email": to_email})
+        
     return render(request, "accounts/signup.html", {"form": form})
+
+
+def activate_view(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, "Thank you for confirming your email. You can now login.")
+        return redirect("login")
+    else:
+        return render(request, "accounts/verification_failed.html")
+
+
+def resend_verification_email(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            user = User.objects.get(email__iexact=email)
+            if user.is_active:
+                messages.info(request, "Account is already active. Please login.")
+                return redirect("login")
+            
+            # Resend Verification Email
+            current_site = get_current_site(request)
+            mail_subject = "Verify your GRIHA account"
+            message = render_to_string("accounts/verification_email.html", {
+                "user": user,
+                "domain": current_site.domain,
+                "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                "token": default_token_generator.make_token(user),
+            })
+            email_msg = EmailMessage(mail_subject, message, to=[email])
+            email_msg.content_subtype = "html"
+            email_msg.send()
+            return render(request, "accounts/verification_sent.html", {"email": email})
+        except User.DoesNotExist:
+            # For security, we don't say explicitly that it failed, just show the sent page.
+            # But let's add an error message
+            messages.error(request, "No account found with this email.")
+            return redirect("resend_verification")
+            
+    return render(request, "accounts/resend_verification.html")
 
 
 def login_view(request):

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your GRIHA Account</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #050505; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #050505; padding: 40px 0;">
+        <tr>
+            <td align="center">
+                
+                <!-- Main Email Card -->
+                <table width="100%" max-width="600" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; width: 100%; background-color: #121212; border: 1px solid #333333; border-top: 4px solid #d4af37; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="padding: 40px 0 20px 0;">
+                            <h1 style="margin: 0; font-size: 28px; color: #ffffff; letter-spacing: 4px; font-family: 'Times New Roman', Times, serif; text-transform: uppercase;">GRIHA</h1>
+                            <p style="margin: 5px 0 0 0; font-size: 11px; color: #d4af37; letter-spacing: 2px; text-transform: uppercase;">Premium Real Estate</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                        <td align="left" style="padding: 20px 50px 40px 50px; color: #cccccc;">
+                            
+                            <h2 style="color: #ffffff; font-size: 22px; font-weight: 300; margin-bottom: 20px;">Welcome to the Elite, <span style="font-weight: 600; color: #d4af37;">{{ user.username }}</span>.</h2>
+                            
+                            <p style="font-size: 15px; line-height: 1.6; margin-bottom: 25px;">
+                                Thank you for creating an account with GRIHA. You are now one step away from exploring curated, world-class properties tailored to your lifestyle.
+                            </p>
+                            
+                            <p style="font-size: 15px; line-height: 1.6; margin-bottom: 35px;">
+                                To ensure the highest level of security and to fully activate your access, please verify your email address by clicking the button below.
+                            </p>
+
+                            <!-- Button Area -->
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td align="center" style="padding-bottom: 35px;">
+                                        <a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}" 
+                                           style="display: inline-block; background-color: #d4af37; color: #000000; padding: 14px 35px; font-size: 15px; font-weight: bold; text-decoration: none; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">
+                                           Activate Account
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="font-size: 14px; line-height: 1.6; color: #888888; border-top: 1px solid #333333; padding-top: 25px;">
+                                If you did not initiate this request, please ignore this email or contact our support team immediately. 
+                            </p>
+                            
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 20px; background-color: #0a0a0a;">
+                            <p style="margin: 0; font-size: 12px; color: #666666;">
+                                &copy; 2026 GRIHA Elite Residences. All rights reserved.
+                            </p>
+                            <p style="margin: 5px 0 0 0; font-size: 11px; color: #444444;">
+                                This is an automated message. Please do not reply.
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+                
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

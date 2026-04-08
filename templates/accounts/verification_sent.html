@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Verify Email | GRIHA{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 2rem;
+    }
+    .auth-card {
+        background: rgba(15, 15, 15, 0.85);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(20px);
+        border-radius: 16px;
+        padding: 4rem 3rem;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+        animation: fadeIn 0.8s ease;
+    }
+    .auth-card h2 {
+        font-family: 'Cinzel', serif;
+        color: #fff;
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+        letter-spacing: 1px;
+    }
+    .auth-card p {
+        color: #ccc;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        font-size: 1rem;
+    }
+    .email-highlight {
+        color: #d4af37;
+        font-weight: 600;
+    }
+    .icon-container {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(212, 175, 55, 0.1);
+        color: #d4af37;
+        margin-bottom: 1.5rem;
+    }
+    .btn-outline-gold {
+        display: inline-block;
+        background: transparent;
+        color: #d4af37;
+        border: 1px solid #d4af37;
+        padding: 12px 24px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .btn-outline-gold:hover {
+        background: rgba(212, 175, 55, 0.1);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="icon-container">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+            </svg>
+        </div>
+        <h2>Check Your Email</h2>
+        <p>We've sent a verification link to <br> <span class="email-highlight">{{ email }}</span></p>
+        <p style="font-size: 0.85rem; color: #888;">Please click the link in the email to activate your account. Check your spam folder if you do not see it.</p>
+        
+        <a href="{% url 'login' %}" class="btn-outline-gold">Back to Login</a>
+    </div>
+</div>
+{% endblock %}

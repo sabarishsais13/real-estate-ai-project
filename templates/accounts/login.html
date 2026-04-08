@@ -1,59 +1,190 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
+{% block title %}Sign In | GRIHA{% endblock %}
 
-{% block title %}Login | GRIHA{% endblock %}
-
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts/auth.css' %}">{% endblock %}
+{% block extra_css %}
+<style>
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 2rem;
+    }
+    .auth-card {
+        background: rgba(15, 15, 15, 0.85);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(20px);
+        border-radius: 16px;
+        padding: 3rem;
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+        animation: fadeIn 0.8s ease;
+    }
+    .auth-card h2 {
+        font-family: 'Cinzel', serif;
+        color: #fff;
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .auth-card p.subtitle {
+        color: #9a9a9a;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+    }
+    .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: left;
+    }
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .input-group label {
+        color: #d4af37;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+    .input-group input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(212, 175, 55, 0.15);
+        color: #fff;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+    .input-group input:focus {
+        outline: none;
+        border-color: #d4af37;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+    .auth-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+    }
+    .auth-options label {
+        color: #bbb;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+    .auth-options a {
+        color: #d4af37;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .auth-options a:hover {
+        color: #ffd700;
+        text-decoration: underline;
+    }
+    .btn-gold {
+        background: linear-gradient(135deg, #d4af37, #ffd700);
+        color: #000;
+        border: none;
+        padding: 14px;
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .btn-gold:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+    }
+    .auth-footer {
+        margin-top: 2rem;
+        color: #9a9a9a;
+        font-size: 0.9rem;
+    }
+    .auth-footer a {
+        color: #d4af37;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+    .error-box {
+        background: rgba(255, 87, 87, 0.1);
+        border: 1px solid rgba(255, 87, 87, 0.4);
+        color: #ff6b6b;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<section class="section auth-wrap auth-wrap-login">
-    <h2 class="auth-title">Login</h2>
-    <p class="auth-subtitle">Welcome back. Access your dashboard instantly.</p>
-    <form method="post" class="glass-card auth-card" novalidate>
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-            <div class="auth-error">{{ form.non_field_errors|join:", " }}</div>
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Enter your credentials to access your account</p>
+
+        {% if form.errors %}
+            <div class="error-box">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            
+            {% if "inactive" in form.errors.values|join:" " or "inactive" in form.non_field_errors|join:" " %}
+                <p style="font-size: 0.85rem; color: #bbb; margin-bottom: 1rem;">
+                    Didn't receive the email? <a href="{% url 'resend_verification' %}" style="color: #d4af37;">Resend Verification</a>
+                </p>
+            {% endif %}
         {% endif %}
 
-        <div class="auth-field">
-            <label for="{{ form.identifier.id_for_label }}">{{ form.identifier.label }}</label>
-            <input
-                class="auth-input"
-                id="{{ form.identifier.id_for_label }}"
-                name="{{ form.identifier.html_name }}"
-                value="{{ form.identifier.value|default:'' }}"
-                placeholder="Enter username or email"
-                autocomplete="username"
-                required
-            >
-            {% if form.identifier.errors %}<div class="auth-error">{{ form.identifier.errors|join:", " }}</div>{% endif %}
-        </div>
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="{{ form.identifier.id_for_label }}">{{ form.identifier.label }}</label>
+                {{ form.identifier }}
+            </div>
+            <div class="input-group">
+                <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+                {{ form.password }}
+            </div>
+            
+            <div class="auth-options">
+                <label>
+                    {{ form.remember_me }} {{ form.remember_me.label }}
+                </label>
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
+            </div>
 
-        <div class="auth-field">
-            <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-            <input
-                type="password"
-                class="auth-input"
-                id="{{ form.password.id_for_label }}"
-                name="{{ form.password.html_name }}"
-                placeholder="Enter password"
-                autocomplete="current-password"
-                required
-            >
-            {% if form.password.errors %}<div class="auth-error">{{ form.password.errors|join:", " }}</div>{% endif %}
-        </div>
+            <button type="submit" class="btn-gold">Sign In</button>
+        </form>
 
-        <div class="auth-actions">
-            <label class="auth-remember-label">
-                {{ form.remember_me }}
-                <span>Remember me</span>
-            </label>
+        <div class="auth-footer">
+            Don't have an account? <a href="{% url 'signup' %}">Sign Up</a>
         </div>
-
-        <button type="submit" class="btn btn-filled auth-submit-btn">Login</button>
-    </form>
-    <p class="auth-footer-link">
-        New here? <a href="{% url 'signup' %}">Create an account</a>
-    </p>
-</section>
+    </div>
+</div>
 {% endblock %}

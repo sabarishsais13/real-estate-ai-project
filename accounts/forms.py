@@ -66,9 +66,15 @@ class LoginForm(forms.Form):
 
         self.user_cache = authenticate(self.request, username=username, password=password)
         if self.user_cache is None:
+            # Check if user exists but is inactive
+            user_obj = User.objects.filter(username=username).first()
+            if user_obj and user_obj.check_password(password) and not user_obj.is_active:
+                raise forms.ValidationError(self.error_messages["inactive"])
             raise forms.ValidationError(self.error_messages["invalid_login"])
+        
         if not self.user_cache.is_active:
             raise forms.ValidationError(self.error_messages["inactive"])
+            
         return cleaned_data
 
     def get_user(self):
