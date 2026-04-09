@@ -12,9 +12,9 @@
         padding: 2rem;
     }
     .auth-card {
-        background: rgba(15, 15, 15, 0.85);
-        border: 1px solid rgba(212, 175, 55, 0.2);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        background: var(--bg-panel);
+        border: 1px solid var(--gold-border);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(20px);
         border-radius: 16px;
         padding: 3rem;
@@ -25,13 +25,13 @@
     }
     .auth-card h2 {
         font-family: 'Cinzel', serif;
-        color: #fff;
+        color: var(--text-primary);
         font-size: 2.2rem;
         margin-bottom: 0.5rem;
         letter-spacing: 1px;
     }
     .auth-card p.subtitle {
-        color: #9a9a9a;
+        color: var(--text-muted);
         margin-bottom: 2rem;
         font-size: 0.95rem;
     }
@@ -47,26 +47,75 @@
         gap: 0.5rem;
     }
     .input-group label {
-        color: #d4af37;
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
+        display: none; /* Hidden for a much cleaner, premium layout */
     }
-    .input-group input {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(212, 175, 55, 0.15);
-        color: #fff;
-        padding: 12px 16px;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: all 0.3s;
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: var(--glass-bg);
+        border: 1px solid transparent; 
+        border-radius: 12px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
     }
-    .input-group input:focus {
+    .input-wrapper:focus-within {
+        background: var(--bg-secondary);
+        border: 1px solid var(--luxury-gold);
+        box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+    }
+    .input-wrapper input {
+        width: 100%;
+        background: transparent !important;
+        border: none !important;
+        color: var(--text-primary);
+        padding: 16px 16px 16px 48px; /* Room for left icon */
+        font-size: 1.05rem;
         outline: none;
-        border-color: #d4af37;
-        background: rgba(255, 255, 255, 0.08);
-        box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        box-shadow: none !important;
+    }
+    .password-toggle-group input {
+        padding-right: 48px; /* Room for right icon */
+    }
+    .input-wrapper input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 30px var(--bg-panel) inset !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+    }
+    .input-wrapper input::placeholder {
+        color: var(--text-muted);
+        opacity: 0.7;
+    }
+    .input-icon.left-icon {
+        position: absolute;
+        left: 16px;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        pointer-events: none;
+        transition: color 0.3s;
+    }
+    .input-wrapper:focus-within .input-icon.left-icon {
+        color: var(--text-primary);
+    }
+    .password-toggle-btn.right-icon {
+        position: absolute;
+        right: 12px;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.3s;
+        border-radius: 50%;
+        outline: none;
+        appearance: none;
+    }
+    .password-toggle-btn.right-icon:hover {
+        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.05);
     }
     .auth-options {
         display: flex;
@@ -75,7 +124,7 @@
         font-size: 0.85rem;
     }
     .auth-options label {
-        color: #bbb;
+        color: var(--text-muted);
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -109,7 +158,7 @@
     }
     .auth-footer {
         margin-top: 2rem;
-        color: #9a9a9a;
+        color: var(--text-muted);
         font-size: 0.9rem;
     }
     .auth-footer a {
@@ -165,13 +214,23 @@
             {% csrf_token %}
             <div class="input-group">
                 <label for="{{ form.identifier.id_for_label }}">{{ form.identifier.label }}</label>
-                {{ form.identifier }}
+                <div class="input-wrapper">
+                    <span class="input-icon left-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </span>
+                    {{ form.identifier }}
+                </div>
             </div>
             <div class="input-group">
                 <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-                <div class="password-toggle-group">
+                <div class="password-toggle-group input-wrapper">
+                    <span class="input-icon left-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </span>
                     {{ form.password }}
-                    <button type="button" class="password-toggle-btn" aria-label="Show password">👁</button>
+                    <button type="button" class="password-toggle-btn right-icon" aria-label="Show password">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
                 </div>
             </div>
             
@@ -190,4 +249,13 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const idField = document.querySelector("input[name='identifier']");
+    const pwField = document.querySelector("input[name='password']");
+    if (idField && !idField.placeholder) idField.placeholder = "Username or Email";
+    if (pwField && !pwField.placeholder) pwField.placeholder = "Password";
+});
+</script>
 {% endblock %}

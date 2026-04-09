@@ -4,13 +4,16 @@
 {% block title %}Sell Property | GRIHA{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/pages/sell.css' %}">
+<link rel="stylesheet" href="{% static 'css/pages/sell.css' %}?v=2.1">
 {% endblock %}
 
 {% block content %}
 
 <section class="section">
-    <h2 class="sell-title">Sell Your Property</h2>
+    <div class="form-header text-center">
+        <h2 class="sell-title">Sell Your Property</h2>
+        <p class="sell-subtitle">List your property on the most exclusive network. Fill out the details below.</p>
+    </div>
 
     <form method="POST" enctype="multipart/form-data" class="sell-container">
         {% csrf_token %}
@@ -23,101 +26,84 @@
             </div>
         {% endif %}
 
-        <div class="form-grid">
-            <div class="form-field">
-                {{ form.title }}
-                {% if form.title.errors %}
-                    <span class="field-error">{{ form.title.errors.0 }}</span>
-                {% endif %}
+        <div class="form-card">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}<span class="field-error">{{ form.title.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
+                    {{ form.location }}
+                    {% if form.location.errors %}<span class="field-error">{{ form.location.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+                    {{ form.city }}
+                    {% if form.city.errors %}<span class="field-error">{{ form.city.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.price.id_for_label }}">{{ form.price.label }}</label>
+                    {{ form.price }}
+                    {% if form.price.errors %}<span class="field-error">{{ form.price.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.bhk.id_for_label }}">{{ form.bhk.label }}</label>
+                    {{ form.bhk }}
+                    {% if form.bhk.errors %}<span class="field-error">{{ form.bhk.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.type.id_for_label }}">{{ form.type.label }}</label>
+                    {{ form.type }}
+                    {% if form.type.errors %}<span class="field-error">{{ form.type.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.area.id_for_label }}">{{ form.area.label }}</label>
+                    {{ form.area }}
+                    {% if form.area.errors %}<span class="field-error">{{ form.area.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.floor.id_for_label }}">{{ form.floor.label }}</label>
+                    {{ form.floor }}
+                    {% if form.floor.errors %}<span class="field-error">{{ form.floor.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.facing.id_for_label }}">{{ form.facing.label }}</label>
+                    {{ form.facing }}
+                    {% if form.facing.errors %}<span class="field-error">{{ form.facing.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group col-span-2">
+                    <label class="form-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}<span class="field-error">{{ form.description.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group col-span-2">
+                    <label class="form-label" for="{{ form.amenities.id_for_label }}">{{ form.amenities.label }}</label>
+                    {{ form.amenities }}
+                    {% if form.amenities.errors %}<span class="field-error">{{ form.amenities.errors.0 }}</span>{% endif %}
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group col-span-2">
+                    <label class="form-label">{{ form.image.label }}</label>
+                    <div class="file-upload">
+                        {{ form.image }}
+                        {% if form.image.errors %}<span class="field-error">{{ form.image.errors.0 }}</span>{% endif %}
+                        <p class="file-upload-help">Upload Property Image (PNG, JPEG, JPG). Max size: 5MB.</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-field">
-                {{ form.location }}
-                {% if form.location.errors %}
-                    <span class="field-error">{{ form.location.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="form-field">
-                {{ form.city }}
-                {% if form.city.errors %}
-                    <span class="field-error">{{ form.city.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="form-field">
-                {{ form.price }}
-                {% if form.price.errors %}
-                    <span class="field-error">{{ form.price.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="form-field">
-                {{ form.bhk }}
-                {% if form.bhk.errors %}
-                    <span class="field-error">{{ form.bhk.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="form-field">
-                {{ form.area }}
-                {% if form.area.errors %}
-                    <span class="field-error">{{ form.area.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="form-field">
-                {{ form.floor }}
-                {% if form.floor.errors %}
-                    <span class="field-error">{{ form.floor.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="form-field">
-                {{ form.type }}
-                {% if form.type.errors %}
-                    <span class="field-error">{{ form.type.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="form-field">
-                {{ form.facing }}
-                {% if form.facing.errors %}
-                    <span class="field-error">{{ form.facing.errors.0 }}</span>
-                {% endif %}
-            </div>
-        </div>
-
-        <br>
-
-        <div class="form-field">
-            {{ form.description }}
-            {% if form.description.errors %}
-                <span class="field-error">{{ form.description.errors.0 }}</span>
-            {% endif %}
-        </div>
-
-        <br>
-
-        <div class="form-field">
-            {{ form.amenities }}
-            {% if form.amenities.errors %}
-                <span class="field-error">{{ form.amenities.errors.0 }}</span>
-            {% endif %}
-        </div>
-
-        <br>
-
-        <!-- Image Upload -->
-        <div class="file-upload">
-            {{ form.image }}
-            {% if form.image.errors %}
-                <span class="field-error">{{ form.image.errors.0 }}</span>
-            {% endif %}
-            <p>Upload Property Image (PNG, JPEG, JPG). Max size: 5MB. Min dimensions: 200x200px.</p>
-        </div>
-
-        <br>
 
         <!-- 360 View Optional Section -->
 <div class="glass-card vr-section">
@@ -139,7 +125,10 @@
 
 <br>
 
-<button type="submit" class="btn btn-filled">Submit Property</button>
+        <div class="form-submit-container">
+            <button type="submit" class="btn btn-filled form-submit-btn">Submit Property Collection</button>
+        </div>
+    </div> <!-- End form-card -->
     </form>
 </section>
 

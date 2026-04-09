@@ -461,25 +461,20 @@ video#cameraFeed {
 .main-content {
   margin-top: 0 !important;
   padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-footer {
+footer, .navbar {
   display: none !important;
-}
-/* Hide base navbar and footer on capture page */
-.navbar {
-  display: none !important;
-}
-
-footer {
-  display: none !important;
-}
-
-.main-content {
-  margin-top: 0 !important;
-  padding: 0 !important;
 }
 
 .capture-layout {
-  height: 100vh;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  z-index: 10;
+  height: auto !important;
 }

@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block title %}Dashboard | GRIHA{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts/dashboard.css' %}">{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/accounts/dashboard.css' %}?v=1.2">{% endblock %}
 
 {% block content %}
 <section class="section dashboard-wrap">
     <h2 class="dashboard-title">My Dashboard</h2>
 
     <div class="glass-card dashboard-card">
-        <h3>My Listed Properties</h3>
+        <h3 class="dashboard-heading heading-listed">My Listed Properties</h3>
         {% if listed_properties %}
             {% for p in listed_properties %}
                 <div class="dashboard-row">
@@ -29,7 +29,7 @@
     </div>
 
     <div class="glass-card dashboard-card">
-        <h3>Saved Properties</h3>
+        <h3 class="dashboard-heading heading-saved">Saved Properties</h3>
         {% if saved_items %}
             {% for s in saved_items %}
                 <div class="dashboard-link-row">
@@ -42,7 +42,7 @@
     </div>
 
     <div class="glass-card dashboard-card">
-        <h3>Interacted Properties</h3>
+        <h3 class="dashboard-heading heading-interacted">Interacted Properties</h3>
         {% if interacted_properties %}
             {% for p in interacted_properties %}
                 <div class="dashboard-link-row">
@@ -55,7 +55,7 @@
     </div>
 
     <div class="glass-card dashboard-card">
-        <h3>Last Viewed</h3>
+        <h3 class="dashboard-heading heading-viewed">Last Viewed</h3>
         {% if last_viewed %}
             {% for event in last_viewed %}
                 <div class="dashboard-link-row">

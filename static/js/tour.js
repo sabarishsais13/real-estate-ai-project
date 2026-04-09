@@ -40,66 +40,82 @@ function updateZoomIndicator() {
 function setCameraFov(scale) {
   const camera = zoomConfig.cameraEl || getAFrameCamera();
   if (!camera) return;
+  zoomConfig.cameraEl = camera; // cache it once found
+
   const clampedScale = clamp(scale, zoomConfig.minScale, zoomConfig.maxScale);
-  const fov = clamp(zoomConfig.baseFov / clampedScale, 25, 100);
+  const fov = clamp(zoomConfig.baseFov / clampedScale, 20, 120);
+  
+  // Set A-frame attribute
   camera.setAttribute('camera', 'fov', fov);
-  const threeCam = camera.getObject3D('camera');
+  
+  // Force update Three.js native camera to bypass A-Frame rendering lag
+  const threeCam = camera.components.camera && camera.components.camera.camera;
   if (threeCam) {
     threeCam.fov = fov;
     threeCam.updateProjectionMatrix();
   }
+  
   zoomConfig.current = clampedScale;
+  updateZoomIndicator();
 }
 
+let isZooming = false;
+
 function applyZoomTarget() {
-  const delta = zoomConfig.target - zoomConfig.current;
-  if (Math.abs(delta) < 0.001) {
-    zoomConfig.current = zoomConfig.target;
-    setCameraFov(zoomConfig.current);
-    return;
+  if (isZooming) {
+    const delta = zoomConfig.target - zoomConfig.current;
+    if (Math.abs(delta) < 0.001) {
+      zoomConfig.current = zoomConfig.target;
+      setCameraFov(zoomConfig.current);
+      isZooming = false;
+    } else {
+      zoomConfig.current += delta * zoomConfig.smooth;
+      setCameraFov(zoomConfig.current);
+    }
   }
-  zoomConfig.current += delta * zoomConfig.smooth;
-  setCameraFov(zoomConfig.current);
+  requestAnimationFrame(applyZoomTarget);
 }
 
 function handleZoomWheel(event) {
+  // Only trigger if hovered over the 360 viewer container (A-frame canvas)
+  if (!event.target.closest('#viewerContainer')) return;
   if (!activeRoom) return;
+  
   event.preventDefault();
   const direction = event.deltaY < 0 ? 1 : -1;
   zoomConfig.target = clamp(zoomConfig.target + direction * zoomConfig.step, zoomConfig.minScale, zoomConfig.maxScale);
-  updateZoomIndicator();
+  isZooming = true;
 }
 
 function handleZoomKey(event) {
   if (!activeRoom) return;
+  
+  let changed = false;
   if (event.key === '+' || event.key === '=' || event.key === 'Add') {
-    event.preventDefault();
     zoomConfig.target = clamp(zoomConfig.target + zoomConfig.step, zoomConfig.minScale, zoomConfig.maxScale);
+    changed = true;
   } else if (event.key === '-' || event.key === '_' || event.key === 'Subtract') {
-    event.preventDefault();
     zoomConfig.target = clamp(zoomConfig.target - zoomConfig.step, zoomConfig.minScale, zoomConfig.maxScale);
+    changed = true;
   } else if (event.key === '0') {
-    event.preventDefault();
     zoomConfig.target = 1.0;
-  } else {
-    return;
+    changed = true;
   }
-  updateZoomIndicator();
+  
+  if (changed) {
+    event.preventDefault();
+    isZooming = true;
+  }
 }
 
 function setupZoom() {
-  const container = document.getElementById('viewerContainer');
-  zoomConfig.cameraEl = getAFrameCamera();
-  if (container) {
-    container.addEventListener('wheel', handleZoomWheel, { passive: false });
-  }
+  // Attach to window to prevent A-Frame internal canvas from swallowing wheel events
+  window.addEventListener('wheel', handleZoomWheel, { passive: false });
   window.addEventListener('keydown', handleZoomKey);
-  setCameraFov(zoomConfig.current);
-  updateZoomIndicator();
-  requestAnimationFrame(function zoomLoop() {
-    applyZoomTarget();
-    requestAnimationFrame(zoomLoop);
-  });
+  
+  // Kickstart animation loop
+  isZooming = true;
+  requestAnimationFrame(applyZoomTarget);
 }
 
 

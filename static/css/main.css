@@ -186,6 +186,7 @@ body[data-theme="light"] .profile-dropdown-button:hover {
 
 .password-toggle-group input {
     padding-right: 3.2rem;
+    width: 100%;
 }
 
 .password-toggle-btn {
@@ -205,6 +206,10 @@ body[data-theme="light"] .profile-dropdown-button:hover {
     height: 32px;
     border-radius: 999px;
     transition: background var(--transition-smooth), color var(--transition-smooth);
+    appearance: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
 }
 
 .password-toggle-btn:hover {

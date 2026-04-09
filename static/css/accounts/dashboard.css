@@ -29,7 +29,64 @@
     padding: 8px 0;
 }
 
+.dashboard-link-row a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.dashboard-link-row a:hover,
+.dashboard-link-row a:focus {
+    color: var(--luxury-gold);
+}
+
 .dashboard-date {
     font-size: 12px;
     color: var(--text-secondary);
+}
+
+/* Dashboard Specific Headings */
+.dashboard-heading {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body[data-theme="light"] .dashboard-heading {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* 1. Listed Properties */
+.heading-listed {
+    color: var(--luxury-gold); /* Brand Gold */
+}
+body[data-theme="light"] .heading-listed {
+    color: #b08d20; /* Slightly deeper gold for white bg contrast */
+}
+
+/* 2. Saved Properties */
+.heading-saved {
+    color: #4ade80; /* Soft Sage Green */
+}
+body[data-theme="light"] .heading-saved {
+    color: #059669; /* Fine Deep Emerald */
+}
+
+/* 3. Interacted Properties */
+.heading-interacted {
+    color: #60a5fa; /* Soft Sapphire Blue */
+}
+body[data-theme="light"] .heading-interacted {
+    color: #2563eb; /* Professional Deep Blue */
+}
+
+/* 4. Last Viewed Properties */
+.heading-viewed {
+    color: #cbd5e1; /* Platinum Silver */
+}
+body[data-theme="light"] .heading-viewed {
+    color: #475569; /* Slate Charcoal */
 }
